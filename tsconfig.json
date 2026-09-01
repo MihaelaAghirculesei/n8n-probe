@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "noEmit": true
+  },
+  "files": [],
+  "references": [
+    { "path": "packages/core" },
+    { "path": "packages/unit" },
+    { "path": "packages/mock-http" },
+    { "path": "packages/e2e" },
+    { "path": "packages/otel" },
+    { "path": "packages/metrics" },
+    { "path": "apps/example-node" }
+  ]
+}
