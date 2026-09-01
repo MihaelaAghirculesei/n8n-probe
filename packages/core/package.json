@@ -1,0 +1,47 @@
+{
+  "name": "@n8n-probe/core",
+  "version": "0.0.0",
+  "description": "Typed mock n8n execution context and data fixtures for testing custom nodes",
+  "keywords": ["n8n", "testing", "mock", "IExecuteFunctions"],
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+      "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
+    }
+  },
+  "files": ["dist", "README.md"],
+  "sideEffects": false,
+  "publishConfig": { "access": "public" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n8n-probe/n8n-probe.git",
+    "directory": "packages/core"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run --coverage"
+  },
+  "dependencies": {
+    "vitest-mock-extended": "^5.1.1"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "^2.16.0",
+    "vitest": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@vitest/coverage-v8": "^4.1.11",
+    "n8n-workflow": "^2.16.0",
+    "tsup": "^8.5.1",
+    "typescript": "~5.9.3",
+    "vitest": "^4.1.11"
+  }
+}
