@@ -1,3 +1,20 @@
 packages:
   - "packages/*"
   - "apps/*"
+
+# esbuild (tsup / vitest) is the only transitive dependency allowed to run its
+# install script.
+onlyBuiltDependencies:
+  - esbuild
+
+# Native build scripts pulled transitively by n8n-core and testcontainers. The
+# fast-tier suites never exercise them, so their (slow, Windows-fragile) builds
+# are deliberately skipped.
+allowBuilds:
+  "@sentry/node-cpu-profiler": false
+  "@sentry/node-native-stacktrace": false
+  cpu-features: false
+  isolated-vm: false
+  msw: false
+  protobufjs: false
+  ssh2: false
