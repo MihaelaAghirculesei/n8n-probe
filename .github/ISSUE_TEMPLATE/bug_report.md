@@ -15,6 +15,7 @@ labels: bug
 <!-- A failing test or a short snippet. -->
 
 **Environment**
+
 - Node:
 - pnpm:
 - n8n-workflow / n8n-core:

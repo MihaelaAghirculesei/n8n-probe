@@ -2,7 +2,13 @@
   "name": "@n8n-probe/metrics",
   "version": "0.0.0",
   "description": "n8n node execution metrics recorded via the OpenTelemetry Metrics API and exposed for Prometheus",
-  "keywords": ["n8n", "opentelemetry", "metrics", "prometheus", "observability"],
+  "keywords": [
+    "n8n",
+    "opentelemetry",
+    "metrics",
+    "prometheus",
+    "observability"
+  ],
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -10,13 +16,24 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
-      "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "sideEffects": false,
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/n8n-probe/n8n-probe.git",

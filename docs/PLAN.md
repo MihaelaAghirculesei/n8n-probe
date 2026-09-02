@@ -2,7 +2,7 @@
 
 Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
-This file tracks *what* is built and in which order. Rationale lives in
+This file tracks _what_ is built and in which order. Rationale lives in
 `docs/ARCHITECTURE.md`. Update the checkboxes in the same commit that lands the
 work.
 
@@ -80,8 +80,7 @@ renovate/CI check that flags minor bumps for manual review.
 ## Milestone 4 — `@n8n-probe/e2e` `[ ]`
 
 - [ ] `workflow()` builder → `IWorkflowBase` (`.addNode`, `.connect`, `.build`).
-- [ ] `runWorkflow(workflowBase, options?)` — fast tier: construct `Workflow`
-      + `WorkflowExecute` from `n8n-workflow` / `n8n-core`, run with a
+- [ ] `runWorkflow(workflowBase, options?)` — fast tier: construct `Workflow` + `WorkflowExecute` from `n8n-workflow` / `n8n-core`, run with a
       `NodeExecuteFunctions`-style context, return `IRun`.
 - [ ] `expectWorkflowSuccess(run)`, `getNodeOutput(run, nodeName)`.
 - [ ] `runWorkflowInFullInstance(workflowBase, { image? })` — full tier:

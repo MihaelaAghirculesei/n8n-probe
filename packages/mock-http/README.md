@@ -7,7 +7,10 @@ HTTP mocking for n8n nodes that call external APIs, built on
 import { setupMswForTest, mockApi, presets } from '@n8n-probe/mock-http';
 
 setupMswForTest([
-  ...mockApi().get('https://api.example.com/users').reply(200, [{ id: 1 }]).handlers(),
+  ...mockApi()
+    .get('https://api.example.com/users')
+    .reply(200, [{ id: 1 }])
+    .handlers(),
   presets.rateLimited('https://api.example.com/slow'),
 ]);
 ```

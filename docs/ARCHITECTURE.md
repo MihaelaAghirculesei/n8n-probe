@@ -1,8 +1,8 @@
 # ARCHITECTURE.md — ADRs, package APIs, config templates
 
 This document records the design decisions behind `n8n-probe`. It is the
-authority on *why* things are shaped the way they are; `docs/PLAN.md` tracks
-*what* is built and in which order.
+authority on _why_ things are shaped the way they are; `docs/PLAN.md` tracks
+_what_ is built and in which order.
 
 If something here conflicts with what is learned during implementation (an API
 that does not exist as sketched, a peer-dependency conflict, etc.), update this

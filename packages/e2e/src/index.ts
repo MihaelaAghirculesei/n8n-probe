@@ -1,10 +1,5 @@
 import { NotImplementedError } from '@n8n-probe/core';
-import type {
-  INodeExecutionData,
-  IRun,
-  IWorkflowBase,
-  WorkflowExecuteMode,
-} from 'n8n-workflow';
+import type { INodeExecutionData, IRun, IWorkflowBase, WorkflowExecuteMode } from 'n8n-workflow';
 
 /** A single node in a workflow under construction. */
 export interface WorkflowNodeSpec {

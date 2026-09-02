@@ -15,14 +15,14 @@ Prometheus metrics for node executions.
 
 ## Packages
 
-| Package | Purpose |
-| --- | --- |
-| [`@n8n-probe/core`](packages/core) | Typed mock `IExecuteFunctions` context and data/binary fixtures |
-| [`@n8n-probe/unit`](packages/unit) | Execute a single node class with inputs/params and assert on its output |
-| [`@n8n-probe/mock-http`](packages/mock-http) | HTTP mocking helpers and presets (rate-limit, timeout, flaky) built on MSW |
-| [`@n8n-probe/e2e`](packages/e2e) | Build and run whole workflows: fast in-process by default, real Docker instance opt-in |
-| [`@n8n-probe/otel`](packages/otel) | OpenTelemetry tracing for node executions and span assertions for tests |
-| [`@n8n-probe/metrics`](packages/metrics) | Execution metrics recorded through the OpenTelemetry Metrics API, exposed in Prometheus format |
+| Package                                      | Purpose                                                                                        |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| [`@n8n-probe/core`](packages/core)           | Typed mock `IExecuteFunctions` context and data/binary fixtures                                |
+| [`@n8n-probe/unit`](packages/unit)           | Execute a single node class with inputs/params and assert on its output                        |
+| [`@n8n-probe/mock-http`](packages/mock-http) | HTTP mocking helpers and presets (rate-limit, timeout, flaky) built on MSW                     |
+| [`@n8n-probe/e2e`](packages/e2e)             | Build and run whole workflows: fast in-process by default, real Docker instance opt-in         |
+| [`@n8n-probe/otel`](packages/otel)           | OpenTelemetry tracing for node executions and span assertions for tests                        |
+| [`@n8n-probe/metrics`](packages/metrics)     | Execution metrics recorded through the OpenTelemetry Metrics API, exposed in Prometheus format |
 
 ## Requirements
 
