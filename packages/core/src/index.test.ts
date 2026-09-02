@@ -55,6 +55,16 @@ describe('createMockExecuteFunctions', () => {
       expect(ctx.getNodeParameter('a.b', 0)).toBe('flat-wins');
     });
 
+    it("reads the node's own parameters, with `params` winning on collision", () => {
+      const ctx = createMockExecuteFunctions({
+        node: { parameters: { field: 'fromNode', keep: 'kept' } },
+        params: { field: 'fromParams' },
+      });
+
+      expect(ctx.getNodeParameter('field', 0)).toBe('fromParams');
+      expect(ctx.getNodeParameter('keep', 0)).toBe('kept');
+    });
+
     it('falls back when a param is missing', () => {
       const ctx = createMockExecuteFunctions();
       expect(ctx.getNodeParameter('missing', 0, 'default')).toBe('default');

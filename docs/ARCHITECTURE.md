@@ -164,9 +164,10 @@ export interface TestExecuteContext {
 }
 ```
 
-`getNodeParameter` resolves against `params` (exact key first, then a dotted-path
-walk), returns the fallback when absent, and throws when there is neither.
-`$parameter`-style expression resolution is not implemented yet.
+`getNodeParameter` resolves against the node's own `parameters` with the `params`
+option layered on top (exact key first, then a dotted-path walk), returns the
+fallback when absent, and throws when there is neither. `$parameter`-style
+expression resolution is not implemented yet.
 
 ### `@n8n-probe/unit`
 
