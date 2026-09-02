@@ -133,10 +133,23 @@ expected in this ecosystem. Silently shipping stale numbers is not acceptable.
 
 ### `@n8n-probe/core`
 
+`createMockExecuteFunctions` takes an **options object** rather than a raw
+`Partial<IExecuteFunctions>` (implemented in Milestone 1): the common test intent
+is "these input items, these params, this node", and the returned value is a
+`vitest-mock-extended` deep mock, so any member can still be refined per test
+(`ctx.helpers.httpRequest.mockResolvedValue(...)`).
+
 ```ts
+export interface CreateMockExecuteFunctionsOptions {
+  node?: Partial<INode>; // merged over a generic default node
+  input?: INodeExecutionData[]; // getInputData(); default []
+  params?: Record<string, unknown>; // getNodeParameter(name, itemIndex, fallback?); flat or dotted keys
+  continueOnFail?: boolean; // default false
+}
+
 export function createMockExecuteFunctions(
-  overrides?: Partial<IExecuteFunctions>,
-): IExecuteFunctions;
+  options?: CreateMockExecuteFunctionsOptions,
+): DeepMockProxy<IExecuteFunctions>;
 
 export function itemsFrom(json: unknown[]): INodeExecutionData[];
 export function binaryFixture(input: {
@@ -150,6 +163,10 @@ export interface TestExecuteContext {
   readonly executeFunctions: IExecuteFunctions;
 }
 ```
+
+`getNodeParameter` resolves against `params` (exact key first, then a dotted-path
+walk), returns the fallback when absent, and throws when there is neither.
+`$parameter`-style expression resolution is not implemented yet.
 
 ### `@n8n-probe/unit`
 

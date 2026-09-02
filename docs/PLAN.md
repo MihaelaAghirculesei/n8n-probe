@@ -32,20 +32,26 @@ on a clean checkout with only placeholder implementations. — **met on
 
 ---
 
-## Milestone 1 — `@n8n-probe/core` `[ ]`
+## Milestone 1 — `@n8n-probe/core` `[~]`
 
-- [ ] `createMockExecuteFunctions(overrides?)` backed by `vitest-mock-extended`
+- [x] `createMockExecuteFunctions(options?)` backed by `vitest-mock-extended`
       (`mockDeep<IExecuteFunctions>()`), with sensible defaults for
       `getNode`, `getInputData`, `getNodeParameter`, `helpers.*`, `continueOnFail`,
-      `logger`.
-- [ ] `itemsFrom(json[])` → `INodeExecutionData[]` (wraps each entry as `{ json }`,
-      sets `pairedItem` index).
-- [ ] `binaryFixture({ fileName, mimeType, data })` → `IBinaryData` (base64 encode,
-      set `fileSize`, `fileExtension`).
-- [ ] `getNodeParameter` override helper that resolves from a plain params object
-      including dotted paths and `$parameter` expressions where feasible.
-- [ ] Unit tests for every export; 100% of the public surface exercised.
-- [ ] README with a copy-pasteable example.
+      `logger`. Takes an options object (`node` / `input` / `params` /
+      `continueOnFail`) rather than a raw `Partial<IExecuteFunctions>`; the
+      returned deep mock is still mutable for per-test refinement. Architecture
+      sketch updated to match.
+- [x] `itemsFrom(json[])` → `INodeExecutionData[]` (wraps each entry as
+      `{ json, pairedItem: { item } }`; rejects non-object entries).
+- [x] `binaryFixture({ fileName, mimeType, data })` → `IBinaryData` (base64
+      encode, set `fileSize`, `fileExtension`).
+- [~] `getNodeParameter` resolution from a plain params object: dotted paths and
+  exact-key-first matching done. `$parameter`-style expression resolution is
+  deferred (needs `n8n-workflow`'s expression engine wired in) — tracked for
+  a later `core` pass.
+- [x] Unit tests for every export; public surface fully exercised (100% funcs,
+      100% lines, >96% branches on `core`).
+- [x] README with a copy-pasteable example.
 
 Risks: n8n frequently reshapes `IExecuteFunctions`; pin `n8n-workflow` and add a
 renovate/CI check that flags minor bumps for manual review.
