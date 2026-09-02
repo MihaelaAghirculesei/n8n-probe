@@ -117,8 +117,9 @@ incompatibility.
   from the 9.x form.
 - **`turbo.json` uses `"tasks"`, not `"pipeline"`.** The `pipeline` key was
   removed in Turborepo 2.0; `tasks` is the current name.
-- **pnpm `11.25.0`**, Node engine `>=22.22`, `@types/node ^22` (tracks the
-  minimum supported Node, not `latest`).
+- **pnpm** pinned via `packageManager` to the version verified locally
+  (`11.22.0`; `11.25.0` is the current npm `latest`). Node engine `>=22.22`,
+  `@types/node ^22` (tracks the minimum supported Node, not `latest`).
 - **`prom-client` is not a dependency** — see ADR-0003.
 
 **Consequences.** Every version in the config templates below reflects the
