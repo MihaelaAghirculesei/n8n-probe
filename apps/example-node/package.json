@@ -3,18 +3,24 @@
   "version": "0.0.0",
   "private": true,
   "description": "Example n8n node used as a shared fixture across the n8n-probe test suites",
-  "keywords": ["n8n-community-node-package"],
+  "keywords": [
+    "n8n-community-node-package"
+  ],
   "license": "MIT",
   "type": "commonjs",
   "main": "dist/index.js",
   "n8n": {
     "n8nNodesApiVersion": 1,
-    "nodes": ["dist/nodes/Example/Example.node.js"]
+    "nodes": [
+      "dist/nodes/Example/Example.node.js"
+    ]
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "dev": "tsc -p tsconfig.json --watch",
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint nodes",
     "test": "vitest run"
