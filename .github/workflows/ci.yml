@@ -48,6 +48,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:e2e:full
 
+  # Publishing is deferred to Milestone 0 -> 9 (see docs/PLAN.md): the npm
+  # @n8n-probe scope, an OIDC Trusted Publisher and provenance must be in place
+  # first. Until then this job only keeps the Changesets "Version Packages" PR
+  # up to date (a no-op while there are no changeset files); it does not publish.
+  # To enable releases: add `publish: pnpm release` back, restore
+  # `id-token: write`, and configure the npm Trusted Publisher.
   release:
     name: release
     needs: build
@@ -55,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      id-token: write # npm OIDC trusted publishing
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -66,7 +72,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - uses: changesets/action@v1
         with:
-          publish: pnpm release
+          version: pnpm version-packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # No NPM_TOKEN: configure an npm Trusted Publisher (OIDC) instead.
