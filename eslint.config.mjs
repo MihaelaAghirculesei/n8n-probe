@@ -31,11 +31,24 @@ export default tseslint.config(
     },
   },
   {
+    // n8n's INodeType.execute is `async` by contract even when a given node
+    // body never awaits; that is idiomatic, not a smell.
+    files: ['**/*.node.ts'],
+    rules: {
+      '@typescript-eslint/require-await': 'off',
+    },
+  },
+  {
+    // Tests exercise stubbed / deliberately loosely-typed code paths; the
+    // no-unsafe-* family is too noisy to be useful here.
     files: ['**/*.{test,spec}.ts', '**/test/**/*.ts'],
     rules: {
       '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
     },
   },
 );
