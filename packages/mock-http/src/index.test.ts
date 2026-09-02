@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { mockApi, presets, setupMswForTest, startWireMock } from './index';
+import { mockApi, presets, setupMswForTest, startWireMock } from './index.js';
 
 describe('@n8n-probe/mock-http public surface', () => {
   it('exposes the documented entry points', () => {

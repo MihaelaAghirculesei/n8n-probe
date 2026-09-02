@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { NotImplementedError, binaryFixture, createMockExecuteFunctions, itemsFrom } from './index';
+import {
+  NotImplementedError,
+  binaryFixture,
+  createMockExecuteFunctions,
+  itemsFrom,
+} from './index.js';
 
 describe('@n8n-probe/core public surface', () => {
   it('exposes the documented functions', () => {

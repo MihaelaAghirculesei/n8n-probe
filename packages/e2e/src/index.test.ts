@@ -6,7 +6,7 @@ import {
   runWorkflow,
   runWorkflowInFullInstance,
   workflow,
-} from './index';
+} from './index.js';
 
 describe('@n8n-probe/e2e public surface', () => {
   it('exposes the documented entry points', () => {

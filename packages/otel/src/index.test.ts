@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { expectSpan, initTracing, traced } from './index';
+import { expectSpan, initTracing, traced } from './index.js';
 
 describe('@n8n-probe/otel public surface', () => {
   it('exposes the documented entry points', () => {
