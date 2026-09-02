@@ -47,31 +47,12 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:e2e:full
-
-  # Publishing is deferred to Milestone 0 -> 9 (see docs/PLAN.md): the npm
-  # @n8n-probe scope, an OIDC Trusted Publisher and provenance must be in place
-  # first. Until then this job only keeps the Changesets "Version Packages" PR
-  # up to date (a no-op while there are no changeset files); it does not publish.
-  # To enable releases: add `publish: pnpm release` back, restore
-  # `id-token: write`, and configure the npm Trusted Publisher.
-  release:
-    name: release
-    needs: build
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - uses: changesets/action@v1
-        with:
-          version: pnpm version-packages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+# There is deliberately no release job here until Milestone 9 (see docs/PLAN.md).
+# Releasing needs the npm @n8n-probe scope, an OIDC Trusted Publisher, provenance,
+# and the repo setting "Allow GitHub Actions to create and approve pull requests"
+# (Settings -> Actions -> General -> Workflow permissions) so Changesets can open
+# its "Version Packages" PR. Until all of that exists, running `changesets/action`
+# on every push to main only produces red runs, so it lives in its own
+# `.github/workflows/release.yml` added in M9 rather than in this validation
+# workflow. Changesets accumulate in `.changeset/` in the meantime; run
+# `pnpm version-packages` locally whenever a version bump is actually wanted.

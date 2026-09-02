@@ -161,8 +161,18 @@ Document which subset; the full tier is the backstop.
 - [ ] Every package: `README.md`, `LICENSE` field, `files`, `exports`,
       `sideEffects: false`, `repository` + `homepage` metadata.
 - [ ] `@n8n-probe/*` reserved on npm (first `0.1.0` publish, possibly `--tag next`).
-- [ ] npm Trusted Publisher (OIDC) configured; release workflow enabled.
-- [ ] `CHANGELOG.md` generated via Changesets.
+- [ ] npm Trusted Publisher (OIDC) configured.
+- [ ] Add `.github/workflows/release.yml` (own workflow, `push: [main]` only)
+      running `changesets/action` with `publish: pnpm release` and
+      `permissions: contents: write, id-token: write, pull-requests: write`.
+      It is **not** part of `ci.yml` — a failing release job must never redden
+      the validation workflow.
+- [ ] Enable **Settings → Actions → General → Workflow permissions → "Allow
+      GitHub Actions to create and approve pull requests"** so Changesets can
+      open its "Version Packages" PR (`can_approve_pull_request_reviews: true`).
+      Without it the release job fails at PR creation.
+- [ ] `CHANGELOG.md` generated via Changesets (`pnpm version-packages` locally
+      until the workflow above exists; the `.changeset/*` files accumulate).
 - [ ] Docs site (optional `apps/docs`) or a docs section in the root README.
 
 ---

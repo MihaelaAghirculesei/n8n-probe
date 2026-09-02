@@ -370,6 +370,16 @@ export default tseslint.config(
 
 ### `.github/workflows/ci.yml` (sketch)
 
+> **Release is not in `ci.yml`.** `ci.yml` is validation only (build / lint /
+> typecheck / test, plus the opt-in `e2e-full`). The `release` job below is what
+> M9 adds as a **separate** `.github/workflows/release.yml` triggered on
+> `push: [main]` only. Keeping it out of the validation workflow means a release
+> failure (missing npm scope, Trusted Publisher not set up, the "Allow GitHub
+> Actions to create and approve pull requests" repo setting still off) can never
+> turn the main-branch CI red. Until M9 there is no release workflow at all;
+> `changeset` files accumulate in `.changeset/` and `pnpm version-packages` is
+> run locally when a bump is wanted.
+
 ```yaml
 name: CI
 on: [push, pull_request]
@@ -403,12 +413,14 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:e2e:full # Docker is available by default on GH-hosted runners
 
+  # M9: lives in its own .github/workflows/release.yml, `on: push: [main]`.
   release:
     needs: build
     if: github.ref == 'refs/heads/main'
     permissions:
       contents: write
       id-token: write # required for npm OIDC trusted publishing
+      pull-requests: write # Changesets opens the "Version Packages" PR
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
