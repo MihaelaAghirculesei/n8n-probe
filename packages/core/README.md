@@ -36,10 +36,12 @@ it('uppercases the configured field', async () => {
 | `params`         | `{}`                | Resolved by `getNodeParameter(name, itemIndex, fallback?)` |
 | `continueOnFail` | `false`             | Value returned by `continueOnFail()`                       |
 
-`params` keys may be flat (`'field'`) or dotted (`'options.limit'`); a flat key
-containing dots is matched before the path is walked. `getNodeParameter` returns
-the fallback when a value is absent, and throws when there is neither a value nor
-a fallback. `$parameter`-style expressions are not resolved yet.
+`getNodeParameter` resolves against the node's own `parameters` with `params`
+layered on top (so `params` wins on a key collision). Keys may be flat
+(`'field'`) or dotted (`'options.limit'`); a flat key containing dots is matched
+before the path is walked. It returns the fallback when a value is absent, and
+throws when there is neither a value nor a fallback. `$parameter`-style
+expressions are not resolved yet.
 
 The result is a live deep mock, so anything can be refined per test:
 

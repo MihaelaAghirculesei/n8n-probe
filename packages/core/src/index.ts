@@ -34,10 +34,11 @@ export interface CreateMockExecuteFunctionsOptions {
   /** Items returned by `getInputData()`. Defaults to `[]`. */
   input?: INodeExecutionData[];
   /**
-   * Values resolved by `getNodeParameter(name, itemIndex, fallback?)`. Keys may
-   * be flat (`'field'`) or dotted (`'options.limit'`); a flat key that contains
-   * dots is matched before the path is walked. `$parameter`-style expressions
-   * are not resolved yet.
+   * Values resolved by `getNodeParameter(name, itemIndex, fallback?)`, layered
+   * over the node's own `parameters` (so `params` wins on a key collision). Keys
+   * may be flat (`'field'`) or dotted (`'options.limit'`); a flat key that
+   * contains dots is matched before the path is walked. `$parameter`-style
+   * expressions are not resolved yet.
    */
   params?: Record<string, unknown>;
   /** Value returned by `continueOnFail()`. Defaults to `false`. */
@@ -72,23 +73,29 @@ export function createMockExecuteFunctions(
     parameters: { ...DEFAULT_NODE.parameters, ...nodeOverride?.parameters },
   };
 
+  // `params` is an override layer over whatever the node itself declares, so a
+  // node's `parameters` and an explicit `params` option both feed `getNodeParameter`.
+  const paramSource: Record<string, unknown> = { ...node.parameters, ...params };
+
   const ctx = mockDeep<IExecuteFunctions>();
 
   ctx.getNode.mockReturnValue(node);
   ctx.getInputData.mockReturnValue(input);
   ctx.continueOnFail.mockReturnValue(continueOnFail);
 
+  // n8n's `getNodeParameter` is a set of overloads no single implementation can
+  // satisfy structurally; the mock only needs the runtime behaviour.
   const getNodeParameter = ((
     parameterName: string,
     _itemIndex?: number,
     fallbackValue?: unknown,
   ): unknown => {
-    const resolved = readPath(params, parameterName);
+    const resolved = readPath(paramSource, parameterName);
     if (resolved !== undefined) return resolved;
     if (fallbackValue !== undefined) return fallbackValue;
     throw new Error(
       `getNodeParameter("${parameterName}") has no value on mock node "${node.name}". ` +
-        'Provide it via the `params` option or pass a fallback value.',
+        "Provide it via the node's `parameters`, the `params` option, or a fallback value.",
     );
   }) as unknown as IExecuteFunctions['getNodeParameter'];
   ctx.getNodeParameter.mockImplementation(getNodeParameter);
