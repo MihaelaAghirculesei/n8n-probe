@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 10s
+
+scrape_configs:
+  - job_name: n8n-probe
+    static_configs:
+      # host.docker.internal reaches a metrics endpoint started on the host by
+      # @n8n-probe/metrics (initMetrics -> :9464/metrics).
+      - targets: ['host.docker.internal:9464']

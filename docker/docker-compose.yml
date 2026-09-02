@@ -1,0 +1,49 @@
+# Local observability stack for manually exercising @n8n-probe/otel and
+# @n8n-probe/metrics against a real n8n instance.
+#
+#   docker compose -f docker/docker-compose.yml up -d
+#
+# n8n        -> http://localhost:5678
+# Prometheus -> http://localhost:9090
+# Grafana    -> http://localhost:3000  (admin / admin)
+# Jaeger UI  -> http://localhost:16686
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    ports:
+      - '5678:5678'
+    environment:
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_RUNNERS_ENABLED=true
+    volumes:
+      - ../apps/example-node/dist:/home/node/.n8n/custom/n8n-nodes-probe-example:ro
+      - n8n_data:/home/node/.n8n
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - '3000:3000'
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - prometheus
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - '16686:16686' # UI
+      - '4318:4318' # OTLP HTTP
+
+volumes:
+  n8n_data:

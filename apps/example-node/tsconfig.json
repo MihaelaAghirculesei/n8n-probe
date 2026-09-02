@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node10",
+    "verbatimModuleSyntax": false,
+    "rootDir": ".",
+    "outDir": "dist"
+  },
+  "include": ["index.ts", "nodes/**/*"],
+  "exclude": ["dist", "node_modules"]
+}

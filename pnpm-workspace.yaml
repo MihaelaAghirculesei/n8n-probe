@@ -1,0 +1,25 @@
+packages:
+  - 'packages/*'
+  - 'apps/*'
+
+# pnpm blocks dependency build (install) scripts by default (supply-chain
+# protection) and, on a clean `pnpm install --frozen-lockfile`, fails with
+# ERR_PNPM_IGNORED_BUILDS until every discovered package is explicitly allowed
+# (true) or denied (false) here.
+#
+# - esbuild (via tsup / vitest / vite) needs its script to place the platform
+#   binary -> allowed.
+# - The native deps pulled transitively by n8n-core and testcontainers
+#   (isolated-vm, ssh2, @sentry/*, cpu-features, protobufjs) are never exercised
+#   by the fast-tier suites; their slow, Windows-fragile builds are denied.
+# - msw's postinstall only matters for its browser service worker, which node
+#   testing does not use -> denied.
+allowBuilds:
+  esbuild: true
+  '@sentry/node-cpu-profiler': false
+  '@sentry/node-native-stacktrace': false
+  cpu-features: false
+  isolated-vm: false
+  msw: false
+  protobufjs: false
+  ssh2: false

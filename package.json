@@ -1,0 +1,36 @@
+{
+  "name": "n8n-probe",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Testing and observability toolkit for n8n custom nodes and workflows",
+  "license": "MIT",
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": ">=22.22",
+    "pnpm": ">=11"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint -- --fix",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e:full": "turbo run test:e2e:full",
+    "format": "prettier --write \"**/*.{ts,js,mjs,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,js,mjs,json,md,yml,yaml}\"",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.1",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22",
+    "eslint": "^10.9.1",
+    "prettier": "^3.9.6",
+    "turbo": "^2.10.12",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.69.0"
+  }
+}

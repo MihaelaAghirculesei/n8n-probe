@@ -1,0 +1,64 @@
+{
+  "name": "@n8n-probe/unit",
+  "version": "0.0.0",
+  "description": "Execute a single n8n node class with inputs and params and assert on its output",
+  "keywords": [
+    "n8n",
+    "testing",
+    "unit",
+    "node"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n8n-probe/n8n-probe.git",
+    "directory": "packages/unit"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@n8n-probe/core": "workspace:^"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "^2.16.0",
+    "vitest": "^4.0.0"
+  },
+  "devDependencies": {
+    "@n8n-probe/core": "workspace:*",
+    "@types/node": "^22",
+    "@vitest/coverage-v8": "^4.1.11",
+    "n8n-workflow": "^2.16.0",
+    "tsup": "^8.5.1",
+    "typescript": "~5.9.3",
+    "vitest": "^4.1.11"
+  }
+}
