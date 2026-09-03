@@ -41,6 +41,12 @@ export interface CreateMockExecuteFunctionsOptions {
    * expressions are not resolved yet.
    */
   params?: Record<string, unknown>;
+  /**
+   * Decrypted credential objects keyed by credential type name, returned by
+   * `getCredentials(type)`. Asking for a type that is not present throws, the
+   * same way a real node run fails when its credentials are not configured.
+   */
+  credentials?: Record<string, unknown>;
   /** Value returned by `continueOnFail()`. Defaults to `false`. */
   continueOnFail?: boolean;
 }
@@ -65,7 +71,13 @@ const DEFAULT_NODE: INode = {
 export function createMockExecuteFunctions(
   options: CreateMockExecuteFunctionsOptions = {},
 ): DeepMockProxy<IExecuteFunctions> {
-  const { node: nodeOverride, input = [], params = {}, continueOnFail = false } = options;
+  const {
+    node: nodeOverride,
+    input = [],
+    params = {},
+    credentials = {},
+    continueOnFail = false,
+  } = options;
 
   const node: INode = {
     ...DEFAULT_NODE,
@@ -99,6 +111,22 @@ export function createMockExecuteFunctions(
     );
   }) as unknown as IExecuteFunctions['getNodeParameter'];
   ctx.getNodeParameter.mockImplementation(getNodeParameter);
+
+  // `getCredentials(type)` resolves the matching entry from the `credentials`
+  // option and otherwise throws, mirroring a real run where a node asking for
+  // credentials it was not given fails rather than receiving `undefined`.
+  const getCredentials = ((type: string): Promise<unknown> => {
+    if (Object.prototype.hasOwnProperty.call(credentials, type)) {
+      return Promise.resolve(credentials[type]);
+    }
+    return Promise.reject(
+      new Error(
+        `getCredentials("${type}") has no value on mock node "${node.name}". ` +
+          'Provide it via the `credentials` option.',
+      ),
+    );
+  }) as unknown as IExecuteFunctions['getCredentials'];
+  ctx.getCredentials.mockImplementation(getCredentials);
 
   ctx.helpers.returnJsonArray.mockImplementation((jsonData) =>
     itemsFrom(Array.isArray(jsonData) ? jsonData : [jsonData]),

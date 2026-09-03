@@ -144,6 +144,7 @@ export interface CreateMockExecuteFunctionsOptions {
   node?: Partial<INode>; // merged over a generic default node
   input?: INodeExecutionData[]; // getInputData(); default []
   params?: Record<string, unknown>; // getNodeParameter(name, itemIndex, fallback?); flat or dotted keys
+  credentials?: Record<string, unknown>; // getCredentials(type); throws for an unprovided type
   continueOnFail?: boolean; // default false
 }
 
@@ -167,7 +168,9 @@ export interface TestExecuteContext {
 `getNodeParameter` resolves against the node's own `parameters` with the `params`
 option layered on top (exact key first, then a dotted-path walk), returns the
 fallback when absent, and throws when there is neither. `$parameter`-style
-expression resolution is not implemented yet.
+expression resolution is not implemented yet. `getCredentials(type)` returns the
+matching entry from `credentials` and throws when the node asks for a type that
+was not provided (matching a real run with unconfigured credentials).
 
 ### `@n8n-probe/unit`
 

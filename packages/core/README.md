@@ -29,12 +29,13 @@ it('uppercases the configured field', async () => {
 });
 ```
 
-| Option           | Default             | Purpose                                                    |
-| ---------------- | ------------------- | ---------------------------------------------------------- |
-| `node`           | a generic test node | Overrides merged over the node returned by `getNode()`     |
-| `input`          | `[]`                | Items returned by `getInputData()`                         |
-| `params`         | `{}`                | Resolved by `getNodeParameter(name, itemIndex, fallback?)` |
-| `continueOnFail` | `false`             | Value returned by `continueOnFail()`                       |
+| Option           | Default             | Purpose                                                             |
+| ---------------- | ------------------- | ------------------------------------------------------------------- |
+| `node`           | a generic test node | Overrides merged over the node returned by `getNode()`              |
+| `input`          | `[]`                | Items returned by `getInputData()`                                  |
+| `params`         | `{}`                | Resolved by `getNodeParameter(name, itemIndex, fallback?)`          |
+| `credentials`    | `{}`                | Decrypted objects keyed by type, returned by `getCredentials(type)` |
+| `continueOnFail` | `false`             | Value returned by `continueOnFail()`                                |
 
 `getNodeParameter` resolves against the node's own `parameters` with `params`
 layered on top (so `params` wins on a key collision). Keys may be flat
@@ -42,6 +43,18 @@ layered on top (so `params` wins on a key collision). Keys may be flat
 before the path is walked. It returns the fallback when a value is absent, and
 throws when there is neither a value nor a fallback. `$parameter`-style
 expressions are not resolved yet.
+
+`getCredentials(type)` resolves the matching entry from `credentials` and throws
+when the node asks for a type that was not provided — the same failure a real
+run produces when credentials are missing, rather than silently handing back
+`undefined`.
+
+```ts
+const ctx = createMockExecuteFunctions({
+  credentials: { myApi: { apiKey: 'secret' } },
+});
+await ctx.getCredentials('myApi'); // { apiKey: 'secret' }
+```
 
 The result is a live deep mock, so anything can be refined per test:
 
