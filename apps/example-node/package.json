@@ -9,6 +9,7 @@
   "license": "MIT",
   "type": "commonjs",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "n8n": {
     "n8nNodesApiVersion": 1,
     "nodes": [
