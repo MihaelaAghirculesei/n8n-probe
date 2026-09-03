@@ -13,7 +13,8 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "nodes": [
-      "dist/nodes/Example/Example.node.js"
+      "dist/nodes/Example/Example.node.js",
+      "dist/nodes/HttpExample/HttpExample.node.js"
     ]
   },
   "files": [

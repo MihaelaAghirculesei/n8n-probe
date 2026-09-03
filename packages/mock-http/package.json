@@ -44,13 +44,16 @@
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
-    "test": "vitest run --coverage"
+    "test": "vitest run --coverage",
+    "test:e2e:full": "vitest run --config vitest.full.config.ts"
   },
   "dependencies": {
     "@n8n-probe/core": "workspace:^",
+    "axios": "^1.15.0",
     "msw": "^2.15.0"
   },
   "peerDependencies": {
+    "n8n-workflow": "^2.16.0",
     "testcontainers": "^12.0.0",
     "vitest": "^4.0.0"
   },
@@ -63,6 +66,8 @@
     "@n8n-probe/core": "workspace:*",
     "@types/node": "^22",
     "@vitest/coverage-v8": "^4.1.11",
+    "n8n-nodes-probe-example": "workspace:*",
+    "n8n-workflow": "^2.16.0",
     "testcontainers": "^12.1.0",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",

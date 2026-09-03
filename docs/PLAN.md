@@ -81,16 +81,27 @@ renovate/CI check that flags minor bumps for manual review.
 
 ---
 
-## Milestone 3 — `@n8n-probe/mock-http` `[ ]`
+## Milestone 3 — `@n8n-probe/mock-http` `[x]`
 
-- [ ] `setupMswForTest(handlers?)` — registers a shared `setupServer`, wires
-      `beforeAll(listen)`, `afterEach(resetHandlers)`, `afterAll(close)`.
-- [ ] `mockApi()` fluent builder → MSW handlers (`.get/.post(path).reply(status, body)`).
-- [ ] `presets.rateLimited` (429 + `Retry-After`), `presets.timeout` (delayed
-      infinite response), `presets.flakyThenSuccess(path, n)` (n failures then 200).
-- [ ] `startWireMock({ mappingsDir? })` via `testcontainers` for contract-style
-      tests that need a real HTTP server; returns `{ baseUrl, stop() }`.
-- [ ] Tests: drive a node that calls an external API through each preset.
+- [x] `setupMswForTest(handlers?)` — registers a shared `setupServer`, wires
+      `beforeAll(listen{onUnhandledRequest:'error'})`, `afterEach(resetHandlers)`,
+      `afterAll(close)`; returns the server for per-case `server.use(...)`.
+- [x] `mockApi()` fluent builder → MSW handlers
+      (`.get/.post/.put/.delete(path).reply(status, body?)`).
+- [x] `presets.rateLimited` (429 + `Retry-After`), `presets.timeout` (never
+      settles), `presets.flakyThenSuccess(path, n, body?)` (n × 503 then 200).
+- [x] `createMockHttpExecuteFunctions()` / `performHttpRequest()` — axios-backed
+      `helpers.httpRequest` so a node's calls actually reach MSW (ADR-0008,
+      issue #9).
+- [x] `startWireMock({ mappingsDir?, image? })` via `testcontainers` +
+      `wiremock/wiremock:3.13.2` → `{ baseUrl, stop() }`. Opt-in Docker tier
+      (`*.full.test.ts` + `vitest.full.config.ts`, `pnpm test:e2e:full`), not in
+      `pnpm test`. **Not run locally (no Docker here)** — exercised by the CI
+      `e2e-full` job / a labelled PR run.
+- [x] Tests: `HttpExample` fixture node driven through happy path, retry,
+      persistent failure, timeout, unmatched request, `continueOnFail`.
+- [x] New fixture `apps/example-node` → `HttpExample.node.ts` (calls
+      `helpers.httpRequest`, retries 429/503, `NodeApiError` on give-up).
 
 ---
 

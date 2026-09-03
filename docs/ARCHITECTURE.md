@@ -127,6 +127,64 @@ incompatibility.
 `npm view <pkg> version` before a fresh install; a few months of drift is
 expected in this ecosystem. Silently shipping stale numbers is not acceptable.
 
+### ADR-0007: Sharing the `apps/example-node` fixture across test packages
+
+**Context.** `unit` (M2) and `mock-http` (M3) — and later `e2e`, `otel`,
+`metrics` — drive the same real fixture nodes (`Example`, `HttpExample`) so the
+examples exercise genuine node code. The fixture is a published-shape n8n
+community node, which n8n loads via `require`, so it builds to **CommonJS**. The
+test packages are ESM.
+
+**Decision.**
+
+- The fixture stays **CommonJS** (`apps/example-node`, `tsc` → `dist`, with a
+  `types` field). Test packages depend on it as `n8n-nodes-probe-example`
+  (`workspace:*`, dev). Turbo's `^build` ordering builds it first.
+- An ESM test importing both the fixture and `n8n-workflow` would otherwise load
+  the fixture's CJS `n8n-workflow` **and** the test's ESM `n8n-workflow` — two
+  copies of `NodeOperationError` / `NodeApiError`, so `instanceof` fails across
+  the boundary. **Every test package that imports the fixture pins
+  `n8n-workflow` to one build** in its `vitest.config.ts`:
+  `resolve.alias` → `createRequire(import.meta.url).resolve('n8n-workflow')`
+  (the CJS build). Duplicated for now; issue #7 tracks extracting a base config.
+- Alternatives rejected: importing the fixture's `.ts` source (breaks the
+  package's `rootDir` and its published-shape realism); dual-building the fixture
+  CJS + ESM (extra build config for a throwaway app, and the alias is still
+  needed for any consumer that lands on the other format).
+
+**`executeNode` surface (M2).** `ARCHITECTURE.md` first sketched
+`executeNode(NodeClass, { input, params, credentials })`. The implementation also
+takes `node` and `continueOnFail`: driving `typeVersion` branches and the
+`continueOnFail` path through the public helper needs them, and the mock context
+already supports them. Principle: the helper's options mirror the mock context's
+options rather than exposing a deliberately narrower set.
+
+**Consequences.** New test packages copy the alias block until issue #7 lands.
+The fixture's public surface (its exported node classes) is part of the toolkit's
+test contract; changing it is a breaking change for the test suites.
+
+### ADR-0008: HTTP interception — `mock-http` supplies a real `helpers.httpRequest`
+
+**Context.** MSW / WireMock only see a node's outbound call if
+`helpers.httpRequest` actually performs a network request.
+`@n8n-probe/core`'s `createMockExecuteFunctions` returns a deep mock whose
+`helpers.httpRequest` is an auto-mock returning `undefined`.
+
+**Decision.** `@n8n-probe/mock-http` owns the real HTTP path:
+`performHttpRequest(node, options)` implements a faithful subset of n8n's
+`helpers.httpRequest` on **axios** (the client n8n itself uses, and one MSW's
+`http`/`https` interceptor catches), and `createMockHttpExecuteFunctions` returns
+core's context with that wired in. `@n8n-probe/core` stays HTTP-client-free — no
+`axios`/`undici` dependency, no `realHttp` flag. `n8n-core`'s full request stack
+is reserved for `@n8n-probe/e2e` (M4).
+
+**Consequences.** `@n8n-probe/unit`'s `executeNode` does not do real HTTP yet; a
+node needing HTTP mocking is tested via `createMockHttpExecuteFunctions` +
+`node.execute.call(ctx)`. Wiring an `httpRequest` option through `executeNode` is
+a possible later convenience. `performHttpRequest` does not cover
+`httpRequestWithAuthentication`, form/multipart bodies, proxy auth, or
+`arrayFormat` query serialisation.
+
 ---
 
 ## Package public APIs (sketch — refine signatures during implementation)
@@ -207,19 +265,34 @@ no `execute()`, or one returning an `EngineRequest` throws
 ### `@n8n-probe/mock-http`
 
 ```ts
-export function mockApi(): MockApiBuilder; // .get(path).reply(status, body) fluent chain
-export function setupMswForTest(handlers?: RequestHandler[]): void; // wires beforeAll/afterEach/afterAll
+export function mockApi(): MockApiBuilder; // .get(path).reply(status, body?) fluent chain
+export function setupMswForTest(handlers?: RequestHandler[]): SetupServer; // wires beforeAll/afterEach/afterAll, returns the server
 
 export const presets: {
-  rateLimited(path: string): RequestHandler;
-  timeout(path: string): RequestHandler;
-  flakyThenSuccess(path: string, failuresBeforeSuccess: number): RequestHandler;
+  rateLimited(path: string): RequestHandler; // 429 + Retry-After: 1
+  timeout(path: string): RequestHandler; // never settles
+  flakyThenSuccess(path: string, failuresBeforeSuccess: number, body?: unknown): RequestHandler;
 };
 
+// core's mock context with helpers.httpRequest wired to a real axios client
+export function createMockHttpExecuteFunctions(
+  options?: CreateMockExecuteFunctionsOptions,
+): DeepMockProxy<IExecuteFunctions>;
+// the axios-backed helpers.httpRequest stand-in on its own; non-2xx / transport
+// failure -> NodeApiError. Subset of IHttpRequestOptions (no auth/form/proxy).
+export function performHttpRequest(node: INode, options: IHttpRequestOptions): Promise<unknown>;
+
+// opt-in Docker tier (testcontainers optional peer); pnpm test:e2e:full only
 export function startWireMock(options?: {
   mappingsDir?: string;
+  image?: string;
 }): Promise<{ baseUrl: string; stop(): Promise<void> }>;
 ```
+
+A node's outbound call only reaches MSW/WireMock if `helpers.httpRequest`
+actually performs a request; `@n8n-probe/core`'s bare mock returns `undefined`.
+`createMockHttpExecuteFunctions` is the resolution of that gap (issue #9) — the
+`unit` package's `executeNode` does not wire real HTTP yet.
 
 ### `@n8n-probe/e2e`
 
