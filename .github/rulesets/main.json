@@ -29,10 +29,7 @@
       "parameters": {
         "strict_required_status_checks_policy": true,
         "do_not_enforce_on_create": false,
-        "required_status_checks": [
-          { "context": "build / node 22" },
-          { "context": "build / node 24" }
-        ]
+        "required_status_checks": [{ "context": "ci" }]
       }
     }
   ],

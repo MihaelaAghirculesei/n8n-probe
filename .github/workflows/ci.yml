@@ -11,7 +11,40 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Least privilege by default; a job that needs more raises its own `permissions`.
+permissions:
+  contents: read
+
+# CI rules (also in AGENTS.md, enforced by the `guards` job):
+#   1. Every job here runs on pull_request, so every check can be a required
+#      check. No job may be gated to run only on a push to the default branch:
+#      it would run after merge, could not gate the PR, and has turned main red
+#      before. Release-type automation lives in its own workflow (Milestone 9).
+#   2. .github/rulesets/main.json requires exactly one check: `ci`. Everything
+#      that must gate a merge is wired into `ci` via `needs:` below, so adding
+#      or renaming jobs never silently un-protects the main branch.
+
 jobs:
+  guards:
+    name: guards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: actionlint (pinned + checksum-verified)
+        run: |
+          set -euo pipefail
+          version=1.7.12
+          sha=8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
+          curl -fsSL -o actionlint.tar.gz \
+            "https://github.com/rhysd/actionlint/releases/download/v${version}/actionlint_${version}_linux_amd64.tar.gz"
+          echo "${sha}  actionlint.tar.gz" | sha256sum -c -
+          tar -xzf actionlint.tar.gz actionlint
+          ./actionlint -color
+
+      - name: workflow invariants
+        run: bash scripts/check-workflow-invariants.sh
+
   build:
     name: build / node ${{ matrix.node }}
     runs-on: ubuntu-latest
@@ -34,6 +67,9 @@ jobs:
 
   e2e-full:
     name: e2e (full instance)
+    # Opt-in only (nightly schedule or the `e2e-full` PR label). Deliberately
+    # NOT wired into `ci` — a flaky Docker-backed nightly must never block a PR
+    # or redden a main commit; a failed run here is its own signal.
     if: >-
       github.event_name == 'schedule' ||
       contains(github.event.pull_request.labels.*.name, 'e2e-full')
@@ -47,12 +83,19 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:e2e:full
-# There is deliberately no release job here until Milestone 9 (see docs/PLAN.md).
-# Releasing needs the npm @n8n-probe scope, an OIDC Trusted Publisher, provenance,
-# and the repo setting "Allow GitHub Actions to create and approve pull requests"
-# (Settings -> Actions -> General -> Workflow permissions) so Changesets can open
-# its "Version Packages" PR. Until all of that exists, running `changesets/action`
-# on every push to main only produces red runs, so it lives in its own
-# `.github/workflows/release.yml` added in M9 rather than in this validation
-# workflow. Changesets accumulate in `.changeset/` in the meantime; run
-# `pnpm version-packages` locally whenever a version bump is actually wanted.
+
+  # The single required status check. If any gating job fails or is skipped for
+  # the wrong reason this fails, and the branch ruleset blocks the merge.
+  ci:
+    name: ci
+    needs: [guards, build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: require guards + build to have succeeded
+        run: |
+          set -euo pipefail
+          echo "guards = ${{ needs.guards.result }}"
+          echo "build  = ${{ needs.build.result }}"
+          [ "${{ needs.guards.result }}" = "success" ] || { echo "::error::guards did not succeed"; exit 1; }
+          [ "${{ needs.build.result }}" = "success" ] || { echo "::error::build did not succeed"; exit 1; }
