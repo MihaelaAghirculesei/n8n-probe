@@ -78,6 +78,27 @@ describe('createMockExecuteFunctions', () => {
     });
   });
 
+  describe('getCredentials', () => {
+    it('returns the credential object registered for a type', async () => {
+      const ctx = createMockExecuteFunctions({
+        credentials: { myApi: { apiKey: 'secret', baseUrl: 'https://example.test' } },
+      });
+
+      await expect(ctx.getCredentials('myApi')).resolves.toEqual({
+        apiKey: 'secret',
+        baseUrl: 'https://example.test',
+      });
+    });
+
+    it('rejects when a node asks for a type it was not given', async () => {
+      const ctx = createMockExecuteFunctions({ node: { name: 'MyNode' } });
+
+      await expect(ctx.getCredentials('missingApi')).rejects.toThrow(
+        /getCredentials\("missingApi"\).*"MyNode"/,
+      );
+    });
+  });
+
   it('can act as `this` for a node execute()', async () => {
     function execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
       const field = this.getNodeParameter('field', 0) as string;
