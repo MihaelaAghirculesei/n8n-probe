@@ -58,19 +58,26 @@ renovate/CI check that flags minor bumps for manual review.
 
 ---
 
-## Milestone 2 — `@n8n-probe/unit` `[ ]`
+## Milestone 2 — `@n8n-probe/unit` `[x]`
 
-- [ ] `executeNode(NodeClass, { input, params, credentials })` — instantiates the
-      node, builds a context via `@n8n-probe/core`, invokes `execute()`, returns
-      `INodeExecutionData[][]`.
-- [ ] `expectNodeOutput(result, expected)` — compares `result[0].map(i => i.json)`
-      to `expected` with a readable diff.
-- [ ] `expectNodeError(promise, matcher)` — asserts rejection by message
+- [x] `executeNode(NodeClass, { input, params, credentials, node, continueOnFail })`
+      — instantiates the node, builds a context via `@n8n-probe/core`, invokes
+      `execute()`, returns `INodeExecutionData[][]`. `typeVersion` defaults to the
+      description's highest. (`node` / `continueOnFail` added beyond the original
+      sketch — see `ARCHITECTURE.md`.)
+- [x] `expectNodeOutput(result, expected, branch?)` — compares
+      `result[branch].map(i => i.json)` to `expected` with a readable diff.
+- [x] `expectNodeError(promise, matcher)` — asserts rejection by message
       (string / RegExp) and/or `instanceOf` (e.g. `NodeApiError`, `NodeOperationError`).
-- [ ] Support multiple output branches (`result[branchIndex]`).
-- [ ] Best-effort path for declarative nodes: detect `description.routing`, skip
-      with a clear "not supported in v1" error (ADR-0005).
-- [ ] Tests using a fixture node from `apps/example-node`.
+- [x] Support multiple output branches (`result[branchIndex]`, `expectNodeOutput`
+      `branch` argument).
+- [x] Best-effort path for declarative nodes: no `execute()` + routing config
+      (`requestDefaults` / `requestOperations` / property `routing`) or
+      `customOperations` → `NodeNotExecutableError` (ADR-0005). `INodeTypeDescription`
+      has no top-level `routing` field; those are the real signals.
+- [x] Tests using the `Example` fixture node from `apps/example-node`
+      (happy path, params, thrown error, `continueOnFail`, `pairedItem`).
+- [x] `@n8n-probe/core`: `credentials` option wiring `getCredentials(type)`.
 
 ---
 

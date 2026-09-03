@@ -177,20 +177,32 @@ was not provided (matching a real run with unconfigured credentials).
 ```ts
 export async function executeNode<T extends new () => INodeType>(
   NodeClass: T,
-  options: {
+  options?: {
     input?: INodeExecutionData[];
     params?: Record<string, unknown>;
     credentials?: Record<string, unknown>;
+    node?: Partial<INode>; // getNode() overrides; typeVersion defaults to the description's highest
+    continueOnFail?: boolean; // value of this.continueOnFail() inside the node
   },
 ): Promise<INodeExecutionData[][]>;
 
-export function expectNodeOutput(result: INodeExecutionData[][], expected: unknown[]): void;
+export function expectNodeOutput(
+  result: INodeExecutionData[][],
+  expected: unknown[],
+  branch?: number, // default 0
+): void;
 
 export async function expectNodeError(
   promise: Promise<unknown>,
-  matcher: { message?: string | RegExp; instanceOf?: new (...args: never[]) => Error },
+  matcher?: { message?: string | RegExp; instanceOf?: new (...args: never[]) => Error },
 ): Promise<void>;
 ```
+
+`node`/`continueOnFail` were added during Milestone 2: exercising `typeVersion`
+branches and the `continueOnFail` path through the public helper needs both, and
+the mock context already supports them. A declarative/routing node, a node with
+no `execute()`, or one returning an `EngineRequest` throws
+`NodeNotExecutableError` (ADR-0005) rather than running half-way.
 
 ### `@n8n-probe/mock-http`
 
