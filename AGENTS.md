@@ -147,6 +147,30 @@ Package dependency direction: `core` ← `unit`; `core` + `n8n-workflow`/`n8n-co
 - README carries an explicit **non-affiliation disclaimer**. "n8n" is a
   trademark of n8n GmbH — nominative use only, never the logo or wordmark.
 
+## CI rules
+
+The main branch must stay green. Two rules make that structural, and
+`scripts/check-workflow-invariants.sh` (run by the `guards` job) enforces them:
+
+1. **Every job in `.github/workflows/ci.yml` runs on `pull_request`.** Nothing
+   there may be gated to a push to the default branch only — such a job runs
+   _after_ merge, so it can never be a required status check and can turn `main`
+   red with nothing able to block it. This already happened twice with an
+   inlined release job (npm `E404`, then "Actions is not permitted to create
+   pull requests"). Release-type automation goes in its **own** workflow file
+   (added in Milestone 9), where being `push: [main]`-only is fine.
+2. **The branch ruleset requires exactly one check: `ci`.** It is an aggregate
+   job that `needs:` every gating job. Add or rename a job → wire it into
+   `ci`'s `needs:`; you never touch `.github/rulesets/main.json` for that, so
+   protection cannot silently rot when the job list changes.
+
+Third-party tools pulled in CI (e.g. `actionlint`) are pinned to a version and
+checksum-verified, never `@latest` or an unpinned install script.
+
+The live ruleset is code in `.github/rulesets/main.json`. Change that file
+first, then apply it:
+`gh api -X PUT repos/:owner/:repo/rulesets/22094683 --input .github/rulesets/main.json`.
+
 ## Definition of Done (per task)
 
 1. `pnpm install --frozen-lockfile && pnpm build && pnpm lint && pnpm typecheck
