@@ -105,20 +105,34 @@ renovate/CI check that flags minor bumps for manual review.
 
 ---
 
-## Milestone 4 — `@n8n-probe/e2e` `[ ]`
+## Milestone 4 — `@n8n-probe/e2e` `[~]`
 
-- [ ] `workflow()` builder → `IWorkflowBase` (`.addNode`, `.connect`, `.build`).
-- [ ] `runWorkflow(workflowBase, options?)` — fast tier: construct `Workflow` + `WorkflowExecute` from `n8n-workflow` / `n8n-core`, run with a
-      `NodeExecuteFunctions`-style context, return `IRun`.
-- [ ] `expectWorkflowSuccess(run)`, `getNodeOutput(run, nodeName)`.
-- [ ] `runWorkflowInFullInstance(workflowBase, { image? })` — full tier:
-      `testcontainers` boots `n8nio/n8n`, imports the workflow via the public
-      REST API, executes, polls the execution result. Gated behind
-      `test:e2e:full`.
-- [ ] Fast-tier tests in `pnpm test`; full-tier tests excluded by default.
+- [x] `workflow(name?)` builder → `WorkflowDefinition` (`.addNode`, `.connect`,
+      `.build`). Returns a structural subset of `IWorkflowBase` (no DB-entity
+      fields) — enough for the in-process runner and a REST import.
+- [x] `runWorkflow(definition, options?)` — fast tier: `Workflow` +
+      `WorkflowExecute` from `n8n-workflow` / `n8n-core`, run in-process with
+      n8n's own per-node context, return `IRun`. Options: `nodeTypes` (classes,
+      matched by `description.name`), `credentials` (`getDecrypted`-only),
+      `mode`. `ManualTrigger` start node built in; entry node is picked as the
+      first node that is not a connection target.
+- [x] `expectWorkflowSuccess(run)` (names the failing node),
+      `getNodeOutput(run, nodeName, branch?)`.
+- [~] `runWorkflowInFullInstance(definition, { image? })` — **deferred to a
+  follow-up** (issue #12). Stubbed; rejects with a clear message. The
+  container + n8n import/execute + `IRun` mapping is a self-contained chunk
+  that also can't be verified without Docker. ADR-0004 already frames this
+  tier as opt-in / secondary.
+- [x] Fast-tier tests in `pnpm test` (Example / HttpExample fixtures,
+      `pairedItem` along a chain, `expectWorkflowSuccess` on a node error,
+      unregistered-type error, credentials, and MSW composition via
+      `@n8n-probe/mock-http`). Full-tier `*.full.test.ts` stays a skipped stub.
+- [x] Shared `vitest.config.base` made a plain object + renamed `.mts` (kills the
+      `UNRESOLVED_IMPORT 'vitest/config'` warning the extracted config introduced).
 
-Risks: the in-process runner reproduces a subset of real execution semantics.
-Document which subset; the full tier is the backstop.
+Subset the in-process runner does NOT reproduce (documented): the full-instance
+tier is the backstop. Known gaps — trigger/webhook/poll activation, credential
+`authenticate`/OAuth, sub-workflows, `$execution` resume URLs.
 
 ---
 

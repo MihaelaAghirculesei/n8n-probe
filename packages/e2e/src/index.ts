@@ -1,61 +1,13 @@
-import { NotImplementedError } from '@n8n-probe/core';
-import type { INodeExecutionData, IRun, IWorkflowBase, WorkflowExecuteMode } from 'n8n-workflow';
+export { workflow } from './workflow-builder.js';
+export type { WorkflowBuilder, WorkflowDefinition, WorkflowNodeSpec } from './workflow-builder.js';
 
-/** A single node in a workflow under construction. */
-export interface WorkflowNodeSpec {
-  name: string;
-  type: string;
-  typeVersion?: number;
-  parameters?: Record<string, unknown>;
-  position?: [number, number];
-}
+export { ManualTrigger, nodeTypesFrom } from './node-types.js';
+export type { NodeTypeClass } from './node-types.js';
 
-/** Fluent builder producing an `IWorkflowBase`. */
-export interface WorkflowBuilder {
-  addNode(node: WorkflowNodeSpec): WorkflowBuilder;
-  connect(from: string, to: string): WorkflowBuilder;
-  build(): IWorkflowBase;
-}
+export { runWorkflow } from './run-workflow.js';
+export type { RunWorkflowOptions } from './run-workflow.js';
 
-/** Options for {@link runWorkflow} (fast, in-process tier). */
-export interface RunWorkflowOptions {
-  credentials?: Record<string, unknown>;
-  mode?: WorkflowExecuteMode;
-}
+export { runWorkflowInFullInstance } from './full-instance.js';
+export type { RunInFullInstanceOptions } from './full-instance.js';
 
-/** Start building a workflow: `workflow().addNode(...).connect(a, b).build()`. */
-export function workflow(): WorkflowBuilder {
-  throw new NotImplementedError('workflow');
-}
-
-/**
- * Fast tier: execute the workflow in-process via `n8n-workflow` / `n8n-core`.
- * No server, no database.
- */
-export function runWorkflow(
-  _workflowBase: IWorkflowBase,
-  _options?: RunWorkflowOptions,
-): Promise<IRun> {
-  return Promise.reject(new NotImplementedError('runWorkflow'));
-}
-
-/**
- * Full tier: boot the official `n8nio/n8n` image via `testcontainers`, import
- * and execute the workflow through the REST API, return the run.
- */
-export function runWorkflowInFullInstance(
-  _workflowBase: IWorkflowBase,
-  _options?: { image?: string },
-): Promise<IRun> {
-  return Promise.reject(new NotImplementedError('runWorkflowInFullInstance'));
-}
-
-/** Assert the run finished without error. */
-export function expectWorkflowSuccess(_run: IRun): void {
-  throw new NotImplementedError('expectWorkflowSuccess');
-}
-
-/** Read a named node's output items from a completed run. */
-export function getNodeOutput(_run: IRun, _nodeName: string): INodeExecutionData[] {
-  throw new NotImplementedError('getNodeOutput');
-}
+export { expectWorkflowSuccess, getNodeOutput } from './assertions.js';

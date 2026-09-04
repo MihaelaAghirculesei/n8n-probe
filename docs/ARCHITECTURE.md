@@ -297,21 +297,48 @@ actually performs a request; `@n8n-probe/core`'s bare mock returns `undefined`.
 ### `@n8n-probe/e2e`
 
 ```ts
-export function workflow(): WorkflowBuilder; // .addNode({...}).connect(a, b).build()
+export function workflow(name?: string): WorkflowBuilder; // .addNode({...}).connect(a, b).build()
+
+// A structural subset of IWorkflowBase (no DB-entity fields) — what the
+// in-process runner and a REST import both need.
+export interface WorkflowDefinition {
+  id: string;
+  name: string;
+  nodes: INode[];
+  connections: IConnections;
+  active: boolean;
+  settings: IWorkflowSettings;
+}
 
 export async function runWorkflow(
-  workflowBase: IWorkflowBase,
-  options?: { credentials?: Record<string, unknown>; mode?: WorkflowExecuteMode },
+  definition: WorkflowDefinition,
+  options?: {
+    nodeTypes?: ReadonlyArray<new () => INodeType>; // matched by description.name
+    credentials?: Record<string, ICredentialDataDecryptedObject>; // getDecrypted-only
+    mode?: WorkflowExecuteMode; // default 'manual'
+  },
 ): Promise<IRun>;
 
-export async function runWorkflowInFullInstance(
-  workflowBase: IWorkflowBase,
+// Deferred to a follow-up (issue filed). Stubbed; rejects.
+export function runWorkflowInFullInstance(
+  definition: WorkflowDefinition,
   options?: { image?: string },
 ): Promise<IRun>;
 
-export function expectWorkflowSuccess(run: IRun): void;
-export function getNodeOutput(run: IRun, nodeName: string): INodeExecutionData[];
+export function expectWorkflowSuccess(run: IRun): void; // names the failing node
+export function getNodeOutput(run: IRun, nodeName: string, branch?: number): INodeExecutionData[];
+
+export class ManualTrigger {} // built-in start node (data param -> first items)
+export function nodeTypesFrom(classes: ReadonlyArray<new () => INodeType>): INodeTypes;
 ```
+
+`runWorkflow` uses n8n's own per-node context (`n8n-core`), so `helpers.httpRequest`
+is real and composes with `@n8n-probe/mock-http` (ADR-0008). Minimum viable
+`IWorkflowExecuteAdditionalData`: `hooks` (an `ExecutionLifecycleHooks`), a
+`getDecrypted`-only `credentialsHelper`, and non-empty base URLs (n8n does
+`new URL()` on them). The entry node is the first node that is never a
+connection target. `WorkflowExecute.run` takes an options object
+(`{ workflow, startNode }`), not positional args.
 
 ### `@n8n-probe/otel`
 
