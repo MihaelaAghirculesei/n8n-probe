@@ -185,6 +185,45 @@ a possible later convenience. `performHttpRequest` does not cover
 `httpRequestWithAuthentication`, form/multipart bodies, proxy auth, or
 `arrayFormat` query serialisation.
 
+### ADR-0009: the cross-pillar dogfood suite is its own app, not inside `apps/example-node`
+
+**Context.** Milestone 7 wires `HttpExample`'s `execute()` through one
+`traced()` + `instrument()` wrapper (the "single call site" M6 deferred) and
+adds a suite that drives `Example`/`HttpExample` through all five pillars
+(`unit`, `mock-http`, `e2e`, `otel`, `metrics`) at once. The natural-looking
+place for that suite is `apps/example-node` itself — it already owns the
+fixture nodes. But `unit`, `mock-http` and `e2e` each already carry
+`n8n-nodes-probe-example` as a `workspace:*` devDependency (ADR-0007); adding
+those same three packages as devDependencies of `apps/example-node` closes a
+cycle in the pnpm workspace graph (`unit → example-node → unit`, and likewise
+for `mock-http`/`e2e`). Turborepo computes that graph once for every
+`^`-prefixed task, so the cycle breaks `pnpm build` outright — not lint, not
+test, `build` — with no way to scope around it per task.
+
+**Decision.**
+
+- `HttpExample.node.ts` gains real (non-dev) `dependencies` on
+  `@n8n-probe/otel` and `@n8n-probe/metrics` — safe, since neither depends back
+  on the fixture.
+- The cross-pillar suite lives in a new private leaf app, `apps/dogfood`
+  (`@n8n-probe/dogfood`, changesets-ignored like the fixture itself). It
+  devDepends on all six packages (`core` transitively) plus
+  `n8n-nodes-probe-example`; nothing depends on it, so it cannot re-introduce a
+  cycle. It imports the fixture nodes as `n8n-nodes-probe-example` (the built
+  CJS package), the same way every other test package does — same
+  `n8n-workflow` CJS/ESM alias from ADR-0007 applies, via its own
+  `vitest.config.ts` merging the shared base config.
+- Alternatives rejected: a `devDependencies`-only cycle is still a cycle to
+  Turborepo (tried first — `turbo run build` fails with "Cyclic dependency
+  detected" naming all four packages); teaching Turborepo to ignore
+  devDependencies for cycle purposes is not a supported per-task config.
+
+**Consequences.** `apps/example-node` keeps exactly the shape ADR-0007
+described (a CJS fixture, `dependencies` only on the two observability
+packages it now really needs at runtime); `apps/dogfood` is the one place that
+depends on the whole toolkit at once, and is where a future pillar's "does
+this still work end-to-end on a real node" question gets answered.
+
 ---
 
 ## Package public APIs (sketch — refine signatures during implementation)

@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["n8n-nodes-probe-example"]
+  "ignore": ["n8n-nodes-probe-example", "@n8n-probe/dogfood"]
 }

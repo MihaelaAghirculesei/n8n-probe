@@ -117,6 +117,8 @@ packages/
 apps/
   example-node/  a real fixture node — package name "n8n-nodes-probe-example", NOT published,
                  used as the fixture across unit / mock-http / e2e / otel / metrics tests
+  dogfood/       private, unpublished; drives the fixture through all five pillars at once
+                 (kept out of example-node itself to avoid a workspace dependency cycle — ADR-0009)
 docker/          docker-compose demo: n8n + Prometheus + Grafana + Jaeger
 docs/            ARCHITECTURE.md (ADRs + API sketches + config templates), PLAN.md (ordered backlog)
 .github/         CI workflow, issue/PR templates, branch-protection ruleset as code
@@ -198,8 +200,11 @@ first, then apply it:
 
 ## Current state
 
-Branch `milestone/0-foundation`. Milestone 0 (repository foundation) is
-essentially complete — workspace, shared TS config, ESLint/Prettier, Changesets,
-all six package skeletons with typed stubs + tests, `apps/example-node`, CI, a
-committed lockfile, the docker demo stack, and ADR-0001…0006. Next up is
-Milestone 1 (`@n8n-probe/core` real implementation). See `docs/PLAN.md`.
+Milestones 0–7 are done (M0–M6 merged to `main`; M7 on
+`milestone/7-example-node`, not yet merged). All six library packages
+(`core`, `unit`, `mock-http`, `e2e`, `otel`, `metrics`) have real
+implementations; `apps/example-node`'s `HttpExample` wires the deferred
+span+metric call site, and `apps/dogfood` dogfoods all five pillars together
+(ADR-0009). Next up is Milestone 8 (local observability stack + docs — the
+docker-compose demo already exists; M8 is the walkthrough doc + a
+pre-provisioned Grafana dashboard). See `docs/PLAN.md`.

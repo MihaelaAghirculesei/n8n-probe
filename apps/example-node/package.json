@@ -27,6 +27,10 @@
     "lint": "eslint nodes",
     "test": "vitest run"
   },
+  "dependencies": {
+    "@n8n-probe/metrics": "workspace:*",
+    "@n8n-probe/otel": "workspace:*"
+  },
   "peerDependencies": {
     "n8n-workflow": "^2.16.0"
   },
