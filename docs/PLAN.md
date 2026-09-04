@@ -181,15 +181,20 @@ metrics deps were already correct (unlike `otel`).
 
 ---
 
-## Milestone 7 — `apps/example-node` `[ ]`
+## Milestone 7 — `apps/example-node` `[x]`
 
-- [ ] A small but non-trivial programmatic node (e.g. calls a public API, maps
+- [x] A small but non-trivial programmatic node (e.g. calls a public API, maps
       fields, supports `continueOnFail`, throws `NodeOperationError` on bad
       input). Named `n8n-nodes-probe-example` to follow n8n's community-node
       naming rule.
-- [ ] Used as the fixture across `unit`, `mock-http`, `e2e`, `otel`, `metrics`
-      tests so the examples stay real.
-- [ ] Not published (ignored in Changesets config).
+- [x] Used as the fixture across `unit`, `mock-http`, `e2e`, `otel`, `metrics`
+      tests so the examples stay real. `HttpExample.execute()` wires the
+      deferred "single call site" (M6) — one `traced()` + `instrument()`
+      wrapper emitting both the span and the metric — and a new leaf app,
+      `apps/dogfood`, drives both fixture nodes through all five pillars
+      together (ADR-0009; kept separate from `apps/example-node` to avoid a
+      workspace dependency cycle).
+- [x] Not published (ignored in Changesets config; `apps/dogfood` too).
 
 ---
 

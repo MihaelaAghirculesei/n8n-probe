@@ -1,0 +1,27 @@
+{
+  "name": "@n8n-probe/dogfood",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Cross-pillar suite exercising unit, mock-http, e2e, otel and metrics together against the real n8n-nodes-probe-example fixture",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@n8n-probe/e2e": "workspace:*",
+    "@n8n-probe/metrics": "workspace:*",
+    "@n8n-probe/mock-http": "workspace:*",
+    "@n8n-probe/otel": "workspace:*",
+    "@n8n-probe/unit": "workspace:*",
+    "@types/node": "^22",
+    "n8n-core": "^2.16.1",
+    "msw": "^2.15.0",
+    "n8n-nodes-probe-example": "workspace:*",
+    "n8n-workflow": "^2.16.0",
+    "typescript": "~5.9.3",
+    "vitest": "^4.1.11"
+  }
+}
