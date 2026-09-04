@@ -57,9 +57,11 @@
   },
   "devDependencies": {
     "@n8n-probe/core": "workspace:*",
+    "@n8n-probe/mock-http": "workspace:*",
     "@types/node": "^22",
     "@vitest/coverage-v8": "^4.1.11",
     "n8n-core": "^2.16.1",
+    "n8n-nodes-probe-example": "workspace:*",
     "n8n-workflow": "^2.16.0",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",

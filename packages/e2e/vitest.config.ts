@@ -1,6 +1,6 @@
 import { defineConfig, mergeConfig } from 'vitest/config';
 
-import baseConfig from '../../vitest.config.base.ts';
+import baseConfig from '../../vitest.config.base.mjs';
 
 // Fast tier: everything except the opt-in full-instance suite.
 export default mergeConfig(
