@@ -380,15 +380,25 @@ warns about.
 ### `@n8n-probe/metrics`
 
 ```ts
-export function initMetrics(options: {
+// async: resolves once the exposition server is listening
+export function initMetrics(options?: {
   port?: number; // default 9464
   endpoint?: string; // default '/metrics'
-}): () => Promise<void>; // returns shutdown()
+  host?: string; // default: all interfaces
+}): Promise<() => Promise<void>>; // resolves to shutdown()
 
 export function instrument(nodeType: string): {
   recordExecution(status: 'success' | 'error', durationSeconds: number): void;
 };
+
+export const EXECUTIONS_COUNTER = 'n8n_node_executions'; // '..._total' in exposition
+export const DURATION_HISTOGRAM = 'n8n_node_execution_duration_seconds';
 ```
+
+`MeterProvider` + `PrometheusExporter` from `@opentelemetry/sdk-metrics` 2.x /
+`@opentelemetry/exporter-prometheus` (0.x by upstream's exporter versioning).
+No `prom-client`, no `@opentelemetry/sdk-node` (ADR-0003). `initMetrics` is async
+because binding a port can fail; `initTracing` (no server) stays sync.
 
 ---
 

@@ -158,17 +158,26 @@ tier is the backstop. Known gaps — trigger/webhook/poll activation, credential
 
 ---
 
-## Milestone 6 — `@n8n-probe/metrics` `[ ]`
+## Milestone 6 — `@n8n-probe/metrics` `[x]`
 
-- [ ] `initMetrics({ port?, endpoint? })` — `MeterProvider` +
+- [x] `initMetrics({ port?, endpoint?, host? })` — `MeterProvider` +
       `PrometheusExporter` (`@opentelemetry/exporter-prometheus`), default
-      `:9464/metrics`; returns async `shutdown()`.
-- [ ] `instrument(nodeType)` → `{ recordExecution(status, durationSeconds) }`
-      updating a counter (`n8n_node_executions_total{node_type,status}`) and a
-      histogram (`n8n_node_execution_duration_seconds`).
-- [ ] Optional single call site that emits both an OTel span (via `otel`) and
-      the metric updates.
-- [ ] Tests scrape the `/metrics` endpoint and assert exposition output.
+      `:9464/metrics`. **async** (`Promise<() => Promise<void>>`) — resolves once
+      the server is listening, so a caller/test knows the bind succeeded.
+- [x] `instrument(nodeType)` → `{ recordExecution(status, durationSeconds) }`
+      updating counter `n8n_node_executions_total{node_type,status}` and
+      histogram `n8n_node_execution_duration_seconds{node_type,status}`.
+      Instruments named without the `_total` suffix (the exporter adds it);
+      exported as `EXECUTIONS_COUNTER` / `DURATION_HISTOGRAM`.
+- [~] Optional single call site emitting both a span and the metric — deferred
+  to Milestone 7 (dogfooding on `apps/example-node`), where a real node
+  wires both. `otel` and `metrics` compose through the OTel API already.
+- [x] Tests scrape `/metrics` (OS-assigned free port) and assert the exposition
+      text — counter series per `node_type`/`status`, histogram
+      `_count`/`_sum`/`_bucket`, 404 off-endpoint (100% lines).
+
+No `@opentelemetry/sdk-node` / `prom-client` (ADR-0003). The M0 scaffold's
+metrics deps were already correct (unlike `otel`).
 
 ---
 
