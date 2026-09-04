@@ -136,18 +136,25 @@ tier is the backstop. Known gaps — trigger/webhook/poll activation, credential
 
 ---
 
-## Milestone 5 — `@n8n-probe/otel` `[ ]`
+## Milestone 5 — `@n8n-probe/otel` `[x]`
 
-- [ ] `initTracing({ serviceName, exporter, otlpEndpoint? })` — tracer provider
-      composed from the stable `@opentelemetry/sdk-trace-node` (NOT the `0.x`
-      `@opentelemetry/sdk-node`, per ADR-0003/ADR-0006), `console` or `otlp-http`
-      span exporter; returns an async `shutdown()`.
-- [ ] `traced(nodeExecuteFn)` — wraps an `execute` function in a span named
-      `n8n.node.execute`, attributes for node type / name / item count, records
-      exceptions and sets span status on throw.
-- [ ] `expectSpan(spans, matcher)` for tests, backed by
-      `InMemorySpanExporter` + `SimpleSpanProcessor`.
-- [ ] Tests assert span tree and attributes for success and error paths.
+- [x] `initTracing({ serviceName, exporter, otlpEndpoint? })` — `NodeTracerProvider`
+      composed from stable `@opentelemetry/sdk-trace-node` 2.x (NOT
+      `@opentelemetry/sdk-node`, per ADR-0003/0006 — the M0 scaffold's
+      `package.json` had the wrong dep; fixed here), `console` (SimpleSpanProcessor)
+      or `otlp-http` (BatchSpanProcessor) exporter; `register()`s globally;
+      returns an async `shutdown()`.
+- [x] `traced(nodeExecuteFn)` — wraps `execute` in an `n8n.node.execute` span
+      (`NODE_EXECUTE_SPAN` const), attributes `n8n.node.type` / `.name` /
+      `.type_version`, `n8n.item.count`, `n8n.workflow.id` / `n8n.execution.id`
+      when available; `recordException` + error status on throw; preserves `this`
+      and passes the value/rejection through.
+- [x] `expectSpan(spans, { name, attributes? })` — name + attribute-subset
+      match, readable failure messages, never timing.
+- [x] `createTestTracing()` → `{ getSpans, reset, shutdown }` (in-memory
+      `NodeTracerProvider` registered globally).
+- [x] Tests: span metadata, return-value passthrough, exception + error status,
+      partial-context tolerance, `expectSpan` failure paths (100% lines).
 
 ---
 

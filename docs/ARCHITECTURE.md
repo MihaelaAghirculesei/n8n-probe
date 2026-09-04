@@ -347,15 +347,35 @@ export function initTracing(options: {
   serviceName: string;
   exporter: 'console' | 'otlp-http';
   otlpEndpoint?: string;
-}): () => Promise<void>; // returns shutdown()
+}): () => Promise<void>; // composes a NodeTracerProvider from stable 2.x parts,
+// register()s it globally, returns shutdown()
 
-export function traced<Fn extends (...args: never[]) => Promise<unknown>>(nodeExecuteFn: Fn): Fn;
+export const NODE_EXECUTE_SPAN = 'n8n.node.execute';
+// preserves `this`; adds n8n.node.type/.name/.type_version, n8n.item.count,
+// n8n.workflow.id / n8n.execution.id when the context exposes them.
+export function traced<Fn extends (this: IExecuteFunctions, ...args: never[]) => Promise<unknown>>(
+  nodeExecuteFn: Fn,
+): Fn;
 
 export function expectSpan(
-  spans: ReadableSpan[],
+  spans: readonly ReadableSpan[],
   matcher: { name: string; attributes?: Record<string, unknown> },
 ): void;
+
+// in-memory NodeTracerProvider registered globally; for tests
+export function createTestTracing(): {
+  getSpans(): ReadableSpan[];
+  reset(): void;
+  shutdown(): Promise<void>;
+};
 ```
+
+Built from `@opentelemetry/sdk-trace-node` 2.x + `@opentelemetry/resources` +
+`@opentelemetry/exporter-trace-otlp-http`. **Not** `@opentelemetry/sdk-node`
+(0.x, experimental) — the Milestone 0 scaffold's `package.json` listed it by
+mistake; Milestone 5 replaced it. The OTLP HTTP exporter is `0.x` by upstream's
+own versioning of every OTel-JS exporter, not the `sdk-node` situation ADR-0003
+warns about.
 
 ### `@n8n-probe/metrics`
 
