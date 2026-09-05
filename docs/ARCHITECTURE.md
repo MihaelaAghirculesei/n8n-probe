@@ -224,6 +224,54 @@ packages it now really needs at runtime); `apps/dogfood` is the one place that
 depends on the whole toolkit at once, and is where a future pillar's "does
 this still work end-to-end on a real node" question gets answered.
 
+### ADR-0010: `HttpExample` loads `@n8n-probe/otel`/`@n8n-probe/metrics` lazily, not via a top-level `import`
+
+**Context.** After ADR-0009 made them real `dependencies`, restarting the
+local docker-compose n8n (`docker/docker-compose.yml`) crashed it outright:
+`Error: Cannot find module '@n8n-probe/metrics'`, `Exiting due to an error.`
+That compose file bind-mounts only `apps/example-node/dist` into
+`~/.n8n/custom/n8n-nodes-probe-example` — no `node_modules` alongside it —
+which is fine for `n8n-workflow` (n8n supplies that itself) but not for a
+workspace package the fixture now genuinely needs at runtime. Mounting the
+whole repo instead of just `dist` was tried and does not fix it: on Windows,
+`pnpm`'s workspace symlinks (`apps/example-node/node_modules/@n8n-probe/otel`)
+are NTFS **junctions holding an absolute host path**
+(`C:\Users\...\packages\otel`), which Docker Desktop's bind mount does not
+resolve inside the container's filesystem namespace, no matter what else is
+mounted — confirmed by reproducing the identical crash with a full-repo mount.
+The real failure mode is worse than "this one node can't observe itself": a
+`require()` that throws during n8n's node-type scan aborts the **entire**
+n8n process at startup, taking every other node down with it.
+
+**Decision.** `HttpExample.node.ts` never `import`s `@n8n-probe/otel` /
+`@n8n-probe/metrics` at the top level. It `require()`s them once, inside a
+`try`/`catch`, and falls back to an identity `traced` and a no-op `instrument`
+if either throws. A real npm/pnpm install (tests, `apps/dogfood`, the host
+driver, or any real deployment where these are actually installed
+dependencies) resolves them normally and gets full tracing/metrics; the
+docker-compose demo's node loads and runs `HttpExample` correctly, just
+without instrumentation. `docker/docker-compose.yml`'s mount is back to
+`dist`-only (the full-repo-mount attempt bought nothing and is slower).
+
+**Alternatives rejected:** bundling `apps/example-node`'s build (tsup with
+`noExternal` for the two packages and their `@opentelemetry/*` transitive
+deps) would make the compiled node self-contained and fix this properly for
+every environment, not just gracefully degrade — but it changes this
+package's build tool (currently plain `tsc`, relied on by ADR-0007's
+CJS/ESM-identity story) for a problem that is specific to one local demo
+convenience mount on one OS. Revisit if Milestone 8's walkthrough wants the
+docker-compose n8n instance to demonstrate live tracing/metrics from inside
+its own UI, rather than via `apps/dogfood` and a host-side driver script (both
+already prove the instrumentation works end-to-end without touching the
+container).
+
+**Consequences.** Any future dependency `HttpExample.node.ts` (or a sibling
+fixture node) adds beyond `n8n-workflow` needs the same lazy-load treatment,
+or the docker-compose mount needs fixing properly (real bundling, or an
+`npm install` step against the mounted folder) — a plain top-level `import`
+of a workspace package will reproduce this crash the moment someone next
+`docker compose down && up`s with a stale `node_modules` assumption.
+
 ---
 
 ## Package public APIs (sketch — refine signatures during implementation)

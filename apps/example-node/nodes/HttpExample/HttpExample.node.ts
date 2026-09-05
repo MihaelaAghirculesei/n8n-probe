@@ -1,5 +1,5 @@
-import { instrument } from '@n8n-probe/metrics';
-import { traced } from '@n8n-probe/otel';
+import type { instrument as instrumentFn } from '@n8n-probe/metrics';
+import type { traced as tracedFn } from '@n8n-probe/otel';
 import type {
   IDataObject,
   IExecuteFunctions,
@@ -12,6 +12,32 @@ import type {
 /** HTTP status codes worth retrying with a plain backoff. */
 const RETRIABLE_STATUS = new Set([429, 503]);
 
+type Traced = typeof tracedFn;
+type Instrument = typeof instrumentFn;
+
+// @n8n-probe/otel and @n8n-probe/metrics are real `dependencies` (package.json)
+// and resolve normally under an ordinary npm/pnpm install. They are still
+// loaded lazily and defensively here — never a top-level `import` — because
+// this fixture also gets loaded by the local docker-compose demo
+// (docker/docker-compose.yml) straight off a bind-mounted `dist/` folder with
+// no `node_modules` next to it. On Windows, pnpm's workspace symlinks are NTFS
+// junctions holding an absolute *host* path, which Docker Desktop's bind mount
+// does not resolve inside the container regardless of what else is mounted.
+// A top-level `import` failing there does not just disable this node: n8n
+// aborts its whole node-type scan at startup ("Exiting due to an error") —
+// confirmed by reproducing it locally. See ADR-0009 in docs/ARCHITECTURE.md.
+let traced: Traced;
+let instrument: Instrument;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports -- optional load, see comment above
+  ({ traced } = require('@n8n-probe/otel') as { traced: Traced });
+  // eslint-disable-next-line @typescript-eslint/no-require-imports -- optional load, see comment above
+  ({ instrument } = require('@n8n-probe/metrics') as { instrument: Instrument });
+} catch {
+  traced = (fn) => fn;
+  instrument = () => ({ recordExecution: () => undefined });
+}
+
 // The "single call site" M6 deferred: one wrapper around the real execute()
 // that emits both the `n8n.node.execute` span (@n8n-probe/otel) and the
 // `n8n_node_executions_total` / `..._duration_seconds` metric
@@ -21,7 +47,8 @@ const RETRIABLE_STATUS = new Set([429, 503]);
 // registered *at that moment*; called once at module load (before
 // `initMetrics` has necessarily run) it would bind to the no-op meter forever
 // (see the `instrument()` doc comment in `@n8n-probe/metrics`). Before
-// `initTracing`/`initMetrics` run, both calls are cheap no-ops.
+// `initTracing`/`initMetrics` run (or when they failed to load at all, per
+// above), both calls are cheap no-ops.
 const tracedExecute = traced(async function (
   this: IExecuteFunctions,
 ): Promise<INodeExecutionData[][]> {

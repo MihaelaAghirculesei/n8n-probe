@@ -17,6 +17,12 @@ services:
       - N8N_DIAGNOSTICS_ENABLED=false
       - N8N_RUNNERS_ENABLED=true
     volumes:
+      # Only dist/ is mounted, no node_modules alongside it — HttpExample.node.ts
+      # loads @n8n-probe/otel / @n8n-probe/metrics lazily and falls back to
+      # no-op tracing/metrics if they don't resolve here. See the comment above
+      # that `require()` in HttpExample.node.ts and ADR-0009 in
+      # docs/ARCHITECTURE.md — a real npm/pnpm install of this fixture gets
+      # both packages and full instrumentation; this demo mount does not.
       - ../apps/example-node/dist:/home/node/.n8n/custom/n8n-nodes-probe-example:ro
       - n8n_data:/home/node/.n8n
 
