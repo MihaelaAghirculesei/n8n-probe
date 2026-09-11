@@ -1,6 +1,6 @@
 {
   "name": "@n8n-probe/core",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Typed mock n8n execution context and data fixtures for testing custom nodes",
   "keywords": [
     "n8n",

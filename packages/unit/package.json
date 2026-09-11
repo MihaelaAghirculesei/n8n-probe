@@ -1,6 +1,6 @@
 {
   "name": "@n8n-probe/unit",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Execute a single n8n node class with inputs and params and assert on its output",
   "keywords": [
     "n8n",

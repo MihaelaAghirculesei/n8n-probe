@@ -1,6 +1,6 @@
 {
   "name": "@n8n-probe/metrics",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "n8n node execution metrics recorded via the OpenTelemetry Metrics API and exposed for Prometheus",
   "keywords": [
     "n8n",

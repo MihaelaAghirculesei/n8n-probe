@@ -1,6 +1,6 @@
 {
   "name": "@n8n-probe/e2e",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Build and run whole n8n workflows in tests: fast in-process by default, real instance opt-in",
   "keywords": [
     "n8n",
