@@ -1,6 +1,6 @@
 {
   "name": "@n8n-probe/mock-http",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "HTTP mocking helpers and presets for testing n8n nodes that call external APIs",
   "keywords": [
     "n8n",
