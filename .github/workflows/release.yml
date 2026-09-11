@@ -30,7 +30,7 @@ jobs:
       # mandatory for n8n community nodes since 2026-05-01).
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 

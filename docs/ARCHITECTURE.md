@@ -682,7 +682,7 @@ jobs:
         node: [22, 24]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -698,7 +698,7 @@ jobs:
     if: github.event_name == 'schedule' || contains(github.event.pull_request.labels.*.name, 'e2e-full')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: pnpm }
@@ -715,7 +715,7 @@ jobs:
       pull-requests: write # Changesets opens the "Version Packages" PR
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: pnpm }
