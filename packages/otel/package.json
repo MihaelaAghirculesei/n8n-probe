@@ -38,6 +38,7 @@
     "url": "git+https://github.com/MihaelaAghirculesei/n8n-probe.git",
     "directory": "packages/otel"
   },
+  "homepage": "https://github.com/MihaelaAghirculesei/n8n-probe/tree/main/packages/otel#readme",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

@@ -38,6 +38,7 @@
     "url": "git+https://github.com/MihaelaAghirculesei/n8n-probe.git",
     "directory": "packages/unit"
   },
+  "homepage": "https://github.com/MihaelaAghirculesei/n8n-probe/tree/main/packages/unit#readme",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
