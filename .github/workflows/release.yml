@@ -1,0 +1,62 @@
+name: Release
+
+# Deliberately its own workflow, not a job inside ci.yml: push: [main]-only
+# automation cannot be a required status check (it only runs after merge),
+# and an inlined release job has turned main red twice before by doing
+# exactly that. See AGENTS.md > "CI rules" / "Release / supply chain" and
+# scripts/check-workflow-invariants.sh (which only inspects ci.yml, on
+# purpose, so this file being push:[main]-only doesn't trip its guard).
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      # OIDC token for npm Trusted Publishing — no static NPM_TOKEN secret,
+      # per AGENTS.md (npm is restricting token-based publish; provenance is
+      # mandatory for n8n community nodes since 2026-05-01).
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Trusted Publishing (OIDC) needs a recent npm CLI; the version bundled
+      # with a given Node release isn't guaranteed to be new enough.
+      - run: npm install -g npm@latest
+
+      - run: pnpm build
+
+      # Opens/updates the "Version Packages" PR when changesets are pending;
+      # once that PR is merged, this same step publishes instead. Needs repo
+      # setting Settings > Actions > General > Workflow permissions > "Allow
+      # GitHub Actions to create and approve pull requests" turned on, or PR
+      # creation fails (this has happened before — see AGENTS.md).
+      - name: Version or publish
+        uses: changesets/action@v1
+        with:
+          version: pnpm version-packages
+          publish: pnpm release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
