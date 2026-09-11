@@ -274,6 +274,66 @@ of a workspace package will reproduce this crash the moment someone next
 
 ---
 
+### ADR-0011: `apps/example-node` builds with `tsup`, and the docker demo self-instruments
+
+**Context.** ADR-0010's crash guard made the docker-compose demo *safe* —
+`HttpExample` runs without taking the rest of n8n down — but not
+*instrumented*: `require('@n8n-probe/otel')` / `require('@n8n-probe/metrics')`
+never actually resolved against the `dist/`-only bind mount, so the demo
+always ran the no-op fallback. Milestone 8's walkthrough needs the opposite:
+a real span in Jaeger and a real data point in Grafana, produced by building
+and running a workflow in n8n's own UI inside the container — not just via
+`apps/dogfood`'s tests or a host-side driver script (issue #19).
+
+**Decision.** Two changes, taken together:
+
+1. `apps/example-node` now builds with `tsup` (`apps/example-node/tsup.config.ts`)
+   instead of plain `tsc`, with `noExternal` for `@n8n-probe/otel`,
+   `@n8n-probe/metrics`, and `/^@opentelemetry\//`. `dist/` is now
+   self-contained — the `require()` calls in `HttpExample.node.ts` resolve for
+   real off the `dist/`-only mount, no `node_modules` needed. `n8n-workflow`
+   stays external (n8n supplies it; bundling it would break ADR-0007's
+   CJS/ESM class identity). The lazy `require()` + `try`/`catch` guard from
+   ADR-0010 stays as-is: it's now a defensive fallback for any *future*
+   dependency that isn't bundled the same way, not the primary mechanism.
+2. `HttpExample.node.ts` gained a module-load-time block, gated behind the
+   `N8N_PROBE_DEMO_OBSERVABILITY` env var (set only in
+   `docker/docker-compose.yml`), that calls `initTracing`/`initMetrics` once
+   — n8n requires each node file exactly once during its startup node-type
+   scan, which is the same "once per process" timing `instrument()`'s doc
+   comment already requires. `docker/prometheus.yml` scrapes the n8n
+   container's own `:9464` (compose DNS name `n8n`) instead of
+   `host.docker.internal`, and the OTLP endpoint points at the `jaeger`
+   service on the compose network.
+
+Two esbuild-specific problems came up building this and are worth recording
+so they aren't rediscovered: (a) `index.ts` and the node files import each
+other, and bundling them as one multi-entry pass makes esbuild try to share a
+chunk between them, which its CJS output can't resolve at `require()` time —
+fixed by giving `index.ts` and the two node files independent tsup configs,
+each fully self-contained. (b) esbuild resolves a bare `*.node` import
+specifier as a native-addon lookup, not a TS source file, so `index.ts`'s
+relative imports need an explicit `.js` extension to reach `*.node.ts` files
+at build time.
+
+**Alternatives rejected:** having the docker-compose stack run a real
+`pnpm install --prod` (or `npm pack` + install) against the mounted `dist/`
+folder before n8n starts (ADR-0010's other option) — works, but adds a slow,
+network-dependent step to every `docker compose up`, versus bundling once at
+build time.
+
+**Consequences.** `apps/example-node`'s `HttpExample.node.js` bundle is large
+(~580 KB — the OpenTelemetry SDK and its OTLP exporter, not idiomatic node
+code) because it inlines the full `@opentelemetry/*` dependency tree; fine
+for a demo fixture that's never published, would need trimming
+(`noExternal` narrowed to just the packages actually needed at each call
+site, or per-signal exporters) if this pattern were reused for a real
+published node. Any other fixture node that wants the same live-instrumented
+docker demo treatment needs the same tsup entry + env-gated init block, not
+just the `dependencies` entry ADR-0009 already requires.
+
+---
+
 ## Package public APIs (sketch — refine signatures during implementation)
 
 ### `@n8n-probe/core`
