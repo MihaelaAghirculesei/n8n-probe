@@ -1,5 +1,5 @@
-import type { instrument as instrumentFn } from '@n8n-probe/metrics';
-import type { traced as tracedFn } from '@n8n-probe/otel';
+import type { traced as tracedFn, initTracing as initTracingFn } from '@n8n-probe/otel';
+import type { instrument as instrumentFn, initMetrics as initMetricsFn } from '@n8n-probe/metrics';
 import type {
   IDataObject,
   IExecuteFunctions,
@@ -14,28 +14,55 @@ const RETRIABLE_STATUS = new Set([429, 503]);
 
 type Traced = typeof tracedFn;
 type Instrument = typeof instrumentFn;
+type OtelModule = { traced: Traced; initTracing: typeof initTracingFn };
+type MetricsModule = { instrument: Instrument; initMetrics: typeof initMetricsFn };
 
-// @n8n-probe/otel and @n8n-probe/metrics are real `dependencies` (package.json)
-// and resolve normally under an ordinary npm/pnpm install. They are still
-// loaded lazily and defensively here — never a top-level `import` — because
-// this fixture also gets loaded by the local docker-compose demo
-// (docker/docker-compose.yml) straight off a bind-mounted `dist/` folder with
-// no `node_modules` next to it. On Windows, pnpm's workspace symlinks are NTFS
-// junctions holding an absolute *host* path, which Docker Desktop's bind mount
-// does not resolve inside the container regardless of what else is mounted.
-// A top-level `import` failing there does not just disable this node: n8n
-// aborts its whole node-type scan at startup ("Exiting due to an error") —
-// confirmed by reproducing it locally. See ADR-0009 in docs/ARCHITECTURE.md.
-let traced: Traced;
-let instrument: Instrument;
+// @n8n-probe/otel and @n8n-probe/metrics are real `dependencies`
+// (package.json) and resolve normally under an ordinary npm/pnpm install —
+// including this fixture's own build (apps/example-node/tsup.config.ts bundles
+// both, and their @opentelemetry/* transitive deps, straight into dist/, so
+// the docker-compose demo's bind-mounted `dist/`-only mount resolves them too;
+// see ADR-0010/ADR-0011 in docs/ARCHITECTURE.md). Still loaded lazily and
+// defensively here — never a top-level `import` — as a fallback for any
+// future dependency this node picks up that ISN'T bundled the same way: a
+// `require()` that throws during n8n's node-type scan would otherwise abort
+// the *entire* n8n process at startup, taking every other node down with it.
+let otelModule: OtelModule | undefined;
+let metricsModule: MetricsModule | undefined;
 try {
   // eslint-disable-next-line @typescript-eslint/no-require-imports -- optional load, see comment above
-  ({ traced } = require('@n8n-probe/otel') as { traced: Traced });
+  otelModule = require('@n8n-probe/otel') as OtelModule;
   // eslint-disable-next-line @typescript-eslint/no-require-imports -- optional load, see comment above
-  ({ instrument } = require('@n8n-probe/metrics') as { instrument: Instrument });
+  metricsModule = require('@n8n-probe/metrics') as MetricsModule;
 } catch {
-  traced = (fn) => fn;
-  instrument = () => ({ recordExecution: () => undefined });
+  otelModule = undefined;
+  metricsModule = undefined;
+}
+
+const traced: Traced = otelModule?.traced ?? ((fn) => fn);
+const instrument: Instrument = metricsModule?.instrument ?? (() => ({ recordExecution: () => undefined }));
+
+// Demo-only, opt-in: registers the real tracer/meter providers once per n8n
+// process (n8n requires this file exactly once, during its startup node-type
+// scan), so `traced()`/`instrument()` above emit to Jaeger/Prometheus instead
+// of the no-op default. Never activates outside the docker-compose demo
+// (docker/docker-compose.yml sets this env var) — a real install of this
+// example, and every test suite / apps/dogfood, does its own host-side
+// initTracing/initMetrics instead. See the `instrument()` doc comment in
+// @n8n-probe/metrics for why this must happen once at load time, not per call.
+if (process.env.N8N_PROBE_DEMO_OBSERVABILITY === '1' && otelModule && metricsModule) {
+  try {
+    otelModule.initTracing({
+      serviceName: 'n8n-probe-demo',
+      exporter: 'otlp-http',
+      otlpEndpoint: process.env.N8N_PROBE_OTLP_ENDPOINT ?? 'http://jaeger:4318/v1/traces',
+    });
+    metricsModule.initMetrics().catch((error: unknown) => {
+      console.error('[n8n-probe demo] initMetrics failed to start:', error);
+    });
+  } catch (error) {
+    console.error('[n8n-probe demo] observability init failed:', error);
+  }
 }
 
 // The "single call site" M6 deferred: one wrapper around the real execute()
