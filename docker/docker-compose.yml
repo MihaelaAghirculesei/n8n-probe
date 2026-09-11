@@ -13,16 +13,22 @@ services:
     image: n8nio/n8n:latest
     ports:
       - '5678:5678'
+      - '9464:9464' # @n8n-probe/metrics Prometheus exposition endpoint
     environment:
       - N8N_DIAGNOSTICS_ENABLED=false
       - N8N_RUNNERS_ENABLED=true
+      # Turns on HttpExample.node.ts's module-load-time initTracing/initMetrics
+      # call (see the comment above that block). Only ever set here — a real
+      # install of this example, and every test suite / apps/dogfood, does its
+      # own host-side init instead.
+      - N8N_PROBE_DEMO_OBSERVABILITY=1
+      - N8N_PROBE_OTLP_ENDPOINT=http://jaeger:4318/v1/traces
     volumes:
-      # Only dist/ is mounted, no node_modules alongside it — HttpExample.node.ts
-      # loads @n8n-probe/otel / @n8n-probe/metrics lazily and falls back to
-      # no-op tracing/metrics if they don't resolve here. See the comment above
-      # that `require()` in HttpExample.node.ts and ADR-0009 in
-      # docs/ARCHITECTURE.md — a real npm/pnpm install of this fixture gets
-      # both packages and full instrumentation; this demo mount does not.
+      # Only dist/ is mounted, no node_modules alongside it. dist/ is a tsup
+      # bundle (apps/example-node/tsup.config.ts) that inlines @n8n-probe/otel,
+      # @n8n-probe/metrics, and their @opentelemetry/* deps, so HttpExample's
+      # require() of them resolves here for real — see ADR-0010/ADR-0011 in
+      # docs/ARCHITECTURE.md.
       - ../apps/example-node/dist:/home/node/.n8n/custom/n8n-nodes-probe-example:ro
       - n8n_data:/home/node/.n8n
 
