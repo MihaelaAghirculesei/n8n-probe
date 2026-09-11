@@ -198,13 +198,16 @@ metrics deps were already correct (unlike `otel`).
 
 ---
 
-## Milestone 8 — local observability stack + docs `[ ]`
+## Milestone 8 — local observability stack + docs `[x]`
 
-- [ ] `docker/docker-compose.yml` (n8n + Prometheus + Grafana + Jaeger).
-- [ ] `docker/prometheus.yml` scrape config for the metrics endpoint.
-- [ ] `docker/grafana/provisioning` datasource + one starter dashboard.
-- [ ] `docs/` walkthrough: instrument the example node, run the stack, see the
-      trace in Jaeger and the panel in Grafana.
+- [x] `docker/docker-compose.yml` (n8n + Prometheus + Grafana + Jaeger).
+- [x] `docker/prometheus.yml` scrape config for the metrics endpoint.
+- [x] `docker/grafana/provisioning` datasource + one starter dashboard.
+- [x] `docs/` walkthrough: instrument the example node, run the stack, see the
+      trace in Jaeger and the panel in Grafana (`docs/observability-walkthrough.md`).
+      Also closes issue #19: `apps/example-node` now bundles with tsup
+      (ADR-0011) so the docker demo's `HttpExample` emits real spans/metrics
+      from inside n8n's own UI, not just avoids crashing.
 
 ---
 

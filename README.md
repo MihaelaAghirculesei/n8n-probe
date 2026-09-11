@@ -69,7 +69,9 @@ pnpm typecheck
 ```
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the design decisions and
-[`docs/PLAN.md`](docs/PLAN.md) for the implementation roadmap.
+[`docs/PLAN.md`](docs/PLAN.md) for the implementation roadmap. To see a real
+trace and metric come out of a node running inside n8n's own UI, follow
+[`docs/observability-walkthrough.md`](docs/observability-walkthrough.md).
 Contributions are welcome — read [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)
 first.
 
