@@ -39,6 +39,7 @@
     "url": "git+https://github.com/MihaelaAghirculesei/n8n-probe.git",
     "directory": "packages/metrics"
   },
+  "homepage": "https://github.com/MihaelaAghirculesei/n8n-probe/tree/main/packages/metrics#readme",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

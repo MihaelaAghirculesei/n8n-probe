@@ -39,6 +39,7 @@
     "url": "git+https://github.com/MihaelaAghirculesei/n8n-probe.git",
     "directory": "packages/e2e"
   },
+  "homepage": "https://github.com/MihaelaAghirculesei/n8n-probe/tree/main/packages/e2e#readme",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
