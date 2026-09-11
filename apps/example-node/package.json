@@ -21,8 +21,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "dev": "tsc -p tsconfig.build.json --watch",
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsup",
+    "dev": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsup --watch",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint nodes",
     "test": "vitest run"
@@ -35,8 +35,10 @@
     "n8n-workflow": "^2.16.0"
   },
   "devDependencies": {
+    "@opentelemetry/api": "^1.9.1",
     "@types/node": "^22",
     "n8n-workflow": "^2.16.0",
+    "tsup": "^8.5.1",
     "typescript": "~5.9.3",
     "vitest": "^4.1.11"
   }
