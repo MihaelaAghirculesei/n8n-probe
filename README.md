@@ -1,5 +1,8 @@
 # n8n-probe
 
+[![CI](https://github.com/MihaelaAghirculesei/n8n-probe/actions/workflows/ci.yml/badge.svg)](https://github.com/MihaelaAghirculesei/n8n-probe/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A testing and observability toolkit for [n8n](https://n8n.io) custom nodes and
 workflows.
 
@@ -15,14 +18,14 @@ Prometheus metrics for node executions.
 
 ## Packages
 
-| Package                                      | Purpose                                                                                        |
-| -------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| [`@n8n-probe/core`](packages/core)           | Typed mock `IExecuteFunctions` context and data/binary fixtures                                |
-| [`@n8n-probe/unit`](packages/unit)           | Execute a single node class with inputs/params and assert on its output                        |
-| [`@n8n-probe/mock-http`](packages/mock-http) | HTTP mocking helpers and presets (rate-limit, timeout, flaky) built on MSW                     |
-| [`@n8n-probe/e2e`](packages/e2e)             | Build and run whole workflows: fast in-process by default, real Docker instance opt-in         |
-| [`@n8n-probe/otel`](packages/otel)           | OpenTelemetry tracing for node executions and span assertions for tests                        |
-| [`@n8n-probe/metrics`](packages/metrics)     | Execution metrics recorded through the OpenTelemetry Metrics API, exposed in Prometheus format |
+| Package                                      | Version                                                                                                         | Purpose                                                                                        |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| [`@n8n-probe/core`](packages/core)           | [![npm](https://img.shields.io/npm/v/@n8n-probe/core)](https://www.npmjs.com/package/@n8n-probe/core)           | Typed mock `IExecuteFunctions` context and data/binary fixtures                                |
+| [`@n8n-probe/unit`](packages/unit)           | [![npm](https://img.shields.io/npm/v/@n8n-probe/unit)](https://www.npmjs.com/package/@n8n-probe/unit)           | Execute a single node class with inputs/params and assert on its output                        |
+| [`@n8n-probe/mock-http`](packages/mock-http) | [![npm](https://img.shields.io/npm/v/@n8n-probe/mock-http)](https://www.npmjs.com/package/@n8n-probe/mock-http) | HTTP mocking helpers and presets (rate-limit, timeout, flaky) built on MSW                     |
+| [`@n8n-probe/e2e`](packages/e2e)             | [![npm](https://img.shields.io/npm/v/@n8n-probe/e2e)](https://www.npmjs.com/package/@n8n-probe/e2e)             | Build and run whole workflows: fast in-process by default, real Docker instance opt-in         |
+| [`@n8n-probe/otel`](packages/otel)           | [![npm](https://img.shields.io/npm/v/@n8n-probe/otel)](https://www.npmjs.com/package/@n8n-probe/otel)           | OpenTelemetry tracing for node executions and span assertions for tests                        |
+| [`@n8n-probe/metrics`](packages/metrics)     | [![npm](https://img.shields.io/npm/v/@n8n-probe/metrics)](https://www.npmjs.com/package/@n8n-probe/metrics)     | Execution metrics recorded through the OpenTelemetry Metrics API, exposed in Prometheus format |
 
 ## Requirements
 
