@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "@n8n-probe/core": "workspace:*",
-    "@types/node": "^22",
+    "@types/node": "^22.20.2",
     "@vitest/coverage-v8": "^4.1.11",
     "n8n-nodes-probe-example": "workspace:*",
     "n8n-workflow": "^2.16.0",
