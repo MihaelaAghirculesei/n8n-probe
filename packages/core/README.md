@@ -41,8 +41,15 @@ it('uppercases the configured field', async () => {
 layered on top (so `params` wins on a key collision). Keys may be flat
 (`'field'`) or dotted (`'options.limit'`); a flat key containing dots is matched
 before the path is walked. It returns the fallback when a value is absent, and
-throws when there is neither a value nor a fallback. `$parameter`-style
-expressions are not resolved yet.
+throws when there is neither a value nor a fallback.
+
+n8n expressions (any string starting with `=`, such as `'={{ $json.id }}'`, at
+any depth of the value) are **not evaluated** by the mock, and reading one
+throws instead of handing the node the raw string — a test would otherwise pass
+on behaviour no real run has. Either pass the already-resolved value in
+`params`, or run the node through `runWorkflow` from
+[`@n8n-probe/e2e`](../e2e/README.md), which evaluates expressions with n8n's own
+engine.
 
 `getCredentials(type)` resolves the matching entry from `credentials` and throws
 when the node asks for a type that was not provided — the same failure a real

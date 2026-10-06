@@ -70,6 +70,19 @@ describe('createMockExecuteFunctions', () => {
       expect(ctx.getNodeParameter('missing', 0, 'default')).toBe('default');
     });
 
+    it('refuses to return an unevaluated n8n expression', () => {
+      const ctx = createMockExecuteFunctions({
+        node: { name: 'MyNode', parameters: { field: '={{ $json.name }}' } },
+        params: { options: { nested: ['plain', '={{ 1 + 1 }}'] }, literal: 'a = b' },
+      });
+
+      expect(() => ctx.getNodeParameter('field', 0)).toThrow(
+        /"field"\) on mock node "MyNode" holds the n8n expression "=\{\{ \$json\.name \}\}".*runWorkflow/,
+      );
+      expect(() => ctx.getNodeParameter('options', 0)).toThrow(/"=\{\{ 1 \+ 1 \}\}"/);
+      expect(ctx.getNodeParameter('literal', 0)).toBe('a = b');
+    });
+
     it('throws when a param is missing and no fallback is given', () => {
       const ctx = createMockExecuteFunctions({ node: { name: 'MyNode' } });
       expect(() => ctx.getNodeParameter('missing', 0)).toThrow(

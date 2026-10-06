@@ -37,8 +37,9 @@ export interface CreateMockExecuteFunctionsOptions {
    * Values resolved by `getNodeParameter(name, itemIndex, fallback?)`, layered
    * over the node's own `parameters` (so `params` wins on a key collision). Keys
    * may be flat (`'field'`) or dotted (`'options.limit'`); a flat key that
-   * contains dots is matched before the path is walked. `$parameter`-style
-   * expressions are not resolved yet.
+   * contains dots is matched before the path is walked. n8n expressions
+   * (`'={{ … }}'`) are not evaluated: reading one throws rather than returning
+   * the raw string — use `@n8n-probe/e2e`'s `runWorkflow` for expression semantics.
    */
   params?: Record<string, unknown>;
   /**
@@ -103,6 +104,15 @@ export function createMockExecuteFunctions(
     fallbackValue?: unknown,
   ): unknown => {
     const resolved = readPath(paramSource, parameterName);
+    const expression = findExpression(resolved);
+    if (expression !== undefined) {
+      throw new Error(
+        `getNodeParameter("${parameterName}") on mock node "${node.name}" holds the n8n ` +
+          `expression ${JSON.stringify(expression)}, which the mock context does not evaluate. ` +
+          'Pass the resolved value in `params`, or run the node through `runWorkflow` from ' +
+          "@n8n-probe/e2e, which evaluates expressions with n8n's own engine.",
+      );
+    }
     if (resolved !== undefined) return resolved;
     if (fallbackValue !== undefined) return fallbackValue;
     throw new Error(
@@ -186,6 +196,22 @@ function readPath(source: Record<string, unknown>, path: string): unknown {
     current = record[key];
   }
   return current;
+}
+
+/**
+ * The first n8n expression in `value` (a string starting with `=`, n8n's own
+ * marker), searching nested collections too. Returning one unevaluated would
+ * hand the node a literal like `={{ $json.id }}` and let the test pass on
+ * behaviour no real run has.
+ */
+function findExpression(value: unknown): string | undefined {
+  if (typeof value === 'string') return value.startsWith('=') ? value : undefined;
+  if (value === null || typeof value !== 'object') return undefined;
+  for (const entry of Object.values(value)) {
+    const found = findExpression(entry);
+    if (found !== undefined) return found;
+  }
+  return undefined;
 }
 
 function typeName(value: unknown): string {
