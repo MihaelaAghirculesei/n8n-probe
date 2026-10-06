@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto';
+
 import { ExecutionLifecycleHooks, WorkflowExecute } from 'n8n-core';
 import { Workflow } from 'n8n-workflow';
 import type {
@@ -22,6 +24,11 @@ export interface RunWorkflowOptions {
   credentials?: Record<string, ICredentialDataDecryptedObject>;
   /** Execution mode passed to n8n. Defaults to `'manual'`. */
   mode?: WorkflowExecuteMode;
+  /**
+   * Name of the node to start from. Defaults to the workflow's only entry node
+   * (a node no connection points to); required when there are several.
+   */
+  startNode?: string;
 }
 
 /**
@@ -53,8 +60,20 @@ function mapCredentialsHelper(
   return { getDecrypted } as unknown as ICredentialsHelper;
 }
 
-/** The first node that is never a connection target — the workflow's entry point. */
-function findStartNodeName(definition: WorkflowDefinition): string {
+/**
+ * The node execution starts from: `requested` if given, otherwise the single
+ * node that is never a connection target. Several candidates are an error
+ * rather than a guess — the engine only runs what is reachable from the start
+ * node, so picking the wrong one would silently skip part of the workflow.
+ */
+function resolveStartNodeName(definition: WorkflowDefinition, requested?: string): string {
+  if (requested !== undefined) {
+    if (!definition.nodes.some((node) => node.name === requested)) {
+      throw new Error(`@n8n-probe/e2e: startNode "${requested}" is not a node of the workflow.`);
+    }
+    return requested;
+  }
+
   const targets = new Set<string>();
   for (const nodeConnections of Object.values(definition.connections)) {
     for (const outputs of Object.values(nodeConnections)) {
@@ -63,10 +82,18 @@ function findStartNodeName(definition: WorkflowDefinition): string {
       }
     }
   }
-  const start = definition.nodes.find((node) => !targets.has(node.name));
+  const candidates = definition.nodes.filter((node) => !targets.has(node.name));
+  const [start, ...others] = candidates;
   if (!start) {
     throw new Error(
       '@n8n-probe/e2e: the workflow has no entry node (every node is a connection target).',
+    );
+  }
+  if (others.length > 0) {
+    const names = candidates.map((node) => `"${node.name}"`).join(', ');
+    throw new Error(
+      `@n8n-probe/e2e: the workflow has several entry nodes (${names}). ` +
+        'Pass runWorkflow(wf, { startNode }) to choose one.',
     );
   }
   return start.name;
@@ -77,7 +104,8 @@ function createAdditionalData(
   workflowDefinition: WorkflowDefinition,
   options: RunWorkflowOptions,
 ): IWorkflowExecuteAdditionalData {
-  const executionId = 'e2e-exec';
+  // Unique per run, so spans/metrics/logs from parallel runs never alias.
+  const executionId = `e2e-${randomUUID()}`;
   const base = 'http://localhost:5678';
   const additionalData = {
     executionId,
@@ -113,6 +141,9 @@ export async function runWorkflow(
   workflowDefinition: WorkflowDefinition,
   options: RunWorkflowOptions = {},
 ): Promise<IRun> {
+  // Resolved first: a structural mistake should not surface as a node-type error.
+  const startNodeName = resolveStartNodeName(workflowDefinition, options.startNode);
+
   const workflow = new Workflow({
     id: workflowDefinition.id,
     name: workflowDefinition.name,
@@ -128,6 +159,6 @@ export async function runWorkflow(
     options.mode ?? 'manual',
   );
 
-  const startNode = workflow.getNode(findStartNodeName(workflowDefinition)) ?? undefined;
+  const startNode = workflow.getNode(startNodeName) ?? undefined;
   return workflowExecute.run({ workflow, startNode });
 }

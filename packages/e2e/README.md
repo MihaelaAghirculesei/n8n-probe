@@ -32,6 +32,9 @@ getNodeOutput(run, 'Up').map((i) => i.json); // [{ name: 'ADA' }]
   - `credentials` — decrypted objects keyed by credential type, handed to a
     node's `getCredentials(type)`.
   - `mode` — n8n execution mode, default `'manual'`.
+  - `startNode` — the node to start from. Defaults to the workflow's only entry
+    node (one no connection points to); with several entry nodes it is required,
+    rather than guessed — the engine only runs what the start node reaches.
 - **`expectWorkflowSuccess(run)`** — throws (naming the failing node) unless the
   run finished cleanly.
 - **`getNodeOutput(run, nodeName, branch?)`** — that node's output items for the

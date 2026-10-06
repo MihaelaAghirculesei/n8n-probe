@@ -516,6 +516,7 @@ export async function runWorkflow(
     nodeTypes?: ReadonlyArray<new () => INodeType>; // matched by description.name
     credentials?: Record<string, ICredentialDataDecryptedObject>; // getDecrypted-only
     mode?: WorkflowExecuteMode; // default 'manual'
+    startNode?: string; // required when the workflow has several entry nodes
   },
 ): Promise<IRun>;
 
@@ -548,8 +549,10 @@ export function nodeTypesFrom(classes: ReadonlyArray<new () => INodeType>): INod
 is real and composes with `@n8n-probe/mock-http` (ADR-0008). Minimum viable
 `IWorkflowExecuteAdditionalData`: `hooks` (an `ExecutionLifecycleHooks`), a
 `getDecrypted`-only `credentialsHelper`, and non-empty base URLs (n8n does
-`new URL()` on them). The entry node is the first node that is never a
-connection target. `WorkflowExecute.run` takes an options object
+`new URL()` on them). The entry node is `startNode`, or else the only node that
+is never a connection target — several candidates throw instead of guessing,
+because the engine silently skips whatever the start node does not reach. Each
+run gets a unique `executionId`. `WorkflowExecute.run` takes an options object
 (`{ workflow, startNode }`), not positional args.
 
 ### `@n8n-probe/otel`

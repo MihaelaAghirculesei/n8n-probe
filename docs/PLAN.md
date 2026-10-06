@@ -114,8 +114,9 @@ renovate/CI check that flags minor bumps for manual review.
       `WorkflowExecute` from `n8n-workflow` / `n8n-core`, run in-process with
       n8n's own per-node context, return `IRun`. Options: `nodeTypes` (classes,
       matched by `description.name`), `credentials` (`getDecrypted`-only),
-      `mode`. `ManualTrigger` start node built in; entry node is picked as the
-      first node that is not a connection target.
+      `mode`, `startNode`. `ManualTrigger` start node built in; without
+      `startNode` the entry node is the only node that is not a connection
+      target (several → error).
 - [x] `expectWorkflowSuccess(run)` (names the failing node),
       `getNodeOutput(run, nodeName, branch?)`.
 - [x] `runWorkflowInFullInstance(definition, options?)` + `startN8nInstance` —
