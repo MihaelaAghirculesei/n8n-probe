@@ -33,6 +33,11 @@ updates:
         versions: ['>=5.0.0']
       - dependency-name: '@vitest/*'
         versions: ['>=5.0.0']
+      # MSW ^2 (AGENTS.md). Its types are part of mock-http's public API and users
+      # pass handlers built with their own msw, so a major is a planned breaking
+      # release, not an automated bump — see issue #35.
+      - dependency-name: msw
+        update-types: [version-update:semver-major]
       # Types follow the supported Node line (engines: >=22.22), not the newest Node.
       - dependency-name: '@types/node'
         update-types: [version-update:semver-major]
