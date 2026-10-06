@@ -102,6 +102,34 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:e2e:full
 
+  n8n-compat:
+    name: n8n compatibility (latest)
+    # The lockfile pins the n8n packages the toolkit is built against, so the
+    # `build` job can never notice a new n8n release breaking the internals we
+    # use (`WorkflowExecute`, `ExecutionLifecycleHooks`, `IExecuteFunctions`).
+    # This re-resolves them to `latest` — including across a major, which is
+    # the point — and runs the fast suite. Opt-in like `e2e-full` (nightly or
+    # the `n8n-compat` PR label) and outside the `ci` gate: an upstream release
+    # must not block unrelated PRs; a red run here is the signal to act on.
+    if: >-
+      github.event_name == 'schedule' ||
+      contains(github.event.pull_request.labels.*.name, 'n8n-compat')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: resolve n8n packages to latest
+        run: pnpm update --recursive --latest n8n-workflow n8n-core
+      - name: report resolved versions
+        run: pnpm list --recursive --depth 0 n8n-workflow n8n-core
+      - run: pnpm typecheck
+      - run: pnpm test
+
   # The single required status check. If any gating job fails or is skipped for
   # the wrong reason this fails, and the branch ruleset blocks the merge.
   ci:
