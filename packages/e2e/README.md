@@ -25,7 +25,8 @@ getNodeOutput(run, 'Up').map((i) => i.json); // [{ name: 'ADA' }]
   `.connect(from, to, fromOutput?, toInput?)`, `.build()` → a `WorkflowDefinition`.
 - **`runWorkflow(definition, options?)`** — executes in-process via
   `n8n-workflow` / `n8n-core`. No server, no database. Returns n8n's `IRun`.
-  Options:
+  Node parameters holding n8n expressions (`'={{ $json.id }}'`) are evaluated by
+  n8n's own engine. Options:
   - `nodeTypes` — the node classes the workflow references (matched by
     `description.name`; a `pkg.name` type also matches the bare `name`).
     `ManualTrigger` is always registered.
