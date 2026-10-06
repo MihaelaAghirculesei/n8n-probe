@@ -35,8 +35,22 @@ Prometheus metrics for node executions.
 ## Quick start
 
 ```bash
-pnpm add -D @n8n-probe/unit @n8n-probe/core
+pnpm add -D @n8n-probe/unit @n8n-probe/core vitest n8n-workflow
 ```
+
+Add the toolkit's Vitest settings once, in `vitest.config.ts`:
+
+```ts
+import { n8nProbeVitestConfig } from '@n8n-probe/core/vitest';
+import { defineConfig, mergeConfig } from 'vitest/config';
+
+export default mergeConfig(n8nProbeVitestConfig(), defineConfig({ test: {} }));
+```
+
+It pins `n8n-workflow` to the CommonJS build your nodes already load — its ESM
+build cannot be imported by Node directly, and two copies would break
+`instanceof NodeOperationError` between a node and its test
+([ADR-0014](docs/ARCHITECTURE.md)). Then:
 
 ```ts
 import { executeNode, expectNodeOutput } from '@n8n-probe/unit';

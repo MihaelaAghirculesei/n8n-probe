@@ -409,6 +409,37 @@ a capability the in-process runner already provides correctly.
 fails with an actionable message (breaking for that test, hence a `minor`
 bump). `core` stays a pure mock with no runtime coupling to n8n's evaluator.
 
+### ADR-0014: consumers get the `n8n-workflow` pin as a published Vitest helper
+
+**Context.** Installing the six packages from `pnpm pack` tarballs into a fresh
+project outside the monorepo (PLAN Appendix A, Day 19 — first done
+2026-10-05) failed before any test ran: `n8n-workflow` 2.16.0's ESM build
+imports `./logger-proxy` without a file extension, which Node's ESM loader
+rejects. Inside the monorepo this never showed, because
+`vitest.config.base.mts` aliases `n8n-workflow` to its CJS build (ADR-0007) and
+workspace packages are symlinks Vite transforms, so the alias reaches them.
+In a consumer, `@n8n-probe/*` sits in `node_modules`, Vitest externalises it,
+and Node loads `n8n-workflow`'s ESM build directly.
+
+**Decision.** Ship the fix instead of documenting a recipe:
+`n8nProbeVitestConfig()` at a separate `@n8n-probe/core/vitest` entry (a config
+file cannot load the main entry, which imports `vitest` at runtime) returns
+the alias to the project's CJS `n8n-workflow` plus
+`test.server.deps.inline: [/@n8n-probe\//]`, so the alias also applies inside
+the toolkit. The quick start makes it step one. Verified from tarballs:
+without it the consumer suite fails to load; with it, all five pillars pass.
+
+**Also found, not changed yet:** the CommonJS builds of `core`, `unit` and
+`mock-http` cannot be `require()`d — they load `vitest-mock-extended` /
+`vitest`, and Vitest 4 throws when required. They only ever work from Vitest
+test files (which use the ESM build). Dropping those CJS builds is a breaking
+packaging change for no functional gain today; revisit with the next breaking
+release. `e2e`, `otel` and `metrics` load fine from CJS.
+
+**Consequences.** One documented line of config per consumer project. The
+upstream ESM build bug is n8n's to fix; if it is fixed, the helper still holds
+the single-copy guarantee that `instanceof` needs.
+
 ---
 
 ## Package public APIs (sketch — refine signatures during implementation)

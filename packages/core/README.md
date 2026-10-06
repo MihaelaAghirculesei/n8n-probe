@@ -6,6 +6,27 @@ Typed mock n8n execution context and data fixtures for testing custom nodes.
 import { createMockExecuteFunctions, itemsFrom, binaryFixture } from '@n8n-probe/core';
 ```
 
+## Vitest set-up: `@n8n-probe/core/vitest`
+
+Every project testing n8n nodes with `@n8n-probe/*` needs one setting in
+`vitest.config.ts`:
+
+```ts
+import { n8nProbeVitestConfig } from '@n8n-probe/core/vitest';
+import { defineConfig, mergeConfig } from 'vitest/config';
+
+export default mergeConfig(n8nProbeVitestConfig(), defineConfig({ test: {} }));
+```
+
+**`n8nProbeVitestConfig({ root? })`** pins every `n8n-workflow` import to its
+CommonJS build — the one n8n nodes load — and inlines `@n8n-probe/*` so the pin
+applies inside the toolkit too. Without it, `n8n-workflow`'s ESM build fails to
+load under Node (`Cannot find module …/dist/esm/logger-proxy`), and two copies
+of its classes break `instanceof` checks between a node and its test. `root`
+(default `process.cwd()`) is where `n8n-workflow` is resolved from. It is a
+separate entry point because a config file must not load the main entry's
+runtime `vitest` dependency.
+
 ## `createMockExecuteFunctions(options?)`
 
 Builds a deep, type-safe mock of n8n's `IExecuteFunctions` (via
