@@ -54,9 +54,11 @@ jobs:
       # GitHub Actions to create and approve pull requests" turned on, or PR
       # creation fails (this has happened before — see AGENTS.md).
       - name: Version or publish
+        # v2 renamed the inputs (version -> version-script, publish ->
+        # publish-script) and no longer reads GITHUB_TOKEN from env; the
+        # `github-token` input defaults to the workflow token. PR CI never runs
+        # this workflow, so a stale input name would only fail at release time.
         uses: changesets/action@v2
         with:
-          version: pnpm version-packages
-          publish: pnpm release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          version-script: pnpm version-packages
+          publish-script: pnpm release
