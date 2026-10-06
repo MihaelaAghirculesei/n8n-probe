@@ -17,7 +17,7 @@
     "@n8n-probe/otel": "workspace:*",
     "@n8n-probe/unit": "workspace:*",
     "@types/node": "^22.20.2",
-    "msw": "^2.15.0",
+    "msw": "^3.0.2",
     "n8n-core": "^2.16.1",
     "n8n-nodes-probe-example": "workspace:*",
     "n8n-workflow": "^2.16.0",
