@@ -193,6 +193,23 @@ describe('runWorkflow (in-process)', () => {
     expect(getNodeOutput(run, 'Auth').map((i) => i.json)).toEqual([{ key: 'k-9' }]);
   });
 
+  it("resolves n8n expressions through n8n's own engine", async () => {
+    const wf = workflow()
+      .addNode({
+        name: 'Start',
+        type: 'manualTrigger',
+        parameters: { data: [{ name: 'ada', target: 'name' }] },
+      })
+      .addNode({ name: 'Up', type: 'example', parameters: { field: '={{ $json.target }}' } })
+      .connect('Start', 'Up')
+      .build();
+
+    const run = await runWorkflow(wf, { nodeTypes: [Example] });
+
+    expectWorkflowSuccess(run);
+    expect(getNodeOutput(run, 'Up').map((i) => i.json)).toEqual([{ name: 'ADA', target: 'name' }]);
+  });
+
   describe('start node', () => {
     const twoEntries = (): WorkflowDefinition =>
       workflow()
