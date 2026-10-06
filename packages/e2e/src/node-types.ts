@@ -38,22 +38,27 @@ export class ManualTrigger implements INodeType {
   };
 
   execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-    let data = this.getNodeParameter('data', 0, [{}]) as unknown;
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch {
-        data = [{}];
-      }
-    }
-    const rows = Array.isArray(data) ? (data as unknown[]) : [data];
-    return Promise.resolve([
-      rows.map((json, item) => ({
-        json: (json && typeof json === 'object' ? json : {}) as IDataObject,
-        pairedItem: { item },
-      })),
-    ]);
+    const rows = manualTriggerRows(this.getNodeParameter('data', 0, [{}]));
+    return Promise.resolve([rows.map((json, item) => ({ json, pairedItem: { item } }))]);
   }
+}
+
+/**
+ * Normalise a {@link ManualTrigger} `data` parameter (an array, a single object,
+ * or either as a JSON string) into the JSON payloads it emits. Unparseable
+ * input and non-object entries degrade to `{}`, like the trigger itself.
+ */
+export function manualTriggerRows(data: unknown): IDataObject[] {
+  let value = data;
+  if (typeof value === 'string') {
+    try {
+      value = JSON.parse(value);
+    } catch {
+      value = [{}];
+    }
+  }
+  const rows = Array.isArray(value) ? (value as unknown[]) : [value];
+  return rows.map((json) => (json && typeof json === 'object' ? json : {}) as IDataObject);
 }
 
 /**
