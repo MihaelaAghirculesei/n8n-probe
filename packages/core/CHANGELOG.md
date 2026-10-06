@@ -1,5 +1,26 @@
 # @n8n-probe/core
 
+## 0.2.0
+
+### Minor Changes
+
+- 61de552: **Breaking:** `getNodeParameter` on the mock context now throws when the value
+  holds an n8n expression (a string starting with `=`, at any depth) instead of
+  returning the raw string, which let a node under test run on input no real
+  execution would give it. Pass the resolved value in `params`, or run the node
+  through `@n8n-probe/e2e`'s `runWorkflow`, which evaluates expressions with n8n's
+  own engine.
+- 99e69d5: Add `@n8n-probe/core/vitest` with `n8nProbeVitestConfig()`, the Vitest settings
+  a project needs to use the toolkit: it pins `n8n-workflow` to the CommonJS build
+  n8n nodes load (its ESM build cannot be loaded by Node, and two copies break
+  `instanceof` between a node and its test) and inlines `@n8n-probe/*` so the pin
+  applies inside the toolkit. Merge it into `vitest.config.ts` — see the README.
+
+### Patch Changes
+
+- 1310b3e: Deprecate `NotImplementedError`: no toolkit API throws it any more. It will be
+  removed in `0.3.0`.
+
 ## 0.1.0
 
 ### Minor Changes

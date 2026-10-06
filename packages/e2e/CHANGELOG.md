@@ -1,5 +1,28 @@
 # @n8n-probe/e2e
 
+## 0.2.0
+
+### Minor Changes
+
+- 849adf4: `runWorkflow` gains a `startNode` option. **Breaking:** a workflow with several
+  entry nodes (nodes no connection points to) now throws instead of silently
+  starting from the first one and skipping whatever it does not reach — pass
+  `startNode` to choose. Each run also gets a unique execution id instead of the
+  fixed `e2e-exec`.
+- f70d196: Implement the full tier: `startN8nInstance({ nodePackages })` boots the official
+  `n8nio/n8n` image (pinned default `DEFAULT_N8N_IMAGE`), installs your built node
+  packages as community packages and runs workflow definitions through n8n's CLI;
+  `runWorkflowInFullInstance` does boot + run + stop in one call. Both resolve
+  with an `IRun` that `expectWorkflowSuccess` / `getNodeOutput` accept. Node types
+  must be package-qualified (`n8n-nodes-my-package.myNode`) for this tier.
+
+### Patch Changes
+
+- e3a8709: Stop installing `testcontainers` (and the unused `@n8n-probe/core`) for every
+  consumer. `testcontainers` is now an optional peer dependency, needed only for
+  the Docker-backed full tier — add it with `pnpm add -D testcontainers` if you use
+  that tier.
+
 ## 0.1.0
 
 ### Minor Changes

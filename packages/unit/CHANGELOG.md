@@ -1,5 +1,14 @@
 # @n8n-probe/unit
 
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies [61de552]
+- Updated dependencies [1310b3e]
+- Updated dependencies [99e69d5]
+  - @n8n-probe/core@0.2.0
+
 ## 0.1.0
 
 ### Minor Changes
