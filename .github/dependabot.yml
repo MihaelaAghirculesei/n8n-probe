@@ -1,0 +1,49 @@
+# Weekly, grouped update PRs. Security alerts are enabled separately in the repo
+# settings; this file only drives version updates.
+#
+# The `ignore` rules mirror the toolchain ceilings in AGENTS.md — raise one only
+# together with the ADR that justifies it.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      # The toolkit tracks n8n's internals; bump these together and review by hand.
+      n8n:
+        patterns: ['n8n-workflow', 'n8n-core']
+      opentelemetry:
+        patterns: ['@opentelemetry/*']
+      dev-tooling:
+        dependency-type: development
+        update-types: [minor, patch]
+        exclude-patterns: ['n8n-workflow', 'n8n-core', '@opentelemetry/*']
+    ignore:
+      # TypeScript ~5.9 until typescript-eslint supports 6+ (AGENTS.md, ADR-0006).
+      - dependency-name: typescript
+        versions: ['>=6.0.0']
+      # Vitest ^4 only; never a 5.x pre-release (AGENTS.md).
+      - dependency-name: vitest
+        versions: ['>=5.0.0']
+      - dependency-name: '@vitest/*'
+        versions: ['>=5.0.0']
+      # Types follow the supported Node line (engines: >=22.22), not the newest Node.
+      - dependency-name: '@types/node'
+        update-types: [version-update:semver-major]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns: ['*']
