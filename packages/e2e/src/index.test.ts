@@ -10,6 +10,7 @@ import {
   nodeTypesFrom,
   runWorkflow,
   runWorkflowInFullInstance,
+  startN8nInstance,
   workflow,
 } from './index.js';
 
@@ -18,6 +19,7 @@ describe('@n8n-probe/e2e public surface', () => {
     expect(typeof workflow).toBe('function');
     expect(typeof runWorkflow).toBe('function');
     expect(typeof runWorkflowInFullInstance).toBe('function');
+    expect(typeof startN8nInstance).toBe('function');
     expect(typeof expectWorkflowSuccess).toBe('function');
     expect(typeof getNodeOutput).toBe('function');
     expect(typeof nodeTypesFrom).toBe('function');
@@ -216,11 +218,5 @@ describe('runWorkflow + mock-http', () => {
 
     expectWorkflowSuccess(run);
     expect(getNodeOutput(run, 'Fetch').map((i) => i.json)).toEqual([{ id: 7 }]);
-  });
-});
-
-describe('runWorkflowInFullInstance', () => {
-  it('rejects with a not-implemented message for now', async () => {
-    await expect(runWorkflowInFullInstance(workflow().build())).rejects.toThrow(/not implemented/);
   });
 });

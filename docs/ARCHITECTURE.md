@@ -332,6 +332,59 @@ published node. Any other fixture node that wants the same live-instrumented
 docker demo treatment needs the same tsup entry + env-gated init block, not
 just the `dependencies` entry ADR-0009 already requires.
 
+### ADR-0012: the full e2e tier drives n8n's CLI inside an idle container
+
+**Context.** ADR-0004's full tier (issue #12) has to run a toolkit
+`WorkflowDefinition` inside the real `n8nio/n8n` image, with the node package
+under test installed, and hand back an `IRun` the fast tier's assertions accept.
+Probing `n8nio/n8n` 2.37–2.41 by hand settled the open questions:
+
+- **CLI, not REST.** `n8n import:workflow` + `n8n execute --id <id> --rawOutput`
+  needs no owner set-up, login or `Secure`-cookie handling, and `execute` prints
+  the full `IRun` as JSON — on success and on a node failure alike (exit 1, run
+  still printed). The REST path needs `POST /rest/owner/setup`, a manual cookie
+  shuttle, and polling for completion.
+- **An idle container, not `n8n start`.** Every CLI command is a full n8n
+  process with its own task broker; running one next to a server collides on
+  the broker port. The container runs `tini -- sh -c 'sleep infinity'` and each
+  run is a CLI invocation; runs on one container are serialised for the same
+  reason.
+- **Install like a community package.** A package placed in
+  `~/.n8n/custom/<pkg>` is _not_ registered under `<pkg>.<node>` — `execute`
+  failed with `Unrecognized node type: n8n-nodes-probe-example.example`, the
+  same message issue #19 hit at webhook activation. Copied (as the image's
+  `node` user — Docker-copied files are root-owned and n8n writes
+  `~/.n8n/nodes/package.json` at start-up) into
+  `~/.n8n/nodes/node_modules/<pkg>`, the qualified type resolves.
+- **Seed trigger data through a Code node.** `execute` starts from the
+  workflow's Manual Trigger, which always emits one empty item, and ignores
+  `pinData` (it never passes it to the runner). A `manualTrigger` with `data`
+  is therefore rewritten into an `n8n-nodes-base.code` node under the same
+  name, fed by an injected Manual Trigger that is stripped from the returned
+  run. Downstream run data is untouched; only that node's own `pairedItem`
+  differs from the fast tier (n8n pairs the Code node's items with its single
+  input item).
+
+**Decision.** `startN8nInstance({ nodePackages, image, env, runTimeoutMs })` →
+`{ run, stop }`, plus the one-shot `runWorkflowInFullInstance`. The default
+image is pinned (`DEFAULT_N8N_IMAGE`, `n8nio/n8n:2.41.7`) — the CLI output
+format and the community-package layout are n8n internals, and a moving
+`latest` would make the nightly fail for reasons unrelated to the change under
+test. Bare node types are rejected before a container starts. `testcontainers`
+is an optional peer dependency loaded with a dynamic `import()`, as
+`@n8n-probe/mock-http`'s WireMock tier already does.
+
+**Alternatives rejected:** the REST API (above); mounting the package as a
+bind mount (root-owned parent directories break n8n's own writes); `n8n start`
+plus a webhook trigger (activation is the path issue #19 found broken for
+unpublished packages, and it adds a port, a readiness wait and an HTTP client).
+
+**Consequences.** Each run pays an n8n CLI start-up (~4–6 s; the first one on
+a container also runs DB migrations, ~12 s), so suites should share one
+instance. Credentials are not supported yet (they would need
+`import:credentials` and stable credential ids). Moving `DEFAULT_N8N_IMAGE` is
+a deliberate, tested change — the nightly `e2e-full` job is what proves it.
+
 ---
 
 ## Package public APIs (sketch — refine signatures during implementation)
@@ -466,11 +519,23 @@ export async function runWorkflow(
   },
 ): Promise<IRun>;
 
-// Deferred to a follow-up (issue filed). Stubbed; rejects.
+// Full tier (ADR-0012): real n8nio/n8n container; testcontainers optional peer.
+export interface RunInFullInstanceOptions {
+  image?: string; // default DEFAULT_N8N_IMAGE (pinned)
+  nodePackages?: readonly string[]; // host paths of built node packages
+  env?: Record<string, string>;
+  runTimeoutMs?: number; // default 120_000
+}
+export function startN8nInstance(
+  options?: RunInFullInstanceOptions,
+): Promise<{
+  run(definition: WorkflowDefinition): Promise<IRun>;
+  stop(): Promise<void>;
+}>;
 export function runWorkflowInFullInstance(
   definition: WorkflowDefinition,
-  options?: { image?: string },
-): Promise<IRun>;
+  options?: RunInFullInstanceOptions,
+): Promise<IRun>; // start + run + stop
 
 export function expectWorkflowSuccess(run: IRun): void; // names the failing node
 export function getNodeOutput(run: IRun, nodeName: string, branch?: number): INodeExecutionData[];
