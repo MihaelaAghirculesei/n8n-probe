@@ -32,7 +32,7 @@ on a clean checkout with only placeholder implementations. — **met on
 
 ---
 
-## Milestone 1 — `@n8n-probe/core` `[~]`
+## Milestone 1 — `@n8n-probe/core` `[x]`
 
 - [x] `createMockExecuteFunctions(options?)` backed by `vitest-mock-extended`
       (`mockDeep<IExecuteFunctions>()`), with sensible defaults for
@@ -45,10 +45,10 @@ on a clean checkout with only placeholder implementations. — **met on
       `{ json, pairedItem: { item } }`; rejects non-object entries).
 - [x] `binaryFixture({ fileName, mimeType, data })` → `IBinaryData` (base64
       encode, set `fileSize`, `fileExtension`).
-- [~] `getNodeParameter` resolution from a plain params object: dotted paths and
-  exact-key-first matching done. `$parameter`-style expression resolution is
-  deferred (needs `n8n-workflow`'s expression engine wired in) — tracked for
-  a later `core` pass.
+- [x] `getNodeParameter` resolution from a plain params object: dotted paths and
+      exact-key-first matching. Expressions are deliberately **not** evaluated
+      in the mock: reading one throws and points to `runWorkflow`, which
+      evaluates them with n8n's own engine (ADR-0013, Milestone 10).
 - [x] Unit tests for every export; public surface fully exercised (100% funcs,
       100% lines, >96% branches on `core`).
 - [x] README with a copy-pasteable example.

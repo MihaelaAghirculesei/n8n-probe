@@ -385,6 +385,30 @@ instance. Credentials are not supported yet (they would need
 `import:credentials` and stable credential ids). Moving `DEFAULT_N8N_IMAGE` is
 a deliberate, tested change — the nightly `e2e-full` job is what proves it.
 
+### ADR-0013: the mock context refuses n8n expressions instead of evaluating them
+
+**Context.** `getNodeParameter` in a real run evaluates expressions
+(`'={{ $json.id }}'`). The mock returned them verbatim, so a node under test
+could receive the literal string and a test could pass on behaviour no real
+run has. `n8n-workflow` 2.16 is mid-migration between expression engines
+(`Expression.initExpressionEngine`, legacy vs. VM evaluator); a spike calling
+`workflow.expression.getParameterValue` without that engine's set-up returned
+`undefined`.
+
+**Decision.** The mock throws on reading any value containing an expression (a
+string starting with `=`, at any depth) and points to the two correct options:
+pass the resolved value in `params`, or use `@n8n-probe/e2e`'s `runWorkflow`,
+whose context is n8n's own and evaluates expressions with n8n's engine — now
+covered by a regression test there.
+
+**Alternatives rejected:** wiring n8n's expression engine into `core` —
+couples the lightest package to an internal API that is actively changing, for
+a capability the in-process runner already provides correctly.
+
+**Consequences.** A test that passed by accident on a raw expression string now
+fails with an actionable message (breaking for that test, hence a `minor`
+bump). `core` stays a pure mock with no runtime coupling to n8n's evaluator.
+
 ---
 
 ## Package public APIs (sketch — refine signatures during implementation)
@@ -425,8 +449,8 @@ export interface TestExecuteContext {
 
 `getNodeParameter` resolves against the node's own `parameters` with the `params`
 option layered on top (exact key first, then a dotted-path walk), returns the
-fallback when absent, and throws when there is neither. `$parameter`-style
-expression resolution is not implemented yet. `getCredentials(type)` returns the
+fallback when absent, and throws when there is neither. A value holding an n8n
+expression is never returned unevaluated — it throws (ADR-0013). `getCredentials(type)` returns the
 matching entry from `credentials` and throws when the node asks for a type that
 was not provided (matching a real run with unconfigured credentials).
 
