@@ -124,8 +124,10 @@ docs/            ARCHITECTURE.md (ADRs + API sketches + config templates), PLAN.
 .github/         CI workflow, issue/PR templates, branch-protection ruleset as code
 ```
 
-Package dependency direction: `core` ← `unit`; `core` + `n8n-workflow`/`n8n-core`
-← `e2e`. Keep it a DAG — no cycles. Each library is independently installable.
+Package dependency direction: `core` ← `unit`; `core` ← `mock-http`;
+`n8n-workflow`/`n8n-core` ← `e2e` (which needs no `core`). Keep it a DAG — no
+cycles. Each library is independently installable; Docker-only helpers load
+`testcontainers` as an optional peer, never a hard dependency.
 
 ---
 
