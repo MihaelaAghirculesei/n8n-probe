@@ -13,6 +13,7 @@ import {
   startN8nInstance,
   workflow,
 } from './index.js';
+import type { WorkflowDefinition } from './index.js';
 
 describe('@n8n-probe/e2e public surface', () => {
   it('exposes the documented entry points', () => {
@@ -190,6 +191,70 @@ describe('runWorkflow (in-process)', () => {
 
     expectWorkflowSuccess(run);
     expect(getNodeOutput(run, 'Auth').map((i) => i.json)).toEqual([{ key: 'k-9' }]);
+  });
+
+  describe('start node', () => {
+    const twoEntries = (): WorkflowDefinition =>
+      workflow()
+        .addNode({ name: 'A', type: 'manualTrigger', parameters: { data: [{ name: 'a' }] } })
+        .addNode({ name: 'B', type: 'manualTrigger', parameters: { data: [{ name: 'b' }] } })
+        .addNode({ name: 'Up', type: 'example', parameters: { field: 'name' } })
+        .connect('B', 'Up')
+        .build();
+
+    it('refuses to guess between several entry nodes', async () => {
+      await expect(runWorkflow(twoEntries(), { nodeTypes: [Example] })).rejects.toThrow(
+        /several entry nodes \("A", "B"\).*startNode/,
+      );
+    });
+
+    it('starts from the node named by startNode', async () => {
+      const run = await runWorkflow(twoEntries(), { nodeTypes: [Example], startNode: 'B' });
+
+      expectWorkflowSuccess(run);
+      expect(getNodeOutput(run, 'Up').map((i) => i.json)).toEqual([{ name: 'B' }]);
+      expect(getNodeOutput(run, 'A')).toEqual([]);
+    });
+
+    it('rejects a startNode that is not in the workflow', async () => {
+      await expect(runWorkflow(twoEntries(), { startNode: 'Ghost' })).rejects.toThrow(
+        /startNode "Ghost" is not a node/,
+      );
+    });
+  });
+
+  it('gives every run its own execution id', async () => {
+    const ids: string[] = [];
+    class RecordId implements INodeType {
+      description = {
+        displayName: 'Record Id',
+        name: 'recordId',
+        group: ['transform'],
+        version: 1,
+        description: '',
+        defaults: { name: 'Record Id' },
+        inputs: ['main'],
+        outputs: ['main'],
+        properties: [],
+      } as INodeType['description'];
+
+      execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
+        ids.push(this.getExecutionId());
+        return Promise.resolve([this.getInputData()]);
+      }
+    }
+    const wf = workflow()
+      .addNode({ name: 'Start', type: 'manualTrigger' })
+      .addNode({ name: 'Id', type: 'recordId' })
+      .connect('Start', 'Id')
+      .build();
+
+    await runWorkflow(wf, { nodeTypes: [RecordId] });
+    await runWorkflow(wf, { nodeTypes: [RecordId] });
+
+    expect(ids).toHaveLength(2);
+    expect(ids[0]).toMatch(/^e2e-/);
+    expect(ids[0]).not.toBe(ids[1]);
   });
 });
 
