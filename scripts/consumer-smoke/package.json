@@ -1,0 +1,6 @@
+{
+  "name": "n8n-probe-consumer-smoke",
+  "private": true,
+  "type": "module",
+  "description": "A stand-in for a project that installs the published @n8n-probe/* tarballs. Copied outside the workspace by scripts/consumer-smoke.sh; never installed in place."
+}
