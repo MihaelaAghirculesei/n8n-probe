@@ -65,6 +65,24 @@ jobs:
       - run: pnpm test
       - run: pnpm build
 
+  consumer:
+    name: consumer smoke
+    # Packs every package and installs the tarballs into a project outside the
+    # workspace, then runs a consumer suite (scripts/consumer-smoke.mjs). Gates
+    # merges: a broken `exports` map or a dependency that only resolves inside
+    # the monorepo ships to every user otherwise (ADR-0014).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: node scripts/consumer-smoke.mjs
+
   e2e-full:
     name: e2e (full instance)
     # Opt-in only (nightly schedule or the `e2e-full` PR label). Deliberately
@@ -88,14 +106,16 @@ jobs:
   # the wrong reason this fails, and the branch ruleset blocks the merge.
   ci:
     name: ci
-    needs: [guards, build]
+    needs: [guards, build, consumer]
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: require guards + build to have succeeded
+      - name: require guards + build + consumer to have succeeded
         run: |
           set -euo pipefail
-          echo "guards = ${{ needs.guards.result }}"
-          echo "build  = ${{ needs.build.result }}"
+          echo "guards   = ${{ needs.guards.result }}"
+          echo "build    = ${{ needs.build.result }}"
+          echo "consumer = ${{ needs.consumer.result }}"
           [ "${{ needs.guards.result }}" = "success" ] || { echo "::error::guards did not succeed"; exit 1; }
           [ "${{ needs.build.result }}" = "success" ] || { echo "::error::build did not succeed"; exit 1; }
+          [ "${{ needs.consumer.result }}" = "success" ] || { echo "::error::consumer did not succeed"; exit 1; }
