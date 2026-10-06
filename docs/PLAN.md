@@ -105,7 +105,7 @@ renovate/CI check that flags minor bumps for manual review.
 
 ---
 
-## Milestone 4 — `@n8n-probe/e2e` `[~]`
+## Milestone 4 — `@n8n-probe/e2e` `[x]`
 
 - [x] `workflow(name?)` builder → `WorkflowDefinition` (`.addNode`, `.connect`,
       `.build`). Returns a structural subset of `IWorkflowBase` (no DB-entity
@@ -118,15 +118,15 @@ renovate/CI check that flags minor bumps for manual review.
       first node that is not a connection target.
 - [x] `expectWorkflowSuccess(run)` (names the failing node),
       `getNodeOutput(run, nodeName, branch?)`.
-- [~] `runWorkflowInFullInstance(definition, { image? })` — **deferred to a
-  follow-up** (issue #12). Stubbed; rejects with a clear message. The
-  container + n8n import/execute + `IRun` mapping is a self-contained chunk
-  that also can't be verified without Docker. ADR-0004 already frames this
-  tier as opt-in / secondary.
+- [x] `runWorkflowInFullInstance(definition, options?)` + `startN8nInstance` —
+      real `n8nio/n8n` container via `testcontainers`, node packages installed
+      as community packages, run through n8n's CLI (ADR-0012, issue #12; landed
+      in Milestone 10).
 - [x] Fast-tier tests in `pnpm test` (Example / HttpExample fixtures,
       `pairedItem` along a chain, `expectWorkflowSuccess` on a node error,
       unregistered-type error, credentials, and MSW composition via
-      `@n8n-probe/mock-http`). Full-tier `*.full.test.ts` stays a skipped stub.
+      `@n8n-probe/mock-http`). Full-tier `run-workflow.full.test.ts` compares
+      the two tiers on the `Example` fixture.
 - [x] Shared `vitest.config.base` made a plain object + renamed `.mts` (kills the
       `UNRESOLVED_IMPORT 'vitest/config'` warning the extracted config introduced).
 
@@ -238,8 +238,9 @@ metrics deps were already correct (unlike `otel`).
 - Do we need a `@n8n-probe/preset-jest` compatibility shim for teams still on
   Jest? Defer until asked (roadmap, not v1).
 - Declarative-node support: confirm demand before committing to v1.1 scope.
-- Should `e2e` full-tier reuse a single container across a file via a Vitest
-  global setup, or one per test? Benchmark during Milestone 4.
+- ~~Should `e2e` full-tier reuse a single container across a file?~~ Answered
+  by ADR-0012: `startN8nInstance` is the reusable handle (boot once per suite;
+  each run still pays ~4–6 s of n8n CLI start-up).
 
 ---
 

@@ -13,7 +13,8 @@ export default mergeConfig(
       coverage: {
         reporter: ['text', 'json-summary', 'html'],
         include: ['src/**/*.ts'],
-        exclude: ['src/**/*.test.ts'],
+        // full-instance.ts drives a Docker container; the full tier covers it.
+        exclude: ['src/**/*.test.ts', 'src/full-instance.ts'],
       },
     },
   }),
