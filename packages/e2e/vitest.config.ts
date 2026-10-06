@@ -15,6 +15,9 @@ export default mergeConfig(
         include: ['src/**/*.ts'],
         // full-instance.ts drives a Docker container; the full tier covers it.
         exclude: ['src/**/*.test.ts', 'src/full-instance.ts'],
+        // Floors just under today's numbers: a drop fails the build, a gain is
+        // locked in by raising them.
+        thresholds: { lines: 95, statements: 95, functions: 90, branches: 85 },
       },
     },
   }),
