@@ -12,7 +12,9 @@ import type { DeepMockProxy } from 'vitest-mock-extended';
 
 /**
  * Thrown by toolkit APIs that are declared but not yet implemented.
- * Tracked in `docs/PLAN.md`.
+ *
+ * @deprecated No toolkit API throws it any more; it will be removed in `0.3.0`.
+ * Use your own `Error` subclass if you depended on it.
  */
 export class NotImplementedError extends Error {
   constructor(api: string) {
