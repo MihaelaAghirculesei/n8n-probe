@@ -72,8 +72,35 @@ it('uppercases the name field', async () => {
    `n8n-core` — real execution semantics, unit-test speed, no server or
    database.
 2. **Full tier** (`pnpm test:e2e:full`) boots the official `n8nio/n8n` Docker
-   image via `testcontainers` for true black-box verification. Opt-in; excluded
-   from the default test run and the default CI job.
+   image via `testcontainers`, installs your built node package into it, and
+   runs the same workflow definition there. Opt-in; excluded from the default
+   test run and the default CI job. See [`@n8n-probe/e2e`](packages/e2e#full-tier-a-real-n8n-instance-opt-in).
+
+## Compatibility
+
+What the toolkit is built and tested against. CI runs the fast tier on every
+PR, the full tier nightly, and a nightly job that re-resolves the n8n packages
+to their `latest` release to catch upstream breakage early.
+
+| Dependency                       | Supported                         | Verified                  |
+| -------------------------------- | --------------------------------- | ------------------------- |
+| Node.js                          | `>= 22.22 < 25`                   | 22, 24                    |
+| `n8n-workflow` (peer)            | `^2.16.0`                         | 2.16.0 + nightly `latest` |
+| `n8n-core` (peer, `e2e`)         | `^2.16.0`                         | 2.16.1 + nightly `latest` |
+| `n8nio/n8n` image (full tier)    | pinned default, override per run  | 2.41.7                    |
+| Vitest (peer)                    | `^4.0.0`                          | 4.1                       |
+| `testcontainers` (optional peer) | `^12.0.0` — only for Docker tiers | 12.1                      |
+
+**Node styles:** programmatic nodes (an explicit `execute()`) are fully
+supported. Declarative/routing nodes are not yet — `executeNode` rejects them
+with a clear error ([ADR-0005](docs/ARCHITECTURE.md), [roadmap](docs/PLAN.md#roadmap-after-020)).
+Jest is not supported; the mocks are built on Vitest, and the packages that
+depend on it (`core`, `unit`, `mock-http`) are usable from Vitest test files
+only — Vitest 4 cannot be `require()`d.
+
+**npm 10:** installing `vitest@4` with npm 10.9 can crash with `Cannot read
+properties of null (reading 'edgesOut')` (an npm resolver bug, reproduced
+without any `@n8n-probe/*` package). npm 11 or pnpm install it fine.
 
 ## Development
 

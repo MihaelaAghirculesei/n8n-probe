@@ -202,11 +202,18 @@ first, then apply it:
 
 ## Current state
 
-Milestones 0–7 are done (M0–M6 merged to `main`; M7 on
-`milestone/7-example-node`, not yet merged). All six library packages
-(`core`, `unit`, `mock-http`, `e2e`, `otel`, `metrics`) have real
-implementations; `apps/example-node`'s `HttpExample` wires the deferred
-span+metric call site, and `apps/dogfood` dogfoods all five pillars together
-(ADR-0009). Next up is Milestone 8 (local observability stack + docs — the
-docker-compose demo already exists; M8 is the walkthrough doc + a
-pre-provisioned Grafana dashboard). See `docs/PLAN.md`.
+Milestones 0–9 are done: all six packages are published on npm at `0.1.0`,
+released hands-off through Changesets + npm Trusted Publishing. Milestone 10
+(post-0.1 hardening — the full e2e tier, dependency hygiene, n8n
+compatibility CI) leads to `0.2.0`; after that the roadmap in `docs/PLAN.md`
+puts adoption ahead of new scope (declarative nodes wait for demand, per
+ADR-0005).
+
+The `ci` gate is `guards` + `build` (Node 22/24) + `consumer` (the packed
+tarballs installed into a project outside the workspace —
+`scripts/consumer-smoke.mjs`; run it locally after `pnpm build` when you touch
+`exports`, dependencies or build config). CI jobs outside the `ci` gate, both
+nightly or by PR label: `e2e-full`
+(Docker tiers, label `e2e-full`) and `n8n-compat` (fast suite against the
+`latest` n8n packages, label `n8n-compat`). A red run of either is a signal to
+act on, not a merge blocker.
