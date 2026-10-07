@@ -30,7 +30,7 @@ want the full story on why that's safe and where it's wired.
 
 ## 3. Run it and activate it
 
-- **Manual Trigger**: click *Execute workflow* in the editor. This proves
+- **Manual Trigger**: click _Execute workflow_ in the editor. This proves
   the node runs and is traced/instrumented, but only inside the editor's
   test-execution process.
 - **Webhook** (recommended — exercises the actual long-running n8n process
@@ -43,7 +43,7 @@ want the full story on why that's safe and where it's wired.
 ## 4. Check Jaeger
 
 Open <http://localhost:16686>, pick service `n8n-probe-demo`, click
-*Find Traces*. You should see an `n8n.node.execute` span
+_Find Traces_. You should see an `n8n.node.execute` span
 (`@n8n-probe/otel`'s `NODE_EXECUTE_SPAN`) for the `HTTP Example` node.
 
 ## 5. Check Prometheus / Grafana
@@ -66,7 +66,7 @@ Open <http://localhost:16686>, pick service `n8n-probe-demo`, click
   `docker compose -f docker/docker-compose.yml restart n8n` — the mount is
   read-only and doesn't pick up a stale `dist/`.
 - **Webhook returns 404 "not registered"**: the workflow must be both saved
-  *and* toggled Active in the editor; an inactive workflow only responds on
+  _and_ toggled Active in the editor; an inactive workflow only responds on
   its `/webhook-test/...` URL while the editor has "listen for test event"
   running.
 
