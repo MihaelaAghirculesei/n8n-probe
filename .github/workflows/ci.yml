@@ -106,12 +106,14 @@ jobs:
       - run: pnpm test:e2e:full
 
   n8n-compat:
-    name: n8n compatibility (latest)
-    # The lockfile pins the n8n packages the toolkit is built against, so the
-    # `build` job can never notice a new n8n release breaking the internals we
-    # use (`WorkflowExecute`, `ExecutionLifecycleHooks`, `IExecuteFunctions`).
-    # This re-resolves them to `latest` — including across a major, which is
-    # the point — and runs the fast suite. Opt-in like `e2e-full` (nightly or
+    name: n8n compatibility (stable)
+    # The lockfile pins the oldest n8n packages the peer range allows (2.16),
+    # so the `build` job can never notice a newer n8n release breaking the
+    # internals we use (`WorkflowExecute`, `ExecutionLifecycleHooks`,
+    # `IExecuteFunctions`, the credentials helper). This re-resolves them to the
+    # `stable` dist-tag — what n8n users actually run — and runs the fast suite.
+    # Not `latest`: n8n stopped moving that tag (it still points at 2.16 while
+    # `stable` is 2.41), so `latest` tested nothing new. Opt-in like `e2e-full` (nightly or
     # the `n8n-compat` PR label) and outside the `ci` gate: an upstream release
     # must not block unrelated PRs; a red run here is the signal to act on.
     if: >-
@@ -126,8 +128,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: resolve n8n packages to latest
-        run: pnpm update --recursive --latest n8n-workflow n8n-core
+      - name: resolve n8n packages to stable
+        run: pnpm update --recursive n8n-workflow@stable n8n-core@stable
       - name: report resolved versions
         run: pnpm list --recursive --depth 0 n8n-workflow n8n-core
       - run: pnpm typecheck

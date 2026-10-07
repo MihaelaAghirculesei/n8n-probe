@@ -215,5 +215,5 @@ tarballs installed into a project outside the workspace —
 `exports`, dependencies or build config). CI jobs outside the `ci` gate, both
 nightly or by PR label: `e2e-full`
 (Docker tiers, label `e2e-full`) and `n8n-compat` (fast suite against the
-`latest` n8n packages, label `n8n-compat`). A red run of either is a signal to
+`stable` n8n packages, label `n8n-compat`). A red run of either is a signal to
 act on, not a merge blocker.

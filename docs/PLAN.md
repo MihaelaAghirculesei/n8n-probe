@@ -254,9 +254,11 @@ The aim is a `0.2.0` that a stranger can adopt without hitting them.
 - [x] Coverage thresholds per package (floors just under current numbers);
       Docker-tier files excluded from fast-tier coverage.
 - [x] Nightly `n8n-compat` CI job: re-resolves `n8n-workflow` / `n8n-core` to
-      `latest` and runs typecheck + tests, so an upstream release that breaks
-      the internals we use is caught by us, not by a user. Outside the `ci`
-      gate, like `e2e-full`.
+      the `stable` dist-tag and runs typecheck + tests, so an upstream release
+      that breaks the internals we use is caught by us, not by a user. Outside
+      the `ci` gate, like `e2e-full`. (First shipped against `latest`, which n8n
+      no longer moves — it stayed on 2.16 while `stable` reached 2.41; switching
+      found the n8n-core 2.41 credentials-helper break, fixed in e2e 0.2.1.)
 - [x] `.github/dependabot.yml` — grouped weekly version updates, with the
       AGENTS.md toolchain ceilings encoded as `ignore` rules.
 - [x] External validation from a fresh project (Appendix A, Day 19): `pnpm pack`
