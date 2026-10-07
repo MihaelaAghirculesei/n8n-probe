@@ -1,5 +1,13 @@
 # @n8n-probe/e2e
 
+## 0.2.1
+
+### Patch Changes
+
+- 6bb0f9b: Fix `runWorkflow` with n8n-core 2.41+: nodes reading credentials failed with
+  `credentialsHelper.isCredentialUsableByNode is not a function`. The in-process
+  credentials helper now implements it (every credential type is usable in tests).
+
 ## 0.2.0
 
 ### Minor Changes
