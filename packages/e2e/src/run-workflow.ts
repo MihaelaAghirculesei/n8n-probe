@@ -33,9 +33,11 @@ export interface RunWorkflowOptions {
 
 /**
  * A `getDecrypted`-backed credentials helper over a plain type -> object map.
- * The in-process runner only ever calls `getDecrypted`; the rest of
- * `ICredentialsHelper` (OAuth flows, credential CRUD) is intentionally not
- * implemented for this tier in v1.
+ * The in-process runner calls `getDecrypted` and, since n8n-core 2.41,
+ * `isCredentialUsableByNode` before every `getCredentials`. Per-node credential
+ * restrictions are an n8n server policy with no meaning in a test, so every
+ * type is usable. The rest of `ICredentialsHelper` (OAuth flows, credential
+ * CRUD) is intentionally not implemented for this tier.
  */
 function mapCredentialsHelper(
   store: Record<string, ICredentialDataDecryptedObject>,
@@ -57,7 +59,9 @@ function mapCredentialsHelper(
     return Promise.resolve(found);
   };
 
-  return { getDecrypted } as unknown as ICredentialsHelper;
+  const isCredentialUsableByNode = (): boolean => true;
+
+  return { getDecrypted, isCredentialUsableByNode } as unknown as ICredentialsHelper;
 }
 
 /**
