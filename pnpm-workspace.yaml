@@ -23,3 +23,11 @@ allowBuilds:
   msw: false
   protobufjs: false
   ssh2: false
+
+# Security floors for transitive dev-only dependencies whose parents' ranges
+# already allow the fixed version but resolution does not pick it up. Each
+# selector targets only the vulnerable versions, so an entry is inert once the
+# tree moves past it — delete it then. Nothing here ships in a published package.
+overrides:
+  # GHSA via vitest coverage (magicast) and postcss: event-loop DoS, fixed in 1.2.2.
+  'source-map-js@<1.2.2': '^1.2.2'
