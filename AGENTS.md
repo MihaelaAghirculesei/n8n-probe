@@ -177,8 +177,8 @@ first, then apply it:
 
 ## Definition of Done (per task)
 
-1. `pnpm install --frozen-lockfile && pnpm build && pnpm lint && pnpm typecheck
-&& pnpm test` all green on a clean checkout.
+1. `pnpm install --frozen-lockfile && pnpm build && pnpm format:check && pnpm lint
+&& pnpm typecheck && pnpm test` all green on a clean checkout.
 2. New/changed public API has tests and a copy-pasteable example in the
    package `README.md`.
 3. `docs/PLAN.md` checkbox ticked; `docs/ARCHITECTURE.md` / ADRs updated if a
