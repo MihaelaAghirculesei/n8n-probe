@@ -40,7 +40,8 @@ try {
 }
 
 const traced: Traced = otelModule?.traced ?? ((fn) => fn);
-const instrument: Instrument = metricsModule?.instrument ?? (() => ({ recordExecution: () => undefined }));
+const instrument: Instrument =
+  metricsModule?.instrument ?? (() => ({ recordExecution: () => undefined }));
 
 // Demo-only, opt-in: registers the real tracer/meter providers once per n8n
 // process (n8n requires this file exactly once, during its startup node-type

@@ -276,9 +276,9 @@ of a workspace package will reproduce this crash the moment someone next
 
 ### ADR-0011: `apps/example-node` builds with `tsup`, and the docker demo self-instruments
 
-**Context.** ADR-0010's crash guard made the docker-compose demo *safe* —
+**Context.** ADR-0010's crash guard made the docker-compose demo _safe_ —
 `HttpExample` runs without taking the rest of n8n down — but not
-*instrumented*: `require('@n8n-probe/otel')` / `require('@n8n-probe/metrics')`
+_instrumented_: `require('@n8n-probe/otel')` / `require('@n8n-probe/metrics')`
 never actually resolved against the `dist/`-only bind mount, so the demo
 always ran the no-op fallback. Milestone 8's walkthrough needs the opposite:
 a real span in Jaeger and a real data point in Grafana, produced by building
@@ -294,7 +294,7 @@ and running a workflow in n8n's own UI inside the container — not just via
    real off the `dist/`-only mount, no `node_modules` needed. `n8n-workflow`
    stays external (n8n supplies it; bundling it would break ADR-0007's
    CJS/ESM class identity). The lazy `require()` + `try`/`catch` guard from
-   ADR-0010 stays as-is: it's now a defensive fallback for any *future*
+   ADR-0010 stays as-is: it's now a defensive fallback for any _future_
    dependency that isn't bundled the same way, not the primary mechanism.
 2. `HttpExample.node.ts` gained a module-load-time block, gated behind the
    `N8N_PROBE_DEMO_OBSERVABILITY` env var (set only in
@@ -582,9 +582,7 @@ export interface RunInFullInstanceOptions {
   env?: Record<string, string>;
   runTimeoutMs?: number; // default 120_000
 }
-export function startN8nInstance(
-  options?: RunInFullInstanceOptions,
-): Promise<{
+export function startN8nInstance(options?: RunInFullInstanceOptions): Promise<{
   run(definition: WorkflowDefinition): Promise<IRun>;
   stop(): Promise<void>;
 }>;
