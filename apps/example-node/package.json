@@ -40,6 +40,6 @@
     "n8n-workflow": "^2.16.0",
     "tsup": "^8.5.1",
     "typescript": "~5.9.3",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
   }
 }
