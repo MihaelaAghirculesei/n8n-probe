@@ -1,5 +1,13 @@
 # @n8n-probe/mock-http
 
+## 0.1.2
+
+### Patch Changes
+
+- a06ed38: Accept Vitest 5 as a peer (`^4.0.0 || ^5.0.0`). A fresh `vitest` install now resolves 5.x, which reported an unmet peer and made npm 10 crash during install.
+- Updated dependencies [a06ed38]
+  - @n8n-probe/core@0.2.1
+
 ## 0.1.1
 
 ### Patch Changes

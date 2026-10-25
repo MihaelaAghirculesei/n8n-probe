@@ -1,5 +1,11 @@
 # @n8n-probe/core
 
+## 0.2.1
+
+### Patch Changes
+
+- a06ed38: Accept Vitest 5 as a peer (`^4.0.0 || ^5.0.0`). A fresh `vitest` install now resolves 5.x, which reported an unmet peer and made npm 10 crash during install.
+
 ## 0.2.0
 
 ### Minor Changes
