@@ -57,7 +57,9 @@ the relevant ADR first.
 
 ### Testing
 
-- **Vitest `^4`. Never a `5.x` pre-release** — do not run a beta test runner.
+- **Vitest: the workspace builds on `^4`; the published peer range is
+  `^4.0.0 || ^5.0.0`.** Every major in that range must have a `consumer smoke`
+  CI leg (ADR-0002). Never a pre-release.
 - **`vitest-mock-extended` `^5`** for deep, type-safe `IExecuteFunctions`
   mocking (the `jest-mock-extended` equivalent n8n's own node tests use).
 - **MSW `^2.15`** for in-process HTTP mocking.

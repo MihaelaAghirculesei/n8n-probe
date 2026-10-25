@@ -51,7 +51,7 @@
   },
   "peerDependencies": {
     "n8n-workflow": "^2.16.0",
-    "vitest": "^4.0.0"
+    "vitest": "^4.0.0 || ^5.0.0"
   },
   "devDependencies": {
     "@n8n-probe/core": "workspace:*",

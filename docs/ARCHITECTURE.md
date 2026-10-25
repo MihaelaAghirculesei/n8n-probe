@@ -43,6 +43,16 @@ type-safe mocking of `IExecuteFunctions`.
 the mocking API familiar (`vitest-mock-extended` mirrors `jest-mock-extended`
 almost 1:1) but the runner differs — call this out in the Getting Started guide.
 
+**Amendment (Vitest 5 stable).** Vitest 5.0 shipped stable, and a fresh
+`pnpm add -D vitest` now resolves it. A `^4.0.0` peer then reports an unmet
+peer on every new project, and npm 10 crashes outright resolving it
+(`vitest-mock-extended`'s own `>=4` peer picks 5, ours insisted on 4). The peer
+range of `core`, `unit` and `mock-http` is now `^4.0.0 || ^5.0.0`. The
+workspace itself stays on Vitest 4 — the oldest supported major — and the
+`consumer smoke` CI job runs once per major against the packed tarballs, so
+each major in the range is verified the way users install it. Pre-releases
+stay out.
+
 ### ADR-0003: OpenTelemetry Metrics as the single source of truth, not a separate Prometheus client
 
 **Context.** The literal reading of "tracing with OpenTelemetry and metrics

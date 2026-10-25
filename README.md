@@ -30,7 +30,9 @@ Prometheus metrics for node executions.
 ## Requirements
 
 - Node.js `>= 22.22`
-- pnpm `>= 11` (this is a pnpm workspace)
+- Vitest 4 or 5 — the toolkit's mocks are built on it
+- npm or pnpm to install; contributing to this repository needs pnpm `>= 11`
+  ([Development](#development))
 
 ## Quick start
 
@@ -89,7 +91,7 @@ early.
 | `n8n-workflow` (peer)            | `^2.16.0`                         | 2.16.0, 2.41.2 (`stable`) |
 | `n8n-core` (peer, `e2e`)         | `^2.16.0`                         | 2.16.1, 2.41.5 (`stable`) |
 | `n8nio/n8n` image (full tier)    | pinned default, override per run  | 2.41.7                    |
-| Vitest (peer)                    | `^4.0.0`                          | 4.1                       |
+| Vitest (peer)                    | `^4.0.0 \|\| ^5.0.0`              | 4.1, 5.0                  |
 | `testcontainers` (optional peer) | `^12.0.0` — only for Docker tiers | 12.1                      |
 
 **Node styles:** programmatic nodes (an explicit `execute()`) are fully
@@ -99,9 +101,10 @@ Jest is not supported; the mocks are built on Vitest, and the packages that
 depend on it (`core`, `unit`, `mock-http`) are usable from Vitest test files
 only — Vitest 4 cannot be `require()`d.
 
-**npm 10:** installing `vitest@4` with npm 10.9 can crash with `Cannot read
-properties of null (reading 'edgesOut')` (an npm resolver bug, reproduced
-without any `@n8n-probe/*` package). npm 11 or pnpm install it fine.
+**npm 10:** `@n8n-probe/core` 0.2.0, `unit` 0.1.1 and `mock-http` 0.1.1 accept
+Vitest 4 only, and npm 10.9 crashes resolving them (`Cannot read properties of
+null (reading 'edgesOut')`). Later releases accept Vitest 5 too and install
+fine; with the older ones, use npm 11 or pnpm.
 
 ## Development
 
