@@ -17,5 +17,6 @@ labels: bug
 **Environment**
 
 - Node:
-- pnpm:
+- Package manager (npm / pnpm) and version:
+- Vitest:
 - n8n-workflow / n8n-core:
