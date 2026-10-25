@@ -298,8 +298,10 @@ Ordered by expected value; each needs evidence before engineering time.
 5. **Drop the CommonJS builds of `core`, `unit`, `mock-http`** with the next
    breaking release — they cannot load, because Vitest 4 cannot be required
    (ADR-0014).
-6. **Report upstream** that `n8n-workflow`'s ESM build has extensionless
-   relative imports (Node cannot load it) — maintainer's call.
+6. ~~**Report upstream** that `n8n-workflow`'s ESM build has extensionless
+   relative imports (Node cannot load it).~~ Already reported as
+   [n8n-io/n8n#30480](https://github.com/n8n-io/n8n/issues/30480), closed as
+   "not planned". `@n8n-probe/core/vitest` is the permanent fix (ADR-0014).
 
 ---
 

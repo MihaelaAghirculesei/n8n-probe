@@ -447,8 +447,10 @@ packaging change for no functional gain today; revisit with the next breaking
 release. `e2e`, `otel` and `metrics` load fine from CJS.
 
 **Consequences.** One documented line of config per consumer project. The
-upstream ESM build bug is n8n's to fix; if it is fixed, the helper still holds
-the single-copy guarantee that `instanceof` needs.
+upstream ESM build bug is n8n's to fix, and n8n closed the report as "not
+planned" ([n8n-io/n8n#30480](https://github.com/n8n-io/n8n/issues/30480)), so
+the helper is permanent. Were it ever fixed, the helper would still hold the
+single-copy guarantee that `instanceof` needs.
 
 ---
 
