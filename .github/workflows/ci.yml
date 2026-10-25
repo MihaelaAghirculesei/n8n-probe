@@ -69,12 +69,17 @@ jobs:
       - run: pnpm build
 
   consumer:
-    name: consumer smoke
+    name: consumer smoke / vitest ${{ matrix.vitest }}
     # Packs every package and installs the tarballs into a project outside the
     # workspace, then runs a consumer suite (scripts/consumer-smoke.mjs). Gates
     # merges: a broken `exports` map or a dependency that only resolves inside
-    # the monorepo ships to every user otherwise (ADR-0014).
+    # the monorepo ships to every user otherwise (ADR-0014). One leg per Vitest
+    # major the peer range accepts (ADR-0002).
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        vitest: ['4', '5']
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -85,6 +90,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: node scripts/consumer-smoke.mjs
+        env:
+          VITEST: ^${{ matrix.vitest }}.0.0
 
   e2e-full:
     name: e2e (full instance)

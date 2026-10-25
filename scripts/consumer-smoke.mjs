@@ -6,6 +6,9 @@
 // (ADR-0014). Run after `pnpm build`:
 //
 //   node scripts/consumer-smoke.mjs        (KEEP=1 keeps the scratch project)
+//
+// VITEST=<range> installs that Vitest instead of the workspace's own, to test
+// every major the peer range promises (CI runs it once per major).
 import { spawnSync } from 'node:child_process';
 import { cpSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -81,7 +84,7 @@ try {
     [
       'add',
       ...Object.values(files),
-      `vitest@${devRange('vitest')}`,
+      `vitest@${process.env.VITEST || devRange('vitest')}`,
       `n8n-workflow@${devRange('n8n-workflow')}`,
       `n8n-core@${devRange('n8n-core')}`,
       `typescript@${devRange('typescript')}`,
