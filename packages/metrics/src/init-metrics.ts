@@ -8,7 +8,7 @@ export interface InitMetricsOptions {
   port?: number;
   /** Path the metrics are served from. Default `/metrics`. */
   endpoint?: string;
-  /** Interface to bind. Default: all interfaces. */
+  /** Interface to bind. Default `0.0.0.0` (all IPv4 interfaces); pass `'::'` for dual-stack. */
   host?: string;
 }
 
@@ -22,7 +22,9 @@ export async function initMetrics(options: InitMetricsOptions = {}): Promise<() 
   const exporter = new PrometheusExporter({
     port: options.port ?? 9464,
     endpoint: options.endpoint ?? '/metrics',
-    host: options.host,
+    // The exporter itself defaults to localhost since 0.300, which a Prometheus
+    // in another container (the docker demo) cannot scrape.
+    host: options.host ?? '0.0.0.0',
     preventServerStart: true,
   });
   await exporter.startServer();

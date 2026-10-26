@@ -27,7 +27,7 @@ await shutdown();
 
 - **`initMetrics({ port?, endpoint?, host? })`** — starts a `MeterProvider` whose
   only reader is a `PrometheusExporter`, registers it as the global provider, and
-  serves the exposition endpoint (default `:9464/metrics`). Resolves once the
+  serves the exposition endpoint (default `0.0.0.0:9464/metrics`). Resolves once the
   server is listening; the returned `shutdown()` stops it.
 - **`instrument(nodeType)`** → `{ recordExecution(status, durationSeconds) }` —
   `status` is `'success'` or `'error'`. Each call bumps
