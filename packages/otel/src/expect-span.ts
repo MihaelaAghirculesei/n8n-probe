@@ -1,4 +1,4 @@
-import type { ReadableSpan } from '@opentelemetry/sdk-trace-node';
+import type { ReadableSpan } from '@opentelemetry/sdk-trace';
 
 /** Matcher accepted by {@link expectSpan}. */
 export interface SpanMatcher {
