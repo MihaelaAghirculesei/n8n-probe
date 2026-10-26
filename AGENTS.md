@@ -76,9 +76,11 @@ the relevant ADR first.
 - **Do NOT install `prom-client`** (deprecated by its author) **or
   `@prometheus-io/client`.** One instrumentation call site emits both the span
   and the metric update; there is no second registry.
-- Use the **stable OpenTelemetry 2.x packages** (`@opentelemetry/api ^1.9`,
-  `@opentelemetry/sdk-trace-node ^2.x`, `@opentelemetry/sdk-metrics ^2.x`,
-  `@opentelemetry/exporter-prometheus ^2.x`, `@opentelemetry/instrumentation-http`).
+- Use the **stable OpenTelemetry 3.x packages** (`@opentelemetry/api ^1.10`,
+  `@opentelemetry/sdk-trace ^3.x`, `@opentelemetry/sdk-metrics ^3.x`,
+  `@opentelemetry/exporter-prometheus ^0.300`, `@opentelemetry/instrumentation-http`).
+  3.x removed `sdk-trace-node`/`sdk-trace-base`; `@n8n-probe/otel` registers the
+  context manager and propagators itself (`packages/otel/src/register.ts`).
   Do **not** depend on `@opentelemetry/sdk-node` (still `0.x`, marked
   experimental). Compose the SDK from the stable parts.
 

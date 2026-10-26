@@ -144,7 +144,9 @@ tier is the backstop. Known gaps — trigger/webhook/poll activation, credential
       `@opentelemetry/sdk-node`, per ADR-0003/0006 — the M0 scaffold's
       `package.json` had the wrong dep; fixed here), `console` (SimpleSpanProcessor)
       or `otlp-http` (BatchSpanProcessor) exporter; `register()`s globally;
-      returns an async `shutdown()`.
+      returns an async `shutdown()`. (Moved to `@opentelemetry/sdk-trace` 3.x
+      `TracerProvider` + explicit global registration when OTel 3.0 dropped
+      `sdk-trace-node`.)
 - [x] `traced(nodeExecuteFn)` — wraps `execute` in an `n8n.node.execute` span
       (`NODE_EXECUTE_SPAN` const), attributes `n8n.node.type` / `.name` /
       `.type_version`, `n8n.item.count`, `n8n.workflow.id` / `n8n.execution.id`
