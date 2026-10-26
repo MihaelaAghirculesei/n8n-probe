@@ -650,8 +650,11 @@ export function createTestTracing(): {
 };
 ```
 
-Built from `@opentelemetry/sdk-trace-node` 2.x + `@opentelemetry/resources` +
-`@opentelemetry/exporter-trace-otlp-http`. **Not** `@opentelemetry/sdk-node`
+Built from `@opentelemetry/sdk-trace` 3.x + `@opentelemetry/resources` +
+`@opentelemetry/exporter-trace-otlp-http`. OpenTelemetry 3.x removed
+`@opentelemetry/sdk-trace-node` and its `NodeTracerProvider#register()`, so
+`initTracing` registers the AsyncLocalStorage context manager and the W3C
+trace-context + baggage propagators itself. **Not** `@opentelemetry/sdk-node`
 (0.x, experimental) — the Milestone 0 scaffold's `package.json` listed it by
 mistake; Milestone 5 replaced it. The OTLP HTTP exporter is `0.x` by upstream's
 own versioning of every OTel-JS exporter, not the `sdk-node` situation ADR-0003
@@ -664,7 +667,7 @@ warns about.
 export function initMetrics(options?: {
   port?: number; // default 9464
   endpoint?: string; // default '/metrics'
-  host?: string; // default: all interfaces
+  host?: string; // default '0.0.0.0' (all IPv4 interfaces)
 }): Promise<() => Promise<void>>; // resolves to shutdown()
 
 export function instrument(nodeType: string): {
@@ -675,8 +678,11 @@ export const EXECUTIONS_COUNTER = 'n8n_node_executions'; // '..._total' in expos
 export const DURATION_HISTOGRAM = 'n8n_node_execution_duration_seconds';
 ```
 
-`MeterProvider` + `PrometheusExporter` from `@opentelemetry/sdk-metrics` 2.x /
+`MeterProvider` + `PrometheusExporter` from `@opentelemetry/sdk-metrics` 3.x /
 `@opentelemetry/exporter-prometheus` (0.x by upstream's exporter versioning).
+The exporter binds `localhost` by default since 0.300; `initMetrics` passes
+`0.0.0.0` unless told otherwise, so a Prometheus in another container (the
+docker demo) can still scrape it.
 No `prom-client`, no `@opentelemetry/sdk-node` (ADR-0003). `initMetrics` is async
 because binding a port can fail; `initTracing` (no server) stays sync.
 
