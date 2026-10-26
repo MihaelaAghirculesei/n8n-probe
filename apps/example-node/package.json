@@ -35,7 +35,7 @@
     "n8n-workflow": "^2.16.0"
   },
   "devDependencies": {
-    "@opentelemetry/api": "^1.9.1",
+    "@opentelemetry/api": "^1.10.0",
     "@types/node": "^22.20.5",
     "n8n-workflow": "^2.16.0",
     "tsup": "^9.0.0",
