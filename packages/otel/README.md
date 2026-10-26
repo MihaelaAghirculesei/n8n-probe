@@ -40,7 +40,7 @@ it('emits a span for the node', async () => {
 ## API
 
 - **`initTracing({ serviceName, exporter, otlpEndpoint? })`** — composes a
-  `NodeTracerProvider` from the stable OpenTelemetry 2.x packages (no
+  `TracerProvider` from the stable OpenTelemetry 3.x packages (no
   `@opentelemetry/sdk-node`, per ADR-0003), registers it globally, and returns an
   async `shutdown()`. `exporter`: `'console'` (prints, flushes each span) or
   `'otlp-http'` (batched POST to a collector; `otlpEndpoint` overrides the
