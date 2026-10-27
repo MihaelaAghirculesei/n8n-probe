@@ -113,19 +113,27 @@ jobs:
       - run: pnpm test:e2e:full
 
   n8n-compat:
-    name: n8n compatibility (stable)
-    # The lockfile pins the oldest n8n packages the peer range allows (2.16),
-    # so the `build` job can never notice a newer n8n release breaking the
-    # internals we use (`WorkflowExecute`, `ExecutionLifecycleHooks`,
-    # `IExecuteFunctions`, the credentials helper). This re-resolves them to the
-    # `stable` dist-tag — what n8n users actually run — and runs the fast suite.
-    # Not `latest`: n8n stopped moving that tag (it still points at 2.16 while
-    # `stable` is 2.41), so `latest` tested nothing new. Opt-in like `e2e-full` (nightly or
-    # the `n8n-compat` PR label) and outside the `ci` gate: an upstream release
-    # must not block unrelated PRs; a red run here is the signal to act on.
+    name: n8n compatibility (${{ matrix.n8n.name }})
+    # The lockfile pins a snapshot of n8n's `stable` line, so the `build` job
+    # alone covers neither end of the `^2.16.0` peer range: not the oldest
+    # release we still claim to support, and not a newer n8n release breaking
+    # the internals we use (`WorkflowExecute`, `ExecutionLifecycleHooks`,
+    # `IExecuteFunctions`, the credentials helper). Dependabot won't close that
+    # gap either — it follows `latest`, which n8n stopped moving (still 2.16).
+    # This re-resolves the n8n packages to each end of the range and runs the
+    # fast suite. Opt-in like `e2e-full` (nightly or the `n8n-compat` PR label)
+    # and outside the `ci` gate: an upstream release must not block unrelated
+    # PRs; a red run here is the signal to act on.
     if: >-
       github.event_name == 'schedule' ||
       contains(github.event.pull_request.labels.*.name, 'n8n-compat')
+    strategy:
+      fail-fast: false
+      matrix:
+        n8n:
+          # The floor of the `^2.16.0` peer range.
+          - { name: minimum, workflow: '2.16.0', core: '2.16.0' }
+          - { name: stable, workflow: stable, core: stable }
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -135,8 +143,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: resolve n8n packages to stable
-        run: pnpm update --recursive n8n-workflow@stable n8n-core@stable
+      - name: resolve n8n packages to ${{ matrix.n8n.name }}
+        run: pnpm update --recursive n8n-workflow@${{ matrix.n8n.workflow }} n8n-core@${{ matrix.n8n.core }}
       - name: report resolved versions
         run: pnpm list --recursive --depth 0 n8n-workflow n8n-core
       - run: pnpm typecheck

@@ -82,14 +82,14 @@ it('uppercases the name field', async () => {
 
 What the toolkit is built and tested against. CI runs the fast tier on every
 PR, the full tier nightly, and a nightly job that re-resolves the n8n packages
-to their `stable` release (what n8n itself ships) to catch upstream breakage
-early.
+to both ends of the supported range — the oldest release and the current
+`stable` (what n8n itself ships) — to catch upstream breakage early.
 
 | Dependency                       | Supported                         | Verified                  |
 | -------------------------------- | --------------------------------- | ------------------------- |
 | Node.js                          | `>= 22.22 < 25`                   | 22, 24                    |
-| `n8n-workflow` (peer)            | `^2.16.0`                         | 2.16.0, 2.41.2 (`stable`) |
-| `n8n-core` (peer, `e2e`)         | `^2.16.0`                         | 2.16.1, 2.41.5 (`stable`) |
+| `n8n-workflow` (peer)            | `^2.16.0`                         | 2.16.0, 2.44.2 (`stable`) |
+| `n8n-core` (peer, `e2e`)         | `^2.16.0`                         | 2.16.0, 2.44.4 (`stable`) |
 | `n8nio/n8n` image (full tier)    | pinned default, override per run  | 2.41.7                    |
 | Vitest (peer)                    | `^4.0.0 \|\| ^5.0.0`              | 4.1, 5.0                  |
 | `testcontainers` (optional peer) | `^12.0.0` — only for Docker tiers | 12.1                      |

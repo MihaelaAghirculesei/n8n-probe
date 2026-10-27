@@ -261,6 +261,9 @@ The aim is a `0.2.0` that a stranger can adopt without hitting them.
       the `ci` gate, like `e2e-full`. (First shipped against `latest`, which n8n
       no longer moves — it stayed on 2.16 while `stable` reached 2.41; switching
       found the n8n-core 2.41 credentials-helper break, fixed in e2e 0.2.1.)
+      Later the lockfile moved from 2.16 to a `stable` snapshot (2.44), and the
+      job gained a `minimum` leg (2.16.0) so the floor of the peer range stays
+      tested.
 - [x] `.github/dependabot.yml` — grouped weekly version updates, with the
       AGENTS.md toolchain ceilings encoded as `ignore` rules.
 - [x] External validation from a fresh project (Appendix A, Day 19): `pnpm pack`
