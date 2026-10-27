@@ -299,7 +299,7 @@ Ordered by expected value; each needs evidence before engineering time.
    user request, or the adoption post showing it is the blocker.
 3. **Full-tier credentials** (`import:credentials` with generated ids) —
    trigger: a user asking to run an authenticated node in the full tier.
-4. **Remove `NotImplementedError`** in `0.3.0`.
+4. ~~**Remove `NotImplementedError`** in `0.3.0`.~~ Done for `0.3.0`.
 5. **Drop the CommonJS builds of `core`, `unit`, `mock-http`** with the next
    breaking release — they cannot load, because Vitest 4 cannot be required
    (ADR-0014).

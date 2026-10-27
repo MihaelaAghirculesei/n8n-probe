@@ -10,19 +10,6 @@ import type {
 import { mockDeep } from 'vitest-mock-extended';
 import type { DeepMockProxy } from 'vitest-mock-extended';
 
-/**
- * Thrown by toolkit APIs that are declared but not yet implemented.
- *
- * @deprecated No toolkit API throws it any more; it will be removed in `0.3.0`.
- * Use your own `Error` subclass if you depended on it.
- */
-export class NotImplementedError extends Error {
-  constructor(api: string) {
-    super(`${api} is not implemented yet — see docs/PLAN.md`);
-    this.name = 'NotImplementedError';
-  }
-}
-
 /** A node instance paired with the mock context it should execute against. */
 export interface TestExecuteContext {
   readonly node: INode;

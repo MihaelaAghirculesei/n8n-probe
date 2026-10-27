@@ -1,12 +1,7 @@
 import type { IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 import { describe, expect, it } from 'vitest';
 
-import {
-  NotImplementedError,
-  binaryFixture,
-  createMockExecuteFunctions,
-  itemsFrom,
-} from './index.js';
+import { binaryFixture, createMockExecuteFunctions, itemsFrom } from './index.js';
 
 describe('createMockExecuteFunctions', () => {
   it('wires sensible defaults', () => {
@@ -209,14 +204,5 @@ describe('binaryFixture', () => {
       data: Buffer.alloc(2048),
     });
     expect(fixture.fileSize).toBe('2.0 kB');
-  });
-});
-
-describe('NotImplementedError', () => {
-  it('names the unimplemented API', () => {
-    const error = new NotImplementedError('someApi');
-    expect(error).toBeInstanceOf(Error);
-    expect(error.name).toBe('NotImplementedError');
-    expect(error.message).toMatch(/someApi/);
   });
 });
