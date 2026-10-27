@@ -219,5 +219,7 @@ tarballs installed into a project outside the workspace —
 `exports`, dependencies or build config). CI jobs outside the `ci` gate, both
 nightly or by PR label: `e2e-full`
 (Docker tiers, label `e2e-full`) and `n8n-compat` (fast suite against the
-`stable` n8n packages, label `n8n-compat`). A red run of either is a signal to
-act on, not a merge blocker.
+oldest n8n packages the peer range allows and against `stable`, label
+`n8n-compat`). A red run of either is a signal to act on, not a merge blocker.
+The lockfile pins a `stable` snapshot, not the floor; Dependabot won't move it
+(it follows n8n's frozen `latest` tag), so bump it by hand when `stable` moves.
