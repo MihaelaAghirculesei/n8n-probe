@@ -98,8 +98,8 @@ to both ends of the supported range — the oldest release and the current
 supported. Declarative/routing nodes are not yet — `executeNode` rejects them
 with a clear error ([ADR-0005](docs/ARCHITECTURE.md), [roadmap](docs/PLAN.md#roadmap-after-020)).
 Jest is not supported; the mocks are built on Vitest, and the packages that
-depend on it (`core`, `unit`, `mock-http`) are usable from Vitest test files
-only — Vitest 4 cannot be `require()`d.
+depend on it (`core`, `unit`, `mock-http`) ship ESM only and are usable from
+Vitest test files only — Vitest cannot be `require()`d.
 
 **npm 10:** `@n8n-probe/core` 0.2.0, `unit` 0.1.1 and `mock-http` 0.1.1 accept
 Vitest 4 only, and npm 10.9 crashes resolving them (`Cannot read properties of

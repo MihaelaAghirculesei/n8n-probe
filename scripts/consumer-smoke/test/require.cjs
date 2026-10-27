@@ -1,6 +1,7 @@
 // The packages that do not depend on Vitest must load from CommonJS, which is
 // what n8n's own node starter compiles to. `core`, `unit` and `mock-http` load
-// Vitest, which cannot be required (ADR-0014), so they are not checked here.
+// Vitest, which cannot be required, so they ship ESM only (ADR-0014) — except
+// `@n8n-probe/core/vitest`, which config files load.
 const assert = require('node:assert');
 
 for (const name of ['e2e', 'otel', 'metrics']) {
