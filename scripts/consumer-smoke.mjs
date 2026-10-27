@@ -100,6 +100,7 @@ try {
   console.log('\ntestcontainers is not installed (optional peer) — OK');
 
   run('pnpm', ['exec', 'tsc', '-p', 'tsconfig.json'], consumer);
+  run('pnpm', ['exec', 'tsc', '-p', 'tsconfig.starter.json'], consumer);
   run('node', ['test/require.cjs'], consumer);
   run('pnpm', ['exec', 'vitest', 'run'], consumer);
   console.log('\nconsumer smoke test passed');

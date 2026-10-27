@@ -8,5 +8,5 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["test", "vitest.config.ts"]
+  "include": ["test", "cjs", "vitest.config.ts"]
 }
