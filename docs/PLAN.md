@@ -300,9 +300,9 @@ Ordered by expected value; each needs evidence before engineering time.
 3. **Full-tier credentials** (`import:credentials` with generated ids) —
    trigger: a user asking to run an authenticated node in the full tier.
 4. ~~**Remove `NotImplementedError`** in `0.3.0`.~~ Done for `0.3.0`.
-5. **Drop the CommonJS builds of `core`, `unit`, `mock-http`** with the next
+5. ~~**Drop the CommonJS builds of `core`, `unit`, `mock-http`** with the next
    breaking release — they cannot load, because Vitest 4 cannot be required
-   (ADR-0014).
+   (ADR-0014).~~ Done for `0.3.0`; `@n8n-probe/core/vitest` stays dual-format.
 6. ~~**Report upstream** that `n8n-workflow`'s ESM build has extensionless
    relative imports (Node cannot load it).~~ Already reported as
    [n8n-io/n8n#30480](https://github.com/n8n-io/n8n/issues/30480), closed as

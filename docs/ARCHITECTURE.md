@@ -439,12 +439,16 @@ the alias to the project's CJS `n8n-workflow` plus
 the toolkit. The quick start makes it step one. Verified from tarballs:
 without it the consumer suite fails to load; with it, all five pillars pass.
 
-**Also found, not changed yet:** the CommonJS builds of `core`, `unit` and
-`mock-http` cannot be `require()`d — they load `vitest-mock-extended` /
-`vitest`, and Vitest 4 throws when required. They only ever work from Vitest
-test files (which use the ESM build). Dropping those CJS builds is a breaking
-packaging change for no functional gain today; revisit with the next breaking
-release. `e2e`, `otel` and `metrics` load fine from CJS.
+**Also found:** the CommonJS builds of `core`, `unit` and `mock-http` could
+not be `require()`d — they load `vitest-mock-extended` / `vitest`, and Vitest
+4 throws when required. They only ever worked from Vitest test files, which use
+the ESM build. **0.3.0 drops them**: those three main entries are ESM only.
+`@n8n-probe/core/vitest` stays dual-format, because it loads no Vitest and a
+config file in a CommonJS project may `require()` it. `e2e`, `otel` and
+`metrics` keep their CommonJS builds, which load fine. Test files in a CommonJS
+project still type-check under `moduleResolution` `node` (n8n's starter) and
+`nodenext`, which the consumer smoke checks; `node16` rejects importing ESM from
+CommonJS (TS1479), so such projects use `nodenext` or `.mts` test files.
 
 **Consequences.** One documented line of config per consumer project. The
 upstream ESM build bug is n8n's to fix, and n8n closed the report as "not
