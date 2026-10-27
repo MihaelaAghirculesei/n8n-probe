@@ -149,6 +149,19 @@ describe('driving a node through MSW', () => {
 
     await expect(new HttpExample().execute.call(ctx)).rejects.toThrow();
   });
+
+  it('rejects an unmatched request through MSW, not by reaching the network', async () => {
+    // A closed local port: if the unhandled-request policy were not `error`, the
+    // request would pass through and fail with a connection error instead.
+    const failure = await fetch('http://127.0.0.1:59999/never-mocked').catch(
+      (error: unknown) => error,
+    );
+
+    expect(failure).toBeInstanceOf(TypeError);
+    expect((failure as TypeError).cause).toMatchObject({
+      message: expect.stringMatching(/\[MSW\]/),
+    });
+  });
 });
 
 describe('performHttpRequest', () => {

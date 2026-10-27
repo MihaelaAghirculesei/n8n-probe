@@ -66,14 +66,14 @@ export function mockApi(): MockApiBuilder {
 /**
  * Register a shared MSW server for the current test file and wire its lifecycle
  * to `beforeAll` / `afterEach` / `afterAll`. An unmatched request fails the test
- * loudly (`onUnhandledRequest: 'error'`) instead of hanging or hitting the
+ * loudly (`onUnhandledFrame: 'error'`) instead of hanging or hitting the
  * network. Returns the server so a test can add per-case handlers with
  * `server.use(...)`.
  */
 export function setupMswForTest(handlers: RequestHandler[] = []): SetupServer {
   const server = setupServer(...handlers);
   beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' });
+    server.listen({ onUnhandledFrame: 'error' });
   });
   afterEach(() => {
     server.resetHandlers();

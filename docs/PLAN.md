@@ -84,7 +84,7 @@ renovate/CI check that flags minor bumps for manual review.
 ## Milestone 3 — `@n8n-probe/mock-http` `[x]`
 
 - [x] `setupMswForTest(handlers?)` — registers a shared `setupServer`, wires
-      `beforeAll(listen{onUnhandledRequest:'error'})`, `afterEach(resetHandlers)`,
+      `beforeAll(listen{onUnhandledFrame:'error'})`, `afterEach(resetHandlers)`,
       `afterAll(close)`; returns the server for per-case `server.use(...)`.
 - [x] `mockApi()` fluent builder → MSW handlers
       (`.get/.post/.put/.delete(path).reply(status, body?)`).

@@ -5,6 +5,17 @@ HTTP mocking for n8n nodes that call external APIs, built on
 [`testcontainers`](https://testcontainers.com) + WireMock for the opt-in
 real-server tier.
 
+`msw` is a peer dependency — install it next to the package, since your tests
+import `http` / `HttpResponse` from it too:
+
+```bash
+pnpm add -D @n8n-probe/mock-http msw
+```
+
+On Vitest 4, pnpm reports an unmet optional peer `msw@^2.4.9` from
+`@vitest/mocker`. It is harmless: Vitest uses `msw` there only for browser-mode
+mocking, and Vitest 5 accepts MSW 3.
+
 ```ts
 import {
   setupMswForTest,
@@ -33,7 +44,7 @@ it('reads a user from the API', async () => {
 
 - **`setupMswForTest(handlers?)`** — one shared server per test file, wired to
   `beforeAll` / `afterEach` / `afterAll`. An unmatched request fails the test
-  (`onUnhandledRequest: 'error'`) instead of hanging or hitting the network.
+  (`onUnhandledFrame: 'error'`) instead of hanging or hitting the network.
   Returns the server for per-case `server.use(...)`.
 - **`mockApi()`** — fluent handler builder:
   `mockApi().get(url).reply(200, body).post(url2).reply(201).handlers()`.
