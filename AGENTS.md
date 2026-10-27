@@ -62,7 +62,9 @@ the relevant ADR first.
   CI leg (ADR-0002). Never a pre-release.
 - **`vitest-mock-extended` `^5`** for deep, type-safe `IExecuteFunctions`
   mocking (the `jest-mock-extended` equivalent n8n's own node tests use).
-- **MSW `^2.15`** for in-process HTTP mocking.
+- **MSW `^3`** for in-process HTTP mocking — a **peer dependency** of
+  `mock-http`: users build handlers with their own `msw` import, and both must be
+  the same copy.
 - For cross-service HTTP mocking use **`testcontainers` + the official
   `wiremock/wiremock` Docker image**. Do **not** depend on
   `@wiremock/wiremock-testcontainers-node` (stuck at `0.0.1`, abandoned).

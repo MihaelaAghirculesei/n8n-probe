@@ -92,6 +92,7 @@ to both ends of the supported range — the oldest release and the current
 | `n8n-core` (peer, `e2e`)         | `^2.16.0`                         | 2.16.0, 2.44.4 (`stable`) |
 | `n8nio/n8n` image (full tier)    | pinned default, override per run  | 2.41.7                    |
 | Vitest (peer)                    | `^4.0.0 \|\| ^5.0.0`              | 4.1, 5.0                  |
+| `msw` (peer, `mock-http`)        | `^3.0.0`                          | 3.0                       |
 | `testcontainers` (optional peer) | `^12.0.0` — only for Docker tiers | 12.1                      |
 
 **Node styles:** programmatic nodes (an explicit `execute()`) are fully

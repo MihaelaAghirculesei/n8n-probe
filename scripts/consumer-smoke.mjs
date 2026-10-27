@@ -34,10 +34,10 @@ function run(command, args, cwd) {
 }
 
 /** The version range the workspace itself builds against, so peers match. */
-function devRange(name) {
-  const manifest = JSON.parse(readFileSync(join(repo, 'packages/e2e/package.json'), 'utf8'));
+function devRange(name, pkg = 'e2e') {
+  const manifest = JSON.parse(readFileSync(join(repo, 'packages', pkg, 'package.json'), 'utf8'));
   const range = manifest.devDependencies[name];
-  if (!range) throw new Error(`packages/e2e has no devDependency "${name}"`);
+  if (!range) throw new Error(`packages/${pkg} has no devDependency "${name}"`);
   return range;
 }
 
@@ -87,6 +87,7 @@ try {
       `vitest@${process.env.VITEST || devRange('vitest')}`,
       `n8n-workflow@${devRange('n8n-workflow')}`,
       `n8n-core@${devRange('n8n-core')}`,
+      `msw@${devRange('msw', 'mock-http')}`,
       `typescript@${devRange('typescript')}`,
       `@types/node@${devRange('@types/node')}`,
     ],

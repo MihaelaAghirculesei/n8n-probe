@@ -144,7 +144,7 @@ describe('@n8n-probe/metrics: HttpExample records success and error executions',
       ...mockApi().get(`${API}/missing`).reply(404, { message: 'nope' }).handlers(),
       // The Prometheus exposition scrape at the end of this test is a real,
       // local HTTP request that MSW would otherwise also intercept (and
-      // reject, under the `onUnhandledRequest: 'error'` policy) — let it
+      // reject, under the `onUnhandledFrame: 'error'` policy) — let it
       // through explicitly.
       http.get(`http://127.0.0.1:${port}/metrics`, () => passthrough()),
     );
