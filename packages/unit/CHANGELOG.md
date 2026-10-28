@@ -1,5 +1,17 @@
 # @n8n-probe/unit
 
+## 0.2.0
+
+### Minor Changes
+
+- 03dbba9: **Breaking:** `core`, `unit` and `mock-http` no longer ship a CommonJS build. Those builds never loaded, because they `require()` Vitest and Vitest cannot be required. Vitest test files already used the ESM build, so they are unaffected. `@n8n-probe/core/vitest` keeps its CommonJS build for config files in CommonJS projects. TypeScript test files in a CommonJS project still type-check with `moduleResolution` `node` (n8n's node starter) or `nodenext`. With `node16`, switch to `nodenext` or use `.mts` test files.
+
+### Patch Changes
+
+- Updated dependencies [87f0a40]
+- Updated dependencies [03dbba9]
+  - @n8n-probe/core@0.3.0
+
 ## 0.1.2
 
 ### Patch Changes
