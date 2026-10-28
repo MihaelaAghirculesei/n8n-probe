@@ -61,14 +61,14 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3(@types/node@22.20.5)(graphql@16.14.2)(supports-color@7.2.0)(typescript@5.9.3)(vite@8.3.5(@types/node@22.20.5)(esbuild@0.28.2)(yaml@2.9.1))
       n8n-core:
-        specifier: ^2.44.4
-        version: 2.44.4(@opentelemetry/api@1.10.0)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.10.0))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.10.0))(supports-color@7.2.0)(zod@3.25.76)
+        specifier: ^2.45.2
+        version: 2.45.2(@opentelemetry/api@1.10.0)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.10.0))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.10.0))(supports-color@7.2.0)(zod@3.25.76)
       n8n-nodes-probe-example:
         specifier: workspace:*
         version: link:../example-node
       n8n-workflow:
-        specifier: ^2.44.2
-        version: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+        specifier: ^2.45.1
+        version: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
@@ -92,8 +92,8 @@ importers:
         specifier: ^22.20.5
         version: 22.20.5
       n8n-workflow:
-        specifier: ^2.44.2
-        version: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+        specifier: ^2.45.1
+        version: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       tsup:
         specifier: ^9.0.0
         version: 9.0.0(postcss@8.5.31)(typescript@5.9.3)(yaml@2.9.1)
@@ -117,8 +117,8 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12(vitest@4.1.12)
       n8n-workflow:
-        specifier: ^2.44.2
-        version: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+        specifier: ^2.45.1
+        version: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       tsup:
         specifier: ^9.0.0
         version: 9.0.0(postcss@8.5.31)(typescript@5.9.3)(yaml@2.9.1)
@@ -141,14 +141,14 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12(vitest@4.1.12)
       n8n-core:
-        specifier: ^2.44.4
-        version: 2.44.4(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.9.1))(supports-color@7.2.0)(zod@3.25.76)
+        specifier: ^2.45.2
+        version: 2.45.2(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.9.1))(supports-color@7.2.0)(zod@3.25.76)
       n8n-nodes-probe-example:
         specifier: workspace:*
         version: link:../../apps/example-node
       n8n-workflow:
-        specifier: ^2.44.2
-        version: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+        specifier: ^2.45.1
+        version: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       testcontainers:
         specifier: ^12.2.1
         version: 12.2.1(supports-color@7.2.0)
@@ -212,8 +212,8 @@ importers:
         specifier: workspace:*
         version: link:../../apps/example-node
       n8n-workflow:
-        specifier: ^2.44.2
-        version: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+        specifier: ^2.45.1
+        version: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       testcontainers:
         specifier: ^12.2.1
         version: 12.2.1(supports-color@7.2.0)
@@ -261,8 +261,8 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12(vitest@4.1.12)
       n8n-workflow:
-        specifier: ^2.44.2
-        version: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+        specifier: ^2.45.1
+        version: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       tsup:
         specifier: ^9.0.0
         version: 9.0.0(postcss@8.5.31)(typescript@5.9.3)(yaml@2.9.1)
@@ -289,8 +289,8 @@ importers:
         specifier: workspace:*
         version: link:../../apps/example-node
       n8n-workflow:
-        specifier: ^2.44.2
-        version: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+        specifier: ^2.45.1
+        version: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       tsup:
         specifier: ^9.0.0
         version: 9.0.0(postcss@8.5.31)(typescript@5.9.3)(yaml@2.9.1)
@@ -1033,31 +1033,31 @@ packages:
     resolution: {integrity: sha512-NmEzpWbbiWpudgqKVZtGdSAvQGIYyj7Rf8ea+1hJEo+Dn0YvPHtiz577US7kGg0sCaZtPelrdqV4SfwwGJq1cA==}
     engines: {node: '>=22'}
 
-  '@n8n/api-types@1.44.3':
-    resolution: {integrity: sha512-0QLFPl5FFr2PTr2zbzIT2alp2LNxnxz0FiMhUskQQ8JqpkjC9b0gC/KaAbTw+exsrqeRIQrIUQ5tX0xb+m8NVA==}
+  '@n8n/api-types@1.45.2':
+    resolution: {integrity: sha512-fVowcr9XQHl2D6RhVJyhVxrxHYZqxzdyfABH9f6lixwKDh2kWK52qUU6j6VvsUiVEjGfoUtwftSf8571w74IUg==}
     peerDependencies:
       zod: 3.25.76
 
-  '@n8n/backend-common@1.44.4':
-    resolution: {integrity: sha512-Dw/P8CfqRJ5vN+SaWpSlJ3kN7lIgoiE2rO6+WD8Xw/s8ONnRO9QBI30cboHBWWrEPgeLx5AJQtonBOacXEpUmg==}
+  '@n8n/backend-common@1.45.2':
+    resolution: {integrity: sha512-mmHjL0ChCGu0iEzxSsTpDwHbZoRf1a9WBJ7I8oNCL7++hsRUo5tifZZx5mAbFQfdDbpFRppucpJ3/PlbVgXuLA==}
 
-  '@n8n/backend-network@1.18.4':
-    resolution: {integrity: sha512-tyS7ejS6GEbbDdvs+A/xHleNHJ8TY1v3qbBp+qpxdEybIpDGTS4hMHU09y40TTz58Mbun5t2ATk774w7wXIlkg==}
+  '@n8n/backend-network@1.19.2':
+    resolution: {integrity: sha512-cLyxwNsz1oDSS4Ht4bROrPbZRFw8lNSlloxqgCHvAmznJUj3O9zJ2adFb55vfYb9liGamxXez1izbQ4fefwdoA==}
 
-  '@n8n/blob-storage@1.12.4':
-    resolution: {integrity: sha512-TYYxRQID4nYpM692kVwLOSfsBiktuEDJDL28I2A5xZgG4xChD/JK4IgkQ9a28rYChwh3d16x9nrlEu0ONHA7Dg==}
+  '@n8n/blob-storage@1.13.2':
+    resolution: {integrity: sha512-A8AI0eHCN13/qWhJOu1ElwOD4OVydGjz4074t7ExJvkn9LpLc427CV3WR+R7hbAJCLiTXvIHhZkSiDbF+bpdyw==}
 
-  '@n8n/client-oauth2@1.26.4':
-    resolution: {integrity: sha512-s6M4LjPse66FCuIBqdM2bEnC7MN8z5yTD3PT8ECJiHI55NjbvzUZe6tw8zxjhZHzHz0W9Mx5N/y9nMAQSmoTXQ==}
+  '@n8n/client-oauth2@1.27.2':
+    resolution: {integrity: sha512-IpJQhunexpzC80yvdAvBiFHhWKVTazTqDiToStdJJuvmp0xP1OOKAvKJt8VbtT5C7Wq/XP6YdMHeh3SXMsHxpA==}
 
-  '@n8n/config@2.42.1':
-    resolution: {integrity: sha512-ksOYc+XCIuMRH372hgvLKxCMdtjX00jnvqgUsfKH4zj+q7mxyyOLddMy2Y3PvZF1CTY95JIAWatTxaCANKAYTA==}
+  '@n8n/config@2.43.1':
+    resolution: {integrity: sha512-LO/8IqCoYh10qQgBw0U8o7TaldKqw2rbI3ugjDygnwIBWXENIBJjx9cnis5CjnRg5p4ouG+nYIRBifj5Hn8sfA==}
 
-  '@n8n/constants@0.42.0':
-    resolution: {integrity: sha512-XZ81xQX2dTrsFSV6mw/TqeDYPoqdCVBpZUAwwb7QIk747irt+rD+K8pD3DUOuCqiwe7+Eik1nh7lnkDNvIPGAA==}
+  '@n8n/constants@0.43.0':
+    resolution: {integrity: sha512-TuJE6ocBGW5TEnXIbDzTpidvMhH5/XdxaDwcQVzZb41wFjWRiiWB1CZ4BkNYI60A10rwQBGmh/y4kXVYx2LiHA==}
 
-  '@n8n/decorators@1.44.3':
-    resolution: {integrity: sha512-nEYJg8YZwudXLSDBijH91EqtBWlAwszjHiO9TR53Wmoeuxpc0miCx8DxpOQzo9ohiJ+qWLJfFmeuORHhuzTH+w==}
+  '@n8n/decorators@1.45.2':
+    resolution: {integrity: sha512-PcLZS7vsRJXcx6VJTBircSlenKgsHbhj0E0Qkk3R+ZGmQ1SQAJtwIiyAtfAFaqnAhda1elJ4+CZiQE8DvAVXsA==}
 
   '@n8n/di@0.17.0':
     resolution: {integrity: sha512-SUs8lp43QD9anRspXswYxoX8EbvdMpwIWYWoBbvw2Mf2CWymFZKSf/Gjo34KATvJLuKhkmv23dM1ntdsY48Wjg==}
@@ -1065,20 +1065,25 @@ packages:
   '@n8n/errors@0.15.0':
     resolution: {integrity: sha512-hLg8/m2Ohs8yTUUh+1UuFFC1+Q4j06HolSoWRQIIobyf9T40xoG5beltEFYrij/psl2Lub41SVV2QTzPROiEOg==}
 
-  '@n8n/expression-runtime@0.35.0':
-    resolution: {integrity: sha512-no7xktrjtK9SgDJgYq9YhaZQ+ZqpWZTp6I8iT/Wehl8m7TI7/Z1cwPD/QiHGFKOY2X81VeDsIBlQCpfJQP/l/A==}
+  '@n8n/expression-runtime@0.36.1':
+    resolution: {integrity: sha512-b/BEi2+bgEromBSo6DkxK5cd66BEd+8Crp+RrWDt8oEVAlDh78omIisq3mHh0JISV2mZdEoGr7z+5rydD2GylQ==}
 
-  '@n8n/permissions@0.81.0':
-    resolution: {integrity: sha512-FgC8NgXOyTc9nlchjl4wy+sZY9bZ27GBzfn+/VTdl6E0hIqJI4jgoKUZ0m0TvxcKWlEBM1wuQecL9loFeiqwkQ==}
+  '@n8n/inbound-auth@0.4.1':
+    resolution: {integrity: sha512-ZdKDd/lb8y7RNXBdctcxxId2KnSG+cM/EaTHNHuV3vP3hjeqBDeNFpNfi33/7x+ydPank3Rxs7qrrgh+o2zh8A==}
+    peerDependencies:
+      zod: 3.25.76
 
-  '@n8n/tournament@1.14.0':
-    resolution: {integrity: sha512-PvK8af1onivDg/FQHB35FLdE9QyvouFI0lDPEEce40aQ51ZXhJguPBfgfYSPaSsCV0zMl9yLy8uqU6euy8N8TQ==}
+  '@n8n/permissions@0.82.0':
+    resolution: {integrity: sha512-TJ9o5expcrIgWNCBv2hUjLg5+LfnhBwXyyWlpPVckVO+5RefLme3ogUB7VD+G44q5KeQrf6/FE5wqWr+48SGAQ==}
 
-  '@n8n/utils@1.51.0':
-    resolution: {integrity: sha512-VcNe2qBIoyPQWIKB7+UwLCMwxiewpJcqFRzHOeiMOAsqGHe6fqYZ3wXIYZh57wYNOuz4CD9LdopPwH1McWbpSA==}
+  '@n8n/tournament@1.15.0':
+    resolution: {integrity: sha512-9A69AFTsomVU0xQli7Bam89XpvQhTH8DbtpGBfJCoEPUNeMWlh59WpOw+oLEBA1W7lifyfkiJSLeUQxYArT2aA==}
 
-  '@n8n/workflow-sdk@0.37.2':
-    resolution: {integrity: sha512-nepFfyfeQzHyHP+Qr8JDqYVDYHIzQY93P2kjEw023dM9tur98GDMwIyQkthUtNym9CKnV6/8K+6mhgPmpqM5XA==}
+  '@n8n/utils@1.52.0':
+    resolution: {integrity: sha512-3stNMFnfx19jNBnyi2pNyZFV39zbZ6CPkPM7HbzYTxu0ZdDZrIH+63R0VabOIbGmSxkuqd8mH776zBc8Hmmtvg==}
+
+  '@n8n/workflow-sdk@0.38.1':
+    resolution: {integrity: sha512-Mgircvwb50Z+YOIHsQ+fEMiUfqkxwEPEovLwvqWiUD1TWXtjygj6kigPgv3B0yQ2ZF304p7EcmbtmkgXD8W15w==}
     hasBin: true
 
   '@n8n_io/ai-assistant-sdk@1.27.0':
@@ -3357,14 +3362,14 @@ packages:
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
 
-  n8n-core@2.44.4:
-    resolution: {integrity: sha512-/jecAGoZW0FA81v9ujuMyAidDbbQig6WkLfxSuMPdtNeo+DeFRmbs9sf9N75GqBmojfOnE1nXr+kVchW9WbtWQ==}
+  n8n-core@2.45.2:
+    resolution: {integrity: sha512-sG/NzfzXnm23J0uObjfWlShnE38jXwFUSXpq6hveDfGab+zETr6qtAL+r8sMrsb9rCkAuybH6I/METxB6bUThA==}
     hasBin: true
     peerDependencies:
       zod: 3.25.76
 
-  n8n-workflow@2.44.2:
-    resolution: {integrity: sha512-cLLk63NNXJHgEybHrU+2pQpXEXqWx2H5U2JvetKryp86AqyP2MynrRDtldoKpSsjiwQd3dkRy9ZiObABSx/ynw==}
+  n8n-workflow@2.45.1:
+    resolution: {integrity: sha512-z3TQt6h9lqo1t7OJFzA48ycbQ9KvDOWMNN8GSuYf+0Vj8fvg3NX+LGzS0T8NVW4CgiDSZCULln6n4Rj6Xgld2g==}
     peerDependencies:
       zod: 3.25.76
 
@@ -3652,9 +3657,6 @@ packages:
   retry@0.12.0:
     resolution: {integrity: sha512-9LkiTwjUh6rT555DtE9rTX+BKByPfrMzEAtnlEtdEwr3Nkffwiihqe2bWADg+OQRjt9gl6ICdmB/ZFDCGAtSow==}
     engines: {node: '>= 4'}
-
-  rettime@0.11.11:
-    resolution: {integrity: sha512-ILJRqVWBCTlg9r42fFgwVZx1gnFAcQF8mRoMkbgQfIrjEDf9nbBFDFx00oloOa+Q869FUtaYDXZvEfnecQSCoQ==}
 
   rettime@0.11.12:
     resolution: {integrity: sha512-5ExtR1ppiDBQkVoPw5NAqdbfH4Iq2VOmQKHMtUoaFxA9bo2krzFYBtyq6K40xxbYp+2w/YOr6D+1ToF6tTN53A==}
@@ -5415,12 +5417,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@n8n/api-types@1.44.3(supports-color@7.2.0)(zod@3.25.76)':
+  '@n8n/api-types@1.45.2(supports-color@7.2.0)(zod@3.25.76)':
     dependencies:
       '@asteasolutions/zod-to-openapi': 7.3.4(zod@3.25.76)
-      '@n8n/permissions': 0.81.0
+      '@n8n/inbound-auth': 0.4.1(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/permissions': 0.82.0
+      '@n8n/utils': 1.52.0
       '@n8n_io/ai-assistant-sdk': 1.27.0
-      n8n-workflow: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+      n8n-workflow: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       validator: 13.15.26
       xss: 1.0.15
       zod: 3.25.76
@@ -5428,17 +5432,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@n8n/backend-common@1.44.4(supports-color@7.2.0)(zod@3.25.76)':
+  '@n8n/backend-common@1.45.2(supports-color@7.2.0)(zod@3.25.76)':
     dependencies:
-      '@n8n/config': 2.42.1
-      '@n8n/constants': 0.42.0
-      '@n8n/decorators': 1.44.3(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/config': 2.43.1
+      '@n8n/constants': 0.43.0
+      '@n8n/decorators': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
       '@n8n/di': 0.17.0
-      '@n8n/utils': 1.51.0
+      '@n8n/utils': 1.52.0
       callsites: 3.1.0
       flatted: 3.4.2
       logform: 2.6.1
-      n8n-workflow: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+      n8n-workflow: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       picocolors: 1.0.1
       stream-json: 1.9.1
       winston: 3.14.2
@@ -5448,20 +5452,20 @@ snapshots:
       - supports-color
       - zod
 
-  '@n8n/backend-network@1.18.4(supports-color@7.2.0)':
+  '@n8n/backend-network@1.19.2(supports-color@7.2.0)':
     dependencies:
-      '@n8n/backend-common': 1.44.4(supports-color@7.2.0)(zod@3.25.76)
-      '@n8n/config': 2.42.1
-      '@n8n/constants': 0.42.0
+      '@n8n/backend-common': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/config': 2.43.1
+      '@n8n/constants': 0.43.0
       '@n8n/di': 0.17.0
-      '@n8n/utils': 1.51.0
+      '@n8n/utils': 1.52.0
       axios: 1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       cache-manager: 5.2.3
       form-data: 4.0.6
       http-proxy-agent: 7.0.2(supports-color@7.2.0)
       https-proxy-agent: 7.0.6(supports-color@7.2.0)
       iconv-lite: 0.6.3
-      n8n-workflow: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+      n8n-workflow: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       proxy-from-env: 1.1.0
       qs: 6.15.2
       undici: 7.30.1
@@ -5470,50 +5474,50 @@ snapshots:
       - debug
       - supports-color
 
-  '@n8n/blob-storage@1.12.4(supports-color@7.2.0)':
+  '@n8n/blob-storage@1.13.2(supports-color@7.2.0)':
     dependencies:
       '@aws-sdk/client-s3': 3.808.0
       '@azure/identity': 4.13.0(supports-color@7.2.0)
       '@azure/storage-blob': 12.34.0(supports-color@7.2.0)
-      '@n8n/backend-common': 1.44.4(supports-color@7.2.0)(zod@3.25.76)
-      '@n8n/backend-network': 1.18.4(supports-color@7.2.0)
-      '@n8n/config': 2.42.1
+      '@n8n/backend-common': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/backend-network': 1.19.2(supports-color@7.2.0)
+      '@n8n/config': 2.43.1
       '@n8n/di': 0.17.0
-      '@n8n/utils': 1.51.0
+      '@n8n/utils': 1.52.0
       lodash: 4.18.1
-      n8n-workflow: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+      n8n-workflow: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       zod: 3.25.76
     transitivePeerDependencies:
       - aws-crt
       - debug
       - supports-color
 
-  '@n8n/client-oauth2@1.26.4(supports-color@7.2.0)':
+  '@n8n/client-oauth2@1.27.2(supports-color@7.2.0)':
     dependencies:
-      '@n8n/backend-network': 1.18.4(supports-color@7.2.0)
-      '@n8n/utils': 1.51.0
+      '@n8n/backend-network': 1.19.2(supports-color@7.2.0)
+      '@n8n/utils': 1.52.0
       axios: 1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@n8n/config@2.42.1':
+  '@n8n/config@2.43.1':
     dependencies:
-      '@n8n/constants': 0.42.0
+      '@n8n/constants': 0.43.0
       '@n8n/di': 0.17.0
       reflect-metadata: 0.2.2
       zod: 3.25.76
 
-  '@n8n/constants@0.42.0': {}
+  '@n8n/constants@0.43.0': {}
 
-  '@n8n/decorators@1.44.3(supports-color@7.2.0)(zod@3.25.76)':
+  '@n8n/decorators@1.45.2(supports-color@7.2.0)(zod@3.25.76)':
     dependencies:
-      '@n8n/api-types': 1.44.3(supports-color@7.2.0)(zod@3.25.76)
-      '@n8n/constants': 0.42.0
+      '@n8n/api-types': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/constants': 0.43.0
       '@n8n/di': 0.17.0
-      '@n8n/permissions': 0.81.0
+      '@n8n/permissions': 0.82.0
       lodash: 4.18.1
-      n8n-workflow: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+      n8n-workflow: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -5527,11 +5531,11 @@ snapshots:
     dependencies:
       callsites: 3.1.0
 
-  '@n8n/expression-runtime@0.35.0':
+  '@n8n/expression-runtime@0.36.1':
     dependencies:
       '@n8n/errors': 0.15.0
-      '@n8n/tournament': 1.14.0
-      '@n8n/utils': 1.51.0
+      '@n8n/tournament': 1.15.0
+      '@n8n/utils': 1.52.0
       isolated-vm: 7.0.1
       jmespath: 0.16.0
       js-base64: 3.7.8
@@ -5544,30 +5548,39 @@ snapshots:
       transliteration: 2.3.5
       zod: 3.25.76
 
-  '@n8n/permissions@0.81.0':
+  '@n8n/inbound-auth@0.4.1(supports-color@7.2.0)(zod@3.25.76)':
+    dependencies:
+      '@n8n/permissions': 0.82.0
+      n8n-workflow: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+      zod: 3.25.76
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@n8n/permissions@0.82.0':
     dependencies:
       zod: 3.25.76
 
-  '@n8n/tournament@1.14.0':
+  '@n8n/tournament@1.15.0':
     dependencies:
       ast-types: 0.16.3
       esprima-next: 5.8.4
       recast: 0.22.0
 
-  '@n8n/utils@1.51.0':
+  '@n8n/utils@1.52.0':
     dependencies:
-      '@n8n/constants': 0.42.0
+      '@n8n/constants': 0.43.0
       nanoid: 3.3.18
       semver: 7.7.3
 
-  '@n8n/workflow-sdk@0.37.2(supports-color@7.2.0)':
+  '@n8n/workflow-sdk@0.38.1(supports-color@7.2.0)':
     dependencies:
       '@dagrejs/dagre': 1.1.8
-      '@n8n/constants': 0.42.0
-      '@n8n/utils': 1.51.0
+      '@n8n/constants': 0.43.0
+      '@n8n/utils': 1.52.0
       acorn: 8.14.0
       lodash: 4.18.1
-      n8n-workflow: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+      n8n-workflow: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       uuid: 11.1.1
       zod: 3.25.76
     transitivePeerDependencies:
@@ -7974,7 +7987,7 @@ snapshots:
       outvariant: 1.4.3
       path-to-regexp: 6.3.0
       picocolors: 1.1.1
-      rettime: 0.11.11
+      rettime: 0.11.12
       statuses: 2.0.2
       strict-event-emitter: 0.5.1
       tough-cookie: 6.0.2
@@ -8019,20 +8032,20 @@ snapshots:
       object-assign: 4.1.1
       thenify-all: 1.6.0
 
-  n8n-core@2.44.4(@opentelemetry/api@1.10.0)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.10.0))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.10.0))(supports-color@7.2.0)(zod@3.25.76):
+  n8n-core@2.45.2(@opentelemetry/api@1.10.0)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.10.0))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.10.0))(supports-color@7.2.0)(zod@3.25.76):
     dependencies:
       '@langchain/core': 1.2.8(@opentelemetry/api@1.10.0)(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.10.0))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.10.0))
-      '@n8n/backend-common': 1.44.4(supports-color@7.2.0)(zod@3.25.76)
-      '@n8n/backend-network': 1.18.4(supports-color@7.2.0)
-      '@n8n/blob-storage': 1.12.4(supports-color@7.2.0)
-      '@n8n/client-oauth2': 1.26.4(supports-color@7.2.0)
-      '@n8n/config': 2.42.1
-      '@n8n/constants': 0.42.0
-      '@n8n/decorators': 1.44.3(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/backend-common': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/backend-network': 1.19.2(supports-color@7.2.0)
+      '@n8n/blob-storage': 1.13.2(supports-color@7.2.0)
+      '@n8n/client-oauth2': 1.27.2(supports-color@7.2.0)
+      '@n8n/config': 2.43.1
+      '@n8n/constants': 0.43.0
+      '@n8n/decorators': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
       '@n8n/di': 0.17.0
       '@n8n/errors': 0.15.0
-      '@n8n/utils': 1.51.0
-      '@n8n/workflow-sdk': 0.37.2(supports-color@7.2.0)
+      '@n8n/utils': 1.52.0
+      '@n8n/workflow-sdk': 0.38.1(supports-color@7.2.0)
       '@sentry/core': 10.70.0
       '@sentry/node': 10.70.0(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.10.0))(supports-color@7.2.0)
       '@sentry/node-native': 10.70.0(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.10.0))(supports-color@7.2.0)
@@ -8048,7 +8061,7 @@ snapshots:
       luxon: 3.7.2
       mime-types: 3.0.2
       ms: 2.1.3
-      n8n-workflow: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+      n8n-workflow: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       nanoid: 3.3.18
       oauth-1.0a: 2.2.6
       p-cancelable: 2.1.1
@@ -8069,20 +8082,20 @@ snapshots:
       - supports-color
       - ws
 
-  n8n-core@2.44.4(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.9.1))(supports-color@7.2.0)(zod@3.25.76):
+  n8n-core@2.45.2(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.9.1))(supports-color@7.2.0)(zod@3.25.76):
     dependencies:
       '@langchain/core': 1.2.8(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.9.1))
-      '@n8n/backend-common': 1.44.4(supports-color@7.2.0)(zod@3.25.76)
-      '@n8n/backend-network': 1.18.4(supports-color@7.2.0)
-      '@n8n/blob-storage': 1.12.4(supports-color@7.2.0)
-      '@n8n/client-oauth2': 1.26.4(supports-color@7.2.0)
-      '@n8n/config': 2.42.1
-      '@n8n/constants': 0.42.0
-      '@n8n/decorators': 1.44.3(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/backend-common': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/backend-network': 1.19.2(supports-color@7.2.0)
+      '@n8n/blob-storage': 1.13.2(supports-color@7.2.0)
+      '@n8n/client-oauth2': 1.27.2(supports-color@7.2.0)
+      '@n8n/config': 2.43.1
+      '@n8n/constants': 0.43.0
+      '@n8n/decorators': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
       '@n8n/di': 0.17.0
       '@n8n/errors': 0.15.0
-      '@n8n/utils': 1.51.0
-      '@n8n/workflow-sdk': 0.37.2(supports-color@7.2.0)
+      '@n8n/utils': 1.52.0
+      '@n8n/workflow-sdk': 0.38.1(supports-color@7.2.0)
       '@sentry/core': 10.70.0
       '@sentry/node': 10.70.0(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.9.1))(supports-color@7.2.0)
       '@sentry/node-native': 10.70.0(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.9.1))(supports-color@7.2.0)
@@ -8098,7 +8111,7 @@ snapshots:
       luxon: 3.7.2
       mime-types: 3.0.2
       ms: 2.1.3
-      n8n-workflow: 2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+      n8n-workflow: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       nanoid: 3.3.18
       oauth-1.0a: 2.2.6
       p-cancelable: 2.1.1
@@ -8119,14 +8132,14 @@ snapshots:
       - supports-color
       - ws
 
-  n8n-workflow@2.44.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76):
+  n8n-workflow@2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76):
     dependencies:
       '@codemirror/autocomplete': 6.20.0
-      '@n8n/constants': 0.42.0
+      '@n8n/constants': 0.43.0
       '@n8n/errors': 0.15.0
-      '@n8n/expression-runtime': 0.35.0
-      '@n8n/tournament': 1.14.0
-      '@n8n/utils': 1.51.0
+      '@n8n/expression-runtime': 0.36.1
+      '@n8n/tournament': 1.15.0
+      '@n8n/utils': 1.52.0
       ast-types: 0.16.1
       axios: 1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       esprima-next: 5.8.4
@@ -8420,9 +8433,6 @@ snapshots:
   resolve-from@5.0.0: {}
 
   retry@0.12.0: {}
-
-  rettime@0.11.11:
-    optional: true
 
   rettime@0.11.12: {}
 
@@ -9092,7 +9102,7 @@ snapshots:
       '@dabh/diagnostics': 2.0.9
       async: 3.2.6
       is-stream: 2.0.1
-      logform: 2.6.1
+      logform: 2.7.0
       one-time: 1.0.0
       readable-stream: 3.6.2
       safe-stable-stringify: 2.5.0
