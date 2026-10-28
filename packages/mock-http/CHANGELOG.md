@@ -1,5 +1,18 @@
 # @n8n-probe/mock-http
 
+## 0.2.0
+
+### Minor Changes
+
+- 03dbba9: **Breaking:** `core`, `unit` and `mock-http` no longer ship a CommonJS build. Those builds never loaded, because they `require()` Vitest and Vitest cannot be required. Vitest test files already used the ESM build, so they are unaffected. `@n8n-probe/core/vitest` keeps its CommonJS build for config files in CommonJS projects. TypeScript test files in a CommonJS project still type-check with `moduleResolution` `node` (n8n's node starter) or `nodenext`. With `node16`, switch to `nodenext` or use `.mts` test files.
+- 2576bb4: **Breaking:** move to MSW 3 and make `msw` a peer dependency (`^3.0.0`) instead of a bundled one. Tests build handlers with their own `msw` import, and `setupMswForTest` / `presets` take and return MSW types, so both sides must share one copy. Install it yourself: `pnpm add -D msw`, and follow the [MSW 3 migration guide](https://mswjs.io/docs/migrations/2.x-to-3.x) for your own handlers. `setupMswForTest` still fails a test on an unmatched request; MSW 3 renamed the option to `onUnhandledFrame: 'error'`.
+
+### Patch Changes
+
+- Updated dependencies [87f0a40]
+- Updated dependencies [03dbba9]
+  - @n8n-probe/core@0.3.0
+
 ## 0.1.2
 
 ### Patch Changes
