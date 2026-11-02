@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@n8n-probe/core": "workspace:^",
-    "axios": "^1.20.0"
+    "axios": "^1.21.0"
   },
   "peerDependencies": {
     "msw": "^3.0.0",
