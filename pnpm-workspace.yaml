@@ -17,6 +17,7 @@ packages:
 allowBuilds:
   esbuild: true
   '@sentry/node-cpu-profiler': false
+  '@sentry-internal/node-native-stacktrace': false
   '@sentry/node-native-stacktrace': false
   cpu-features: false
   isolated-vm: false
