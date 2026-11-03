@@ -62,7 +62,7 @@ importers:
         version: 3.0.3(@types/node@22.20.5)(graphql@16.14.2)(supports-color@7.2.0)(typescript@5.9.3)(vite@8.3.5(@types/node@22.20.5)(esbuild@0.28.2)(yaml@2.9.1))
       n8n-core:
         specifier: ^2.45.2
-        version: 2.45.2(@opentelemetry/api@1.10.0)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.10.0))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.10.0))(supports-color@7.2.0)(zod@3.25.76)
+        version: 2.45.2(@opentelemetry/api@1.10.0)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.10.0))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.10.0))(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       n8n-nodes-probe-example:
         specifier: workspace:*
         version: link:../example-node
@@ -142,7 +142,7 @@ importers:
         version: 4.1.12(vitest@4.1.12)
       n8n-core:
         specifier: ^2.45.2
-        version: 2.45.2(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.9.1))(supports-color@7.2.0)(zod@3.25.76)
+        version: 2.45.2(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.9.1))(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       n8n-nodes-probe-example:
         specifier: workspace:*
         version: link:../../apps/example-node
@@ -196,8 +196,8 @@ importers:
         specifier: workspace:^
         version: link:../core
       axios:
-        specifier: ^1.20.0
-        version: 1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: ^1.21.0
+        version: 1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       '@types/node':
         specifier: ^22.20.5
@@ -2244,6 +2244,9 @@ packages:
   axios@1.20.0:
     resolution: {integrity: sha512-r8aOh8j9cGKpgQAqpzrUHnSIc6a59Y3Xf/cv8sy1DrHCkZHzQGEuoq1tARk6qSyDdtQGSDgpb9kFlruzPvrgwg==}
 
+  axios@1.21.0:
+    resolution: {integrity: sha512-YCzXMB53Q9PZBsh7yN7wtapit4WepwcHS2fP8QhGsBxSz5YtgYobV7GGlWlAJi+RxfU77GQTQi2DSLUma42EYA==}
+
   b4a@1.9.0:
     resolution: {integrity: sha512-dpfcF9fDNR6++cthXR67iyhgqWy9CBouAvIWhIntzBG6cvK/cnIPiZQjBwi/ZqjjBEDGfoNDtmB0kTjroOJ3pQ==}
     peerDependencies:
@@ -2772,6 +2775,15 @@ packages:
 
   follow-redirects@1.16.1:
     resolution: {integrity: sha512-FNvFGzoMLWmE6Yj9spb/zjd7yiNCHiAW9/Tg9CXrQ8wuu32HtlJOwWO11OJafl5FfY3DxTdQ0vj42zU1kvv5jg==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
+  follow-redirects@1.16.2:
+    resolution: {integrity: sha512-/kVP2U8z596Ia0gwFrwyIeo74ta5aVmSeU1FfAUMAmcEP5EP7zydmag3SLiN64NaRKef3lxsq7i/g7ltJQDGow==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -5422,10 +5434,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@n8n/api-types@1.45.2(supports-color@7.2.0)(zod@3.25.76)':
+  '@n8n/api-types@1.45.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)':
     dependencies:
       '@asteasolutions/zod-to-openapi': 7.3.4(zod@3.25.76)
-      '@n8n/inbound-auth': 0.4.1(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/inbound-auth': 0.4.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       '@n8n/permissions': 0.82.0
       '@n8n/utils': 1.52.0
       '@n8n_io/ai-assistant-sdk': 1.27.0
@@ -5437,11 +5449,11 @@ snapshots:
       - debug
       - supports-color
 
-  '@n8n/backend-common@1.45.2(supports-color@7.2.0)(zod@3.25.76)':
+  '@n8n/backend-common@1.45.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)':
     dependencies:
       '@n8n/config': 2.43.1
       '@n8n/constants': 0.43.0
-      '@n8n/decorators': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/decorators': 1.45.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       '@n8n/di': 0.17.0
       '@n8n/utils': 1.52.0
       callsites: 3.1.0
@@ -5457,9 +5469,9 @@ snapshots:
       - supports-color
       - zod
 
-  '@n8n/backend-network@1.19.2(supports-color@7.2.0)':
+  '@n8n/backend-network@1.19.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@n8n/backend-common': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/backend-common': 1.45.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       '@n8n/config': 2.43.1
       '@n8n/constants': 0.43.0
       '@n8n/di': 0.17.0
@@ -5479,13 +5491,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@n8n/blob-storage@1.13.2(supports-color@7.2.0)':
+  '@n8n/blob-storage@1.13.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@aws-sdk/client-s3': 3.808.0
       '@azure/identity': 4.13.0(supports-color@7.2.0)
       '@azure/storage-blob': 12.34.0(supports-color@7.2.0)
-      '@n8n/backend-common': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
-      '@n8n/backend-network': 1.19.2(supports-color@7.2.0)
+      '@n8n/backend-common': 1.45.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/backend-network': 1.19.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@n8n/config': 2.43.1
       '@n8n/di': 0.17.0
       '@n8n/utils': 1.52.0
@@ -5497,9 +5509,9 @@ snapshots:
       - debug
       - supports-color
 
-  '@n8n/client-oauth2@1.27.2(supports-color@7.2.0)':
+  '@n8n/client-oauth2@1.27.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@n8n/backend-network': 1.19.2(supports-color@7.2.0)
+      '@n8n/backend-network': 1.19.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@n8n/utils': 1.52.0
       axios: 1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
@@ -5515,9 +5527,9 @@ snapshots:
 
   '@n8n/constants@0.43.0': {}
 
-  '@n8n/decorators@1.45.2(supports-color@7.2.0)(zod@3.25.76)':
+  '@n8n/decorators@1.45.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)':
     dependencies:
-      '@n8n/api-types': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/api-types': 1.45.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       '@n8n/constants': 0.43.0
       '@n8n/di': 0.17.0
       '@n8n/permissions': 0.82.0
@@ -5553,7 +5565,7 @@ snapshots:
       transliteration: 2.3.5
       zod: 3.25.76
 
-  '@n8n/inbound-auth@0.4.1(supports-color@7.2.0)(zod@3.25.76)':
+  '@n8n/inbound-auth@0.4.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)':
     dependencies:
       '@n8n/permissions': 0.82.0
       n8n-workflow: 2.45.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
@@ -5578,7 +5590,7 @@ snapshots:
       nanoid: 3.3.18
       semver: 7.7.3
 
-  '@n8n/workflow-sdk@0.38.1(supports-color@7.2.0)':
+  '@n8n/workflow-sdk@0.38.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@dagrejs/dagre': 1.1.8
       '@n8n/constants': 0.43.0
@@ -6928,6 +6940,16 @@ snapshots:
       - debug
       - supports-color
 
+  axios@1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0):
+    dependencies:
+      follow-redirects: 1.16.2(debug@4.4.3(supports-color@7.2.0))
+      form-data: 4.0.6
+      https-proxy-agent: 5.0.1(supports-color@7.2.0)
+      proxy-from-env: 2.1.0
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
   b4a@1.9.0: {}
 
   balanced-match@1.0.2: {}
@@ -7477,6 +7499,10 @@ snapshots:
   fn.name@1.1.0: {}
 
   follow-redirects@1.16.1(debug@4.4.3(supports-color@7.2.0)):
+    optionalDependencies:
+      debug: 4.4.3(supports-color@7.2.0)
+
+  follow-redirects@1.16.2(debug@4.4.3(supports-color@7.2.0)):
     optionalDependencies:
       debug: 4.4.3(supports-color@7.2.0)
 
@@ -8039,20 +8065,20 @@ snapshots:
       object-assign: 4.1.1
       thenify-all: 1.6.0
 
-  n8n-core@2.45.2(@opentelemetry/api@1.10.0)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.10.0))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.10.0))(supports-color@7.2.0)(zod@3.25.76):
+  n8n-core@2.45.2(@opentelemetry/api@1.10.0)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.10.0))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.10.0))(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76):
     dependencies:
       '@langchain/core': 1.2.8(@opentelemetry/api@1.10.0)(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.10.0))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.10.0))
-      '@n8n/backend-common': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
-      '@n8n/backend-network': 1.19.2(supports-color@7.2.0)
-      '@n8n/blob-storage': 1.13.2(supports-color@7.2.0)
-      '@n8n/client-oauth2': 1.27.2(supports-color@7.2.0)
+      '@n8n/backend-common': 1.45.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/backend-network': 1.19.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@n8n/blob-storage': 1.13.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@n8n/client-oauth2': 1.27.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@n8n/config': 2.43.1
       '@n8n/constants': 0.43.0
-      '@n8n/decorators': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/decorators': 1.45.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       '@n8n/di': 0.17.0
       '@n8n/errors': 0.15.0
       '@n8n/utils': 1.52.0
-      '@n8n/workflow-sdk': 0.38.1(supports-color@7.2.0)
+      '@n8n/workflow-sdk': 0.38.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sentry/core': 10.70.0
       '@sentry/node': 10.70.0(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.10.0))(supports-color@7.2.0)
       '@sentry/node-native': 10.70.0(@opentelemetry/core@2.12.0(@opentelemetry/api@1.10.0))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.10.0))(supports-color@7.2.0)
@@ -8089,20 +8115,20 @@ snapshots:
       - supports-color
       - ws
 
-  n8n-core@2.45.2(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.9.1))(supports-color@7.2.0)(zod@3.25.76):
+  n8n-core@2.45.2(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.9.1))(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76):
     dependencies:
       '@langchain/core': 1.2.8(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.222.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.12.0(@opentelemetry/api@1.9.1))
-      '@n8n/backend-common': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
-      '@n8n/backend-network': 1.19.2(supports-color@7.2.0)
-      '@n8n/blob-storage': 1.13.2(supports-color@7.2.0)
-      '@n8n/client-oauth2': 1.27.2(supports-color@7.2.0)
+      '@n8n/backend-common': 1.45.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/backend-network': 1.19.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@n8n/blob-storage': 1.13.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@n8n/client-oauth2': 1.27.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@n8n/config': 2.43.1
       '@n8n/constants': 0.43.0
-      '@n8n/decorators': 1.45.2(supports-color@7.2.0)(zod@3.25.76)
+      '@n8n/decorators': 1.45.2(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)(zod@3.25.76)
       '@n8n/di': 0.17.0
       '@n8n/errors': 0.15.0
       '@n8n/utils': 1.52.0
-      '@n8n/workflow-sdk': 0.38.1(supports-color@7.2.0)
+      '@n8n/workflow-sdk': 0.38.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sentry/core': 10.70.0
       '@sentry/node': 10.70.0(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.9.1))(supports-color@7.2.0)
       '@sentry/node-native': 10.70.0(@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.300.0(@opentelemetry/api@1.9.1))(supports-color@7.2.0)
