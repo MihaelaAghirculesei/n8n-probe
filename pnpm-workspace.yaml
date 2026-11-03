@@ -36,3 +36,7 @@ overrides:
   # 8.2.4. The vitest peer
   # keeps pnpm on 8.2.2 even though vitest's own range allows the fix.
   'vite@>=8.0.0 <8.2.4': '^8.2.4'
+  # GHSA-3g3m-2fjr-6pw4 and GHSA-g3hv-75wg-m249 via the n8n dev packages and tooling.
+  # Their parents still ask for older majors, so Dependabot cannot update these.
+  'glob@>=9.0.0 <14.0.2': '^14.0.2'
+  'minimatch@<11.0.1': '^11.0.1'
