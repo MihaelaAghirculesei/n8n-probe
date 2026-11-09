@@ -62,7 +62,7 @@
     "@vitest/coverage-v8": "^4.1.12",
     "msw": "^3.0.3",
     "n8n-nodes-probe-example": "workspace:*",
-    "n8n-workflow": "^3.0.1",
+    "n8n-workflow": "^3.1.0",
     "testcontainers": "^12.2.1",
     "tsup": "^9.0.0",
     "typescript": "~5.9.3",
