@@ -204,4 +204,13 @@ describe('performHttpRequest', () => {
     });
     expect(body).toEqual({ message: 'nope' });
   });
+
+  it('accepts a request-target object as url, as newer n8n passes', async () => {
+    server.use(...mockApi().get(`${API}/search`).reply(200, { hits: 1 }).handlers());
+
+    // Stands in for n8n's `RequestUrl`, which only exists on newer n8n-workflow.
+    const url = { toString: () => `${API}/search` } as unknown as string;
+    const body = await performHttpRequest(node, { url });
+    expect(body).toEqual({ hits: 1 });
+  });
 });
