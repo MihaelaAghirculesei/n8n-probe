@@ -40,3 +40,6 @@ overrides:
   # Their parents still ask for older majors, so Dependabot cannot update these.
   'glob@>=9.0.0 <14.0.2': '^14.0.2'
   'minimatch@<11.0.1': '^11.0.1'
+  # GHSA-474x-hrwr-fgx4 via the AWS SDK under n8n-core: quadratic CPU on unterminated
+  # stop-node tags, fixed in 5.12.0. The SDK still pins older versions exactly.
+  'fast-xml-parser@<5.12.0': '^5.12.0'
