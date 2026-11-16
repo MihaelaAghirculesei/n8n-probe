@@ -3,7 +3,13 @@ import type { CreateMockExecuteFunctionsOptions } from '@n8n-probe/core';
 import axios from 'axios';
 import type { AxiosRequestConfig, RawAxiosRequestHeaders } from 'axios';
 import { NodeApiError } from 'n8n-workflow';
-import type { IHttpRequestOptions, INode, JsonObject } from 'n8n-workflow';
+import type { IExecuteFunctions, IHttpRequestOptions, INode, JsonObject } from 'n8n-workflow';
+
+/**
+ * What `helpers.httpRequest` accepts on the installed n8n: plain
+ * `IHttpRequestOptions`, widened on newer n8n with the `WithRequestTarget` form.
+ */
+type HttpRequestInput = Parameters<IExecuteFunctions['helpers']['httpRequest']>[0];
 
 /** Map `IHttpRequestOptions.encoding` onto an axios `responseType`. */
 function responseType(
@@ -24,10 +30,7 @@ function responseType(
  * Not covered: `httpRequestWithAuthentication`, proxy auth, form/multipart
  * bodies, `arrayFormat` query serialisation.
  */
-export async function performHttpRequest(
-  node: INode,
-  options: IHttpRequestOptions,
-): Promise<unknown> {
+export async function performHttpRequest(node: INode, options: HttpRequestInput): Promise<unknown> {
   const {
     url,
     baseURL,
@@ -43,7 +46,7 @@ export async function performHttpRequest(
 
   try {
     const response = await axios.request<unknown>({
-      url,
+      url: String(url),
       baseURL,
       method,
       headers: headers as RawAxiosRequestHeaders | undefined,
@@ -88,7 +91,7 @@ export function createMockHttpExecuteFunctions(
 ): ReturnType<typeof createMockExecuteFunctions> {
   const ctx = createMockExecuteFunctions(options);
   const node = ctx.getNode();
-  ctx.helpers.httpRequest.mockImplementation((requestOptions: IHttpRequestOptions) =>
+  ctx.helpers.httpRequest.mockImplementation((requestOptions: HttpRequestInput) =>
     performHttpRequest(node, requestOptions),
   );
   return ctx;
