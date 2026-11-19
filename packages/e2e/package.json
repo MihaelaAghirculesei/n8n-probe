@@ -49,8 +49,8 @@
     "test:e2e:full": "vitest run --config vitest.full.config.ts"
   },
   "peerDependencies": {
-    "n8n-core": "^2.16.0",
-    "n8n-workflow": "^2.16.0",
+    "n8n-core": "^2.16.0 || ^3.0.0",
+    "n8n-workflow": "^2.16.0 || ^3.0.0",
     "testcontainers": "^12.0.0"
   },
   "peerDependenciesMeta": {
