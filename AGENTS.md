@@ -223,6 +223,8 @@ nightly or by PR label: `e2e-full`
 (Docker tiers, label `e2e-full`) and `n8n-compat` (fast suite against the
 oldest n8n packages the peer range allows and against `stable`, label
 `n8n-compat`). A red run of either is a signal to act on, not a merge blocker.
+A red nightly opens a `nightly-failure` issue (`.github/workflows/nightly-alert.yml`),
+which the next green nightly closes.
 The n8n peer range is `^2.16.0 || ^3.0.0`. The lockfile tracks the newest n8n
 3 release through the Dependabot `n8n` group, so every PR tests n8n 3, and
 `n8n-compat` covers the 2.x floor and `stable`. A new n8n major means widening

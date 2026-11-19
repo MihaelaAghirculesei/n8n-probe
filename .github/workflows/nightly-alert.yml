@@ -1,0 +1,77 @@
+name: Nightly alert
+
+# A red nightly CI run (the only run that exercises `e2e-full` and `n8n-compat`
+# without a PR label) otherwise surfaces only as an email. This turns it into
+# an issue, so it lands on the project board next to PRs and issues:
+#   - nightly fails, no open alert   -> open an issue labelled `nightly-failure`
+#   - nightly fails, alert open      -> comment on it (one issue per red streak)
+#   - nightly green, alert open      -> close it
+# Its own workflow, not a job in ci.yml: it needs `issues: write`, and ci.yml
+# stays read-only. `workflow_dispatch` exercises both paths by hand.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      conclusion:
+        description: Nightly result to simulate
+        type: choice
+        options: [failure, success]
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  alert:
+    name: alert
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.event == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TRIGGER: ${{ github.event_name }}
+      CONCLUSION: ${{ github.event.workflow_run.conclusion || inputs.conclusion }}
+      RUN_URL: ${{ github.event.workflow_run.html_url || format('{0}/{1}/actions/runs/{2}', github.server_url, github.repository, github.run_id) }}
+    steps:
+      - name: open, update or close the nightly-failure issue
+        run: |
+          set -euo pipefail
+          label=nightly-failure
+          note=''
+          if [ "$TRIGGER" = workflow_dispatch ]; then
+            note=$'\n\nTriggered by hand to test this alert.'
+          fi
+          open=$(gh issue list --label "$label" --state open --json number --jq '.[0].number // empty' 2>/dev/null || true)
+
+          case "$CONCLUSION" in
+            failure | timed_out)
+              if [ -n "$open" ]; then
+                gh issue comment "$open" --body "Still failing: ${RUN_URL}${note}"
+              else
+                gh label create "$label" --color B60205 \
+                  --description 'Opened by the nightly alert workflow' --force
+                gh issue create --label "$label" --title 'Nightly CI failed' --body \
+                  "The scheduled CI run failed: ${RUN_URL}
+
+          It is the only run that covers \`e2e-full\` and \`n8n-compat\` without a PR label. This issue stays open while the nightly is red; later failures add a comment, and the next green nightly closes it.${note}"
+              fi
+              ;;
+            success)
+              if [ -n "$open" ]; then
+                gh issue close "$open" --comment "Nightly CI is green again: ${RUN_URL}${note}"
+              fi
+              ;;
+            *)
+              echo "Nightly concluded '${CONCLUSION}' (e.g. cancelled); nothing to do."
+              ;;
+          esac
