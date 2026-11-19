@@ -235,7 +235,7 @@ metrics deps were already correct (unlike `otel`).
 
 ---
 
-## Milestone 10 — post-0.1 hardening `[~]`
+## Milestone 10 — post-0.1 hardening `[x]`
 
 A senior review of the published `0.1.0` (2026-10-05) found the gaps below.
 The aim is a `0.2.0` that a stranger can adopt without hitting them.
@@ -263,7 +263,8 @@ The aim is a `0.2.0` that a stranger can adopt without hitting them.
       found the n8n-core 2.41 credentials-helper break, fixed in e2e 0.2.1.)
       Later the lockfile moved from 2.16 to a `stable` snapshot (2.44), and the
       job gained a `minimum` leg (2.16.0) so the floor of the peer range stays
-      tested.
+      tested. The lockfile then followed n8n 3, and the peer range became
+      `^2.16.0 || ^3.0.0`.
 - [x] `.github/dependabot.yml` — grouped weekly version updates, with the
       AGENTS.md toolchain ceilings encoded as `ignore` rules.
 - [x] External validation from a fresh project (Appendix A, Day 19): `pnpm pack`
@@ -277,8 +278,9 @@ The aim is a `0.2.0` that a stranger can adopt without hitting them.
       overrides pinning every `@n8n-probe/*` to its tarball, assert
       `testcontainers` absent, `tsc`, CJS `require`, consumer Vitest suite),
       wired into the `ci` gate.
-- [ ] Release `0.2.0` (merge the "Version Packages" PR), then announce it —
-      see the roadmap below.
+- [x] Release `0.2.0` (merge the "Version Packages" PR). Followed by the
+      `0.3.0` breaking batch (roadmap items 4–5, MSW 3); the announcement is
+      roadmap item 1.
 
 ---
 
