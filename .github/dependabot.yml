@@ -28,7 +28,8 @@ updates:
       # TypeScript ~5.9 until typescript-eslint supports 6+ (AGENTS.md, ADR-0006).
       - dependency-name: typescript
         versions: ['>=6.0.0']
-      # Vitest ^4 only; never a 5.x pre-release (AGENTS.md).
+      # The workspace stays on Vitest ^4, the floor of the published peer range;
+      # Vitest 5 is covered by the `consumer smoke / vitest 5` leg (ADR-0002).
       - dependency-name: vitest
         versions: ['>=5.0.0']
       - dependency-name: '@vitest/*'
