@@ -88,8 +88,8 @@ re-resolves the n8n packages to the oldest supported release and to the current
 | Dependency                       | Supported                         | Verified                       |
 | -------------------------------- | --------------------------------- | ------------------------------ |
 | Node.js                          | `>= 22.22 < 25`                   | 22, 24                         |
-| `n8n-workflow` (peer)            | `^2.16.0 \|\| ^3.0.0`             | 2.16.0, 2.48.3 (`stable`), 3.0 |
-| `n8n-core` (peer, `e2e`)         | `^2.16.0 \|\| ^3.0.0`             | 2.16.0, 2.48.3 (`stable`), 3.0 |
+| `n8n-workflow` (peer)            | `^2.16.0 \|\| ^3.0.0`             | 2.16.0, 2.48.3 (`stable`), 3.2 |
+| `n8n-core` (peer, `e2e`)         | `^2.16.0 \|\| ^3.0.0`             | 2.16.0, 2.48.3 (`stable`), 3.2 |
 | `n8nio/n8n` image (full tier)    | pinned default, override per run  | 2.41.7                         |
 | Vitest (peer)                    | `^4.0.0 \|\| ^5.0.0`              | 4.1, 5.0                       |
 | `msw` (peer, `mock-http`)        | `^3.0.0`                          | 3.0                            |
