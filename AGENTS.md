@@ -202,18 +202,18 @@ first, then apply it:
 - `docker compose up` brings the demo stack live in under ~2 minutes with a
   pre-provisioned Grafana dashboard and traces landing in Jaeger.
 - Docs site (or a thorough root README section) covers a 5-minute quickstart,
-  one guide per pillar, the ADRs, and a comparison table.
+  one guide per pillar and the ADRs.
 
 ---
 
 ## Current state
 
-Milestones 0–9 are done: all six packages are published on npm at `0.1.0`,
-released hands-off through Changesets + npm Trusted Publishing. Milestone 10
-(post-0.1 hardening — the full e2e tier, dependency hygiene, n8n
-compatibility CI) leads to `0.2.0`; after that the roadmap in `docs/PLAN.md`
-puts adoption ahead of new scope (declarative nodes wait for demand, per
-ADR-0005).
+Milestones 0–10 are done: all six packages are published on npm, released
+hands-off through Changesets + npm Trusted Publishing, and `0.3.0` landed the
+planned breaking batch (ESM-only `core`/`unit`/`mock-http`, MSW 3). The
+roadmap in `docs/PLAN.md` now puts adoption ahead of new scope: declarative
+nodes and full-tier credentials wait for demand (ADR-0005), so day-to-day work
+is dependency and n8n-compatibility upkeep.
 
 The `ci` gate is `guards` + `build` (Node 22/24) + `consumer` (the packed
 tarballs installed into a project outside the workspace —
