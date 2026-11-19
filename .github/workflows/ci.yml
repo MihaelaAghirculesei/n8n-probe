@@ -114,14 +114,12 @@ jobs:
 
   n8n-compat:
     name: n8n compatibility (${{ matrix.n8n.name }})
-    # The lockfile pins a snapshot of n8n's `stable` line, so the `build` job
-    # alone covers neither end of the `^2.16.0` peer range: not the oldest
-    # release we still claim to support, and not a newer n8n release breaking
-    # the internals we use (`WorkflowExecute`, `ExecutionLifecycleHooks`,
-    # `IExecuteFunctions`, the credentials helper). Dependabot won't close that
-    # gap either — it follows `latest`, which n8n stopped moving (still 2.16).
-    # This re-resolves the n8n packages to each end of the range and runs the
-    # fast suite. Opt-in like `e2e-full` (nightly or the `n8n-compat` PR label)
+    # The lockfile pins n8n 3, so the `build` job alone covers neither the 2.x
+    # line of the `^2.16.0 || ^3.0.0` peer range — not the oldest release we
+    # still claim to support — nor whatever n8n currently ships as `stable`
+    # breaking the internals we use (`WorkflowExecute`, `ExecutionLifecycleHooks`,
+    # `IExecuteFunctions`, the credentials helper). This re-resolves the n8n
+    # packages to the floor and to `stable` and runs the fast suite. Opt-in like `e2e-full` (nightly or the `n8n-compat` PR label)
     # and outside the `ci` gate: an upstream release must not block unrelated
     # PRs; a red run here is the signal to act on.
     if: >-
@@ -131,7 +129,7 @@ jobs:
       fail-fast: false
       matrix:
         n8n:
-          # The floor of the `^2.16.0` peer range.
+          # The floor of the `^2.16.0 || ^3.0.0` peer range.
           - { name: minimum, workflow: '2.16.0', core: '2.16.0' }
           - { name: stable, workflow: stable, core: stable }
     runs-on: ubuntu-latest

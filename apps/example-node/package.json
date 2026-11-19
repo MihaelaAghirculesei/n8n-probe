@@ -32,7 +32,7 @@
     "@n8n-probe/otel": "workspace:*"
   },
   "peerDependencies": {
-    "n8n-workflow": "^2.16.0"
+    "n8n-workflow": "^2.16.0 || ^3.0.0"
   },
   "devDependencies": {
     "@opentelemetry/api": "^1.10.0",

@@ -81,19 +81,19 @@ it('uppercases the name field', async () => {
 ## Compatibility
 
 What the toolkit is built and tested against. CI runs the fast tier on every
-PR, the full tier nightly, and a nightly job that re-resolves the n8n packages
-to both ends of the supported range — the oldest release and the current
+PR against n8n 3 (the lockfile), the full tier nightly, and a nightly job that
+re-resolves the n8n packages to the oldest supported release and to the current
 `stable` (what n8n itself ships) — to catch upstream breakage early.
 
-| Dependency                       | Supported                         | Verified                  |
-| -------------------------------- | --------------------------------- | ------------------------- |
-| Node.js                          | `>= 22.22 < 25`                   | 22, 24                    |
-| `n8n-workflow` (peer)            | `^2.16.0`                         | 2.16.0, 2.44.2 (`stable`) |
-| `n8n-core` (peer, `e2e`)         | `^2.16.0`                         | 2.16.0, 2.44.4 (`stable`) |
-| `n8nio/n8n` image (full tier)    | pinned default, override per run  | 2.41.7                    |
-| Vitest (peer)                    | `^4.0.0 \|\| ^5.0.0`              | 4.1, 5.0                  |
-| `msw` (peer, `mock-http`)        | `^3.0.0`                          | 3.0                       |
-| `testcontainers` (optional peer) | `^12.0.0` — only for Docker tiers | 12.1                      |
+| Dependency                       | Supported                         | Verified                       |
+| -------------------------------- | --------------------------------- | ------------------------------ |
+| Node.js                          | `>= 22.22 < 25`                   | 22, 24                         |
+| `n8n-workflow` (peer)            | `^2.16.0 \|\| ^3.0.0`             | 2.16.0, 2.48.3 (`stable`), 3.0 |
+| `n8n-core` (peer, `e2e`)         | `^2.16.0 \|\| ^3.0.0`             | 2.16.0, 2.48.3 (`stable`), 3.0 |
+| `n8nio/n8n` image (full tier)    | pinned default, override per run  | 2.41.7                         |
+| Vitest (peer)                    | `^4.0.0 \|\| ^5.0.0`              | 4.1, 5.0                       |
+| `msw` (peer, `mock-http`)        | `^3.0.0`                          | 3.0                            |
+| `testcontainers` (optional peer) | `^12.0.0` — only for Docker tiers | 12.1                           |
 
 **Node styles:** programmatic nodes (an explicit `execute()`) are fully
 supported. Declarative/routing nodes are not yet — `executeNode` rejects them

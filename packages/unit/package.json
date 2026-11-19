@@ -43,7 +43,7 @@
     "@n8n-probe/core": "workspace:^"
   },
   "peerDependencies": {
-    "n8n-workflow": "^2.16.0",
+    "n8n-workflow": "^2.16.0 || ^3.0.0",
     "vitest": "^4.0.0 || ^5.0.0"
   },
   "devDependencies": {
